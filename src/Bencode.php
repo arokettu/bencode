@@ -2,6 +2,7 @@
 
 namespace SandFoxMe\Bencode;
 
+use SandFoxMe\Bencode\Engine\Decoder;
 use SandFoxMe\Bencode\Engine\Encoder;
 
 /**
@@ -33,7 +34,7 @@ class Bencode
      */
     public static function decode(string $bencoded, array $options = [])
     {
-        return [];
+        return (new Decoder($bencoded, $options))->decode();
     }
 
     /**
