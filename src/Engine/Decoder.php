@@ -37,7 +37,7 @@ class Decoder
 
     public function __construct(string $bencoded, array $options = [])
     {
-        $this->bencoded = str_split($bencoded);
+        $this->bencoded = str_split($bencoded); // make array out of string for speed
         $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
     }
 
@@ -65,6 +65,7 @@ class Decoder
     private function processChar()
     {
         if ($this->stateContainer()) {
+            // we're inside a container, find its children
             $this->nextObject();
         } else {
             switch ($this->state) {
@@ -94,18 +95,15 @@ class Decoder
     {
         switch ($this->char()) {
             case 'i':
-                $this->pushState(self::STATE_INT);
-                $this->pushValue();
+                $this->push(self::STATE_INT);
                 return;
 
             case 'l':
-                $this->pushState(self::STATE_LIST);
-                $this->pushValue();
+                $this->push(self::STATE_LIST);
                 return;
 
             case 'd':
-                $this->pushState(self::STATE_DICT);
-                $this->pushValue();
+                $this->push(self::STATE_DICT);
                 return;
 
             case 'e':
@@ -118,8 +116,7 @@ class Decoder
                     throw new ParseErrorException('Probably some junk after the end of the file');
                 }
 
-                $this->pushState(self::STATE_STR);
-                $this->pushValue();
+                $this->push(self::STATE_STR);
                 $this->value []= $this->char();
         }
     }
@@ -134,8 +131,7 @@ class Decoder
                 throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
             }
 
-            $this->popState();
-            $this->popValue($int);
+            $this->pop($int);
         } else {
             $this->value []= $this->char();
         }
@@ -167,8 +163,7 @@ class Decoder
 
             $str = implode($strChars);
 
-            $this->popState();
-            $this->popValue($str);
+            $this->pop($str);
         } else {
             $this->value []= $this->char();
         }
@@ -194,8 +189,7 @@ class Decoder
     {
         $value = $this->convertArrayToType($this->value, 'listType');
 
-        $this->popState();
-        $this->popValue($value);
+        $this->pop($value);
     }
 
     private function finalizeDict()
@@ -204,16 +198,17 @@ class Decoder
 
         $prevKey = null;
 
+        // we have an array [key1, value1, key2, value2, key3, value3, ...]
         while (count($this->value)) {
             $dictKey = array_shift($this->value);
-            if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
-                throw new ParseErrorException('Invalid order of dictionary keys');
-            }
             if (is_string($dictKey) === false) {
                 throw new ParseErrorException('Non string key found in the dictionary');
             }
             if (count($this->value) === 0) {
-                throw new ParseErrorException('Dictionary key without corresponding value');
+                throw new ParseErrorException("Dictionary key without corresponding value: '{$dictKey}'");
+            }
+            if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
+                throw new ParseErrorException("Invalid order of dictionary keys: '{$dictKey}' after '{$prevKey}'");
             }
             $dictValue = array_shift($this->value);
 
@@ -223,20 +218,32 @@ class Decoder
 
         $value = $this->convertArrayToType($dict, 'dictionaryType');
 
-        $this->popState();
-        $this->popValue($value);
+        $this->pop($value);
     }
 
-    private function pushValue()
+    /**
+     * Push previous layer to the stack and set new state
+     * @param int $newState
+     */
+    private function push(int $newState)
     {
+        array_push($this->stateStack, $this->state);
+        $this->state = $newState;
+
         if ($this->state !== self::STATE_ROOT) {
             array_push($this->valueStack, $this->value);
         }
         $this->value = [];
     }
 
-    private function popValue($valueToPrevLevel)
+    /**
+     * Pop previous layer from the stack and give it a parsed value
+     * @param mixed $valueToPrevLevel
+     */
+    private function pop($valueToPrevLevel)
     {
+        $this->state = array_pop($this->stateStack);
+
         if ($this->state !== self::STATE_ROOT) {
             $this->value = array_pop($this->valueStack);
             $this->value []= $valueToPrevLevel;
@@ -244,17 +251,6 @@ class Decoder
             // we have final result
             $this->decoded = $valueToPrevLevel;
         }
-    }
-
-    private function pushState(int $newState)
-    {
-        array_push($this->stateStack, $this->state);
-        $this->state = $newState;
-    }
-
-    private function popState()
-    {
-        $this->state = array_pop($this->stateStack);
     }
 
     private function char()
