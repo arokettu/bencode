@@ -202,8 +202,13 @@ class Decoder
     {
         $dict = [];
 
+        $prevKey = null;
+
         while (count($this->value)) {
             $dictKey = array_shift($this->value);
+            if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
+                throw new ParseErrorException('Invalid order of dictionary keys');
+            }
             if (is_string($dictKey) === false) {
                 throw new ParseErrorException('Non string key found in the dictionary');
             }
@@ -213,6 +218,7 @@ class Decoder
             $dictValue = array_shift($this->value);
 
             $dict[$dictKey] = $dictValue;
+            $prevKey = $dictKey;
         }
 
         $value = $this->convertArrayToType($dict, 'dictionaryType');
