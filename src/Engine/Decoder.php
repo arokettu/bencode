@@ -271,6 +271,10 @@ class Decoder
             return $array;
         }
 
+        if ($type === 'object') {
+            return (object)$array;
+        }
+
         if (is_callable($type)) {
             return call_user_func($type, $array);
         }

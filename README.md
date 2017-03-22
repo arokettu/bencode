@@ -64,6 +64,7 @@ Bencode::decode("...", [
         return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
     },
 ]);
+// default value for both types is 'array'. you can also use 'object' for stdClass
 ```
 
 ## Working with files
