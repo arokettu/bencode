@@ -74,7 +74,13 @@ class Encoder
 
     private function encodeList($array): string
     {
-        $list = implode(array_map([$this, 'encodeValue'], $array));
+        $listData = [];
+
+        foreach ($array as $value) {
+            $listData []= $this->encodeValue($value);
+        }
+
+        $list = implode($listData);
 
         return "l{$list}e";
     }
