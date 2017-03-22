@@ -1,6 +1,6 @@
 # PHP Bencode Encoder/Decoder
 
-[Bencode](https://en.wikipedia.org/wiki/Bencode) is the encoding used by the peer-to-peer file sharing system 
+[Bencode](https://en.wikipedia.org/wiki/Bencode) is the encoding used by the peer-to-peer file sharing system
 [BitTorrent](https://en.wikipedia.org/wiki/BitTorrent) for storing and transmitting loosely structured data.
 
 This is a pure PHP library that allows you to encode and decode Bencode data.
@@ -18,7 +18,7 @@ $encoded = Bencode::encode([    // array will become dictionary
     'arr'       => [1,2,3,4],       // sequential array will become a list
     'int'       => 123,             // integer is stored as is
     'float'     => 3.1415,          // float will become a string
-    'bool'      => true,            // bool will be a string '1' or '' 
+    'bool'      => true,            // bool will be a string '1' or ''
     'string'    => "test\0test",    // string can contain any binary data
 ]); // "d3:arrli1ei2ei3ei4ee4:bool1:15:float6:3.14153:inti123e6:string9:test\0teste"
 
@@ -41,6 +41,41 @@ Bencode::encode(new class { function __toString() { return 'I am string'; } }); 
 ```
 
 ## Decoding
+
+```php
+<?php
+
+use SandFoxMe\Bencode\Bencode;
+
+// simple decoding, lists and dictionaries will be arrays
+Bencode::decode("d3:arrli1ei2ei3ei4ee4:bool1:15:float6:3.14153:inti123e6:string9:test\0teste");
+// [
+//   "arr" => [1,2,3,4],
+//   "bool" => "1",
+//   "float" => "3.1415",
+//   "int" => 123,
+//   "string" => "test\0test",
+// ]
+
+// You can control lists and dictionaries types with options
+Bencode::decode("...", [
+    'dictionaryType'    => ArrayObject::class, // pass class name, new $type($array) will be created
+    'listType'          => function ($array) { // or callback for greater flexibility
+        return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
+    },
+]);
+```
+
+## Working with files
+
+```php
+<?php
+
+use SandFoxMe\Bencode\Bencode;
+
+$data = Bencode::load('testfile.torrent'); // load data from bencoded file
+Bencode::dump('testfile.torrent', $data); // save data to the bencoded file
+```
 
 ## Installation
 
