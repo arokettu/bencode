@@ -253,7 +253,7 @@ class Decoder
         }
     }
 
-    private function char()
+    private function char(): string
     {
         return $this->bencoded[$this->index];
     }
@@ -263,7 +263,7 @@ class Decoder
         return $this->index === $this->eof;
     }
 
-    private function convertArrayToType(array $array, $typeOption)
+    private function convertArrayToType(array $array, string $typeOption)
     {
         $type = $this->options[$typeOption];
 
