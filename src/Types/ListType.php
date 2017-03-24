@@ -2,27 +2,21 @@
 
 namespace SandFoxMe\Bencode\Types;
 
-use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
-
 class ListType implements \IteratorAggregate
 {
-    private $iterable;
+    private $traversable;
 
     /**
      * ArrayType constructor.
-     * @param $arrayOrTraversable
+     * @param \Traversable $traversable
      */
-    public function __construct($arrayOrTraversable)
+    public function __construct(\Traversable $traversable)
     {
-        if (is_array($arrayOrTraversable) === false && ($arrayOrTraversable instanceof \Traversable) === false) {
-            throw new InvalidArgumentException('$arrayOrTraversable must be an array or implement \Traversable');
-        }
-
-        $this->iterable = $arrayOrTraversable;
+        $this->traversable = $traversable;
     }
 
     public function getIterator()
     {
-        return $this->iterable;
+        return $this->traversable;
     }
 }
