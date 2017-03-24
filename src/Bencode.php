@@ -45,7 +45,7 @@ class Bencode
      * @param array $options
      * @return bool success of file_put_contents
      */
-    public static function dump(string $filename, $data, array $options = [])
+    public static function dump(string $filename, $data, array $options = []): bool
     {
         return file_put_contents($filename, self::encode($data, $options)) !== false;
     }
