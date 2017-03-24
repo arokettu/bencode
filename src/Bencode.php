@@ -43,10 +43,11 @@ class Bencode
      * @param string $filename
      * @param mixed $data
      * @param array $options
+     * @return bool success of file_put_contents
      */
     public static function dump(string $filename, $data, array $options = [])
     {
-        file_put_contents($filename, self::encode($data, $options));
+        return file_put_contents($filename, self::encode($data, $options)) !== false;
     }
 
     /**
