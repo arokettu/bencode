@@ -3,4 +3,4 @@
 /composer.lock
 
 # tests
-/tests/coverage
+/reports
