@@ -112,7 +112,7 @@ class Decoder
 
             default:
 
-                if ($this->decoded && $this->state === self::STATE_ROOT) {
+                if ($this->decoded !== null && $this->state === self::STATE_ROOT) {
                     throw new ParseErrorException('Probably some junk after the end of the file');
                 }
 
