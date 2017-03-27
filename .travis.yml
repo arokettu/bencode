@@ -2,10 +2,12 @@ language: php
 php:
   - '7.0'
   - '7.1'
-  - hhvm
+#  - hhvm
   - nightly
 install:
   - composer install
 script:
   - vendor/bin/phpunit tests --bootstrap vendor/autoload.php --coverage-clover reports/coverage/clover.xml --whitelist src
-  - vendor/bin/test-reporter --coverage-report reports/coverage/clover.xml
+after_script:
+  # only if generated
+  - if [ -f reports/coverage/clover.xml ]; then vendor/bin/test-reporter --coverage-report reports/coverage/clover.xml; fi
