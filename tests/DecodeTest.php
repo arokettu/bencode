@@ -19,6 +19,14 @@ class DecodeTest extends TestCase
         Bencode::decode('i0ejunk');
     }
 
+    public function testValidBencodeJunkIsAlsoJunk()
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Probably some junk after the end of the file');
+
+        Bencode::decode('i0ele');
+    }
+
     public function testRootIntegerNotFinalized()
     {
         $this->expectException(ParseErrorException::class);
