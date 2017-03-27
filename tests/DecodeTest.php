@@ -18,4 +18,36 @@ class DecodeTest extends TestCase
 
         Bencode::decode('i0ejunk');
     }
+
+    public function testRootIntegerNotFinalized()
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Unexpected end of file');
+
+        Bencode::decode('i123');
+    }
+
+    public function testRootStringNotFinalized()
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Unexpected end of file');
+
+        Bencode::decode('10:abc');
+    }
+
+    public function testRootListNotFinalized()
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Unexpected end of file');
+
+        Bencode::decode('li213ei123e');
+    }
+
+    public function testRootDictionaryNotFinalized()
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Unexpected end of file');
+
+        Bencode::decode('d4:key1i1e4:key2i2e');
+    }
 }
