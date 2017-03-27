@@ -93,6 +93,10 @@ class Decoder
 
     private function nextObject()
     {
+        if ($this->decoded !== null && $this->state === self::STATE_ROOT) {
+            throw new ParseErrorException('Probably some junk after the end of the file');
+        }
+
         switch ($this->char()) {
             case 'i':
                 $this->push(self::STATE_INT);
@@ -111,11 +115,6 @@ class Decoder
                 return;
 
             default:
-
-                if ($this->decoded !== null && $this->state === self::STATE_ROOT) {
-                    throw new ParseErrorException('Probably some junk after the end of the file');
-                }
-
                 $this->push(self::STATE_STR);
                 $this->value []= $this->char();
         }
