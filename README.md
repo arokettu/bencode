@@ -22,9 +22,9 @@ $encoded = Bencode::encode([    // array will become dictionary
     'arr'       => [1,2,3,4],       // sequential array will become a list
     'int'       => 123,             // integer is stored as is
     'float'     => 3.1415,          // float will become a string
-    'bool'      => true,            // bool will be a string '1' or ''
+    'bool'      => true,            // bool will be an integer 1 or 0
     'string'    => "test\0test",    // string can contain any binary data
-]); // "d3:arrli1ei2ei3ei4ee4:bool1:15:float6:3.14153:inti123e6:string9:test\0teste"
+]); // "d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste"
 
 // objects
 
@@ -52,10 +52,10 @@ Bencode::encode(new class { function __toString() { return 'I am string'; } }); 
 use SandFoxMe\Bencode\Bencode;
 
 // simple decoding, lists and dictionaries will be arrays
-Bencode::decode("d3:arrli1ei2ei3ei4ee4:bool1:15:float6:3.14153:inti123e6:string9:test\0teste");
+Bencode::decode("d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste");
 // [
 //   "arr" => [1,2,3,4],
-//   "bool" => "1",
+//   "bool" => 1,
 //   "float" => "3.1415",
 //   "int" => 123,
 //   "string" => "test\0test",

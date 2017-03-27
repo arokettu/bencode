@@ -27,7 +27,8 @@ class Encoder
     private function encodeValue($value): string
     {
         // first check if we have integer
-        if (is_int($value)) {
+        // boolean is converted to integer 1 or 0
+        if (is_int($value) || is_bool($value)) {
             return $this->encodeInteger($value);
         }
 
