@@ -27,6 +27,14 @@ class DecodeTest extends TestCase
         Bencode::decode('i0ele');
     }
 
+    public function testNothing()
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Unexpected end of file');
+
+        Bencode::decode('');
+    }
+
     public function testRootIntegerNotFinalized()
     {
         $this->expectException(ParseErrorException::class);
