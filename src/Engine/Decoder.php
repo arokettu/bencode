@@ -282,6 +282,6 @@ class Decoder
             return new $type($array);
         }
 
-        throw new InvalidArgumentException("Invalid type option for '{$typeOption}'. Type should be 'array', class name, or callback");
+        throw new InvalidArgumentException("Invalid type option for '{$typeOption}'. Type should be 'array', 'object', class name, or callback");
     }
 }
