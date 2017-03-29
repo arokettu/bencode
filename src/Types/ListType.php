@@ -8,7 +8,7 @@ class ListType implements \IteratorAggregate
 
     /**
      * ArrayType constructor.
-     * @param iterable $iterable
+     * @param iterable|array|\Traversable $iterable
      */
     public function __construct($iterable)
     {

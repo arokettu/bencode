@@ -76,6 +76,18 @@ class EncodeTest extends TestCase
             )
         ));
 
+        // test list type consuming an array
+
+        $this->assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
+            new ListType([
+                'key1' => 1,
+                'key2' => 2,
+                'key0' => '3',
+                'qqqq' => 'test',
+                423112 => 5,
+            ])
+        ));
+
         // empty list
 
         $this->assertEquals('le', Bencode::encode([]));
