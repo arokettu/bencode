@@ -78,7 +78,10 @@ class Decoder
                     break;
 
                 default:
+                    // @codeCoverageIgnoreStart
+                    // This exception means that we have a bug in our own code
                     throw new ParseErrorException('Parser entered invalid state while parsing char');
+                    // @codeCoverageIgnoreEnd
             }
         }
     }
@@ -180,7 +183,10 @@ class Decoder
                 break;
 
             default:
+                // @codeCoverageIgnoreStart
+                // This exception means that we have a bug in our own code
                 throw new ParseErrorException('Parser entered invalid state while finalizing container');
+                // @codeCoverageIgnoreEnd
         }
     }
 
