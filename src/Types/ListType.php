@@ -8,9 +8,18 @@ class ListType implements \IteratorAggregate
 
     /**
      * ArrayType constructor.
-     * @param \Traversable $traversable
+     * @param iterable $iterable
      */
-    public function __construct(\Traversable $traversable)
+    public function __construct($iterable)
+    {
+        if (is_array($iterable)) {
+            $iterable = new \ArrayIterator($iterable);
+        }
+
+        $this->setIterator($iterable);
+    }
+
+    private function setIterator(\Traversable $traversable)
     {
         $this->traversable = $traversable;
     }
