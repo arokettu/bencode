@@ -4,7 +4,7 @@
 [![Packagist](https://img.shields.io/packagist/l/sandfoxme/bencode.svg?maxAge=2592000)](https://opensource.org/licenses/MIT)
 [![Travis](https://img.shields.io/travis/sandfoxme/bencode.svg?maxAge=2592000)](https://travis-ci.org/sandfoxme/bencode)
 [![Code Climate](https://img.shields.io/codeclimate/coverage/github/sandfoxme/bencode.svg?maxAge=2592000)](https://codeclimate.com/github/sandfoxme/bencode/coverage)
-[![Code Climate](https://img.shields.io/codeclimate/github/sandfoxme/bencode.svg?maxAge=2592000)](https://codeclimate.com/github/sandfoxme/bencode)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/sandfoxme/bencode.svg?maxAge=2592000)](https://codeclimate.com/github/sandfoxme/bencode)
 
 [Bencode](https://en.wikipedia.org/wiki/Bencode) is the encoding used by the peer-to-peer file sharing system
 [BitTorrent](https://en.wikipedia.org/wiki/BitTorrent) for storing and transmitting loosely structured data.
