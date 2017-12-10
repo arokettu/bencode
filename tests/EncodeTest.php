@@ -47,6 +47,15 @@ class EncodeTest extends TestCase
         // scalars converted to string
 
         $this->assertEquals('6:3.1416', Bencode::encode(3.1416));
+
+        // object with __toString
+
+        $this->assertEquals('6:string', Bencode::encode(new class {
+            public function __toString()
+            {
+                return 'string';
+            }
+        }));
     }
 
     public function testList()
