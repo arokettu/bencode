@@ -72,7 +72,7 @@ class Encoder
             return $this->encodeDictionary((array)$value);
         }
 
-        // everything else is a string
+        // try to convert other objects to string
         return $this->encodeString($value);
     }
 
