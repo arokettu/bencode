@@ -32,18 +32,31 @@ class Encoder
             return $this->encodeInteger($value);
         }
 
-        // lists and dictionaries
-
-        // array first
+        // process arrays
         if (is_array($value)) {
-            if ($this->isSequentialArray($value)) {
-                return $this->encodeList($value);
-            } else {
-                return $this->encodeDictionary($value);
-            }
+            return $this->encodeArray($value);
         }
 
-        // traversables next
+        if (is_object($value)) {
+            return $this->encodeObject($value);
+        }
+
+        // everything else is a string
+        return $this->encodeString($value);
+    }
+
+    private function encodeArray(array $value): string
+    {
+        if ($this->isSequentialArray($value)) {
+            return $this->encodeList($value);
+        } else {
+            return $this->encodeDictionary($value);
+        }
+    }
+
+    private function encodeObject($value): string
+    {
+        // traversables
         if ($value instanceof ListType) {
             // ListType forces traversable object to be list
             return $this->encodeList($value);
