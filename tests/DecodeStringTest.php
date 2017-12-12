@@ -19,6 +19,8 @@ class DecodeStringTest extends TestCase
         $this->assertEquals('', Bencode::decode('0:'));
         // special chars
         $this->assertEquals("zero\0newline\nsymblol05\x05ok", Bencode::decode("25:zero\0newline\nsymblol05\x05ok"));
+        // unicode
+        $this->assertEquals('日本語', Bencode::decode('9:日本語'));
     }
 
     public function testIncorrectLengthZeroPrefix()
