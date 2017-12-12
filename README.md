@@ -96,6 +96,8 @@ Add this to your `composer.json`:
 }
 ```
 
+or run `composer require 'sandfoxme/bencode:^1.0.0'`.
+
 ## License
 
 The library is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
