@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use SandFoxMe\Bencode\Bencode;
+use SandFoxMe\Bencode\Types\BencodeSerializable;
 use SandFoxMe\Bencode\Types\ListType;
 
 class EncodeTest extends TestCase
@@ -228,5 +229,47 @@ class EncodeTest extends TestCase
 
         $this->assertEquals($expected,  $result1);
         $this->assertEquals($result1,   $result2); // different order of dict keys should not change the result
+    }
+
+    public function testSerializable()
+    {
+        // test returning scalar
+        $dataScalar = new class implements BencodeSerializable {
+            public function bencodeSerialize()
+            {
+                return 'Test';
+            }
+        };
+
+        // test returning object which is also serializable
+        $dataRecursion = new class($dataScalar) implements BencodeSerializable {
+            private $data;
+
+            public function __construct($data)
+            {
+                $this->data = $data;
+            }
+
+            public function bencodeSerialize()
+            {
+                return $this->data;
+            }
+        };
+
+        // Test returning array
+        $dataArray = new class implements BencodeSerializable {
+            public function bencodeSerialize()
+            {
+                return [
+                    1,
+                    2,
+                    3,
+                ];
+            }
+        };
+
+        $this->assertEquals('4:Test',       Bencode::encode($dataScalar));
+        $this->assertEquals('4:Test',       Bencode::encode($dataRecursion));
+        $this->assertEquals('li1ei2ei3ee',  Bencode::encode($dataArray));
     }
 }

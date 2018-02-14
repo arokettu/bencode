@@ -2,6 +2,7 @@
 
 namespace SandFoxMe\Bencode\Engine;
 
+use SandFoxMe\Bencode\Types\BencodeSerializable;
 use SandFoxMe\Bencode\Types\ListType;
 use SandFoxMe\Bencode\Util\Util;
 
@@ -59,6 +60,12 @@ class Encoder
 
     private function encodeObject($value): string
     {
+        // serializable
+        if ($value instanceof BencodeSerializable) {
+            // Start again with method result
+            return $this->encodeValue($value->bencodeSerialize());
+        }
+
         // traversables
         if ($value instanceof ListType) {
             // ListType forces traversable object to be list

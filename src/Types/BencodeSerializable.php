@@ -1,0 +1,21 @@
+<?php
+
+namespace SandFoxMe\Bencode\Types;
+
+/**
+ * Interface BencodeSerializable
+ * @package SandFoxMe\Bencode\Types
+ *
+ * Objects implementing BencodeSerializable can customize their Bencode representation when encoded with Bencode::encode()
+ *
+ * @see \JsonSerializable Similar concept for json_encode
+ */
+interface BencodeSerializable
+{
+    /**
+     * Specify data which should be serialized to Bencode
+     *
+     * @return mixed
+     */
+    public function bencodeSerialize();
+}
