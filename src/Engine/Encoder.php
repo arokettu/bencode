@@ -73,13 +73,9 @@ class Encoder
         }
 
         // all other traversables are dictionaries
-        if ($value instanceof \Traversable) {
-            return $this->encodeDictionary($value);
-        }
-
         // also treat stdClass as a dictionary
-        if ($value instanceof \stdClass) {
-            return $this->encodeDictionary((array)$value);
+        if ($value instanceof \Traversable || $value instanceof \stdClass) {
+            return $this->encodeDictionary($value);
         }
 
         // try to convert other objects to string
