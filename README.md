@@ -37,7 +37,7 @@ $std->a = '123';
 $std->b = 456;
 $encoded = Bencode::encode($std); // "d1:a3:1231:bi456ee"
 
-// you can force traversable to become a list by wrapping it with SandFoxMe\Bencode\Types\ListType
+// you can force traversable to become a list by wrapping it with ListType
 // keys will be discarded in that case
 use SandFoxMe\Bencode\Types\ListType;
 $encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
@@ -51,7 +51,7 @@ $encoded = Bencode::encode(new class {
 ### BencodeSerializable
 
 You can also force object representation by implementing BencodeSerializable interface.
-This will work exactly like JsonSerializable interface.
+This will work exactly like [JsonSerializable](http://php.net/manual/en/class.jsonserializable.php) interface.
 ```php
 <?php
 
