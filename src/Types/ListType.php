@@ -24,7 +24,7 @@ class ListType implements \IteratorAggregate
         $this->traversable = $traversable;
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->traversable;
     }
