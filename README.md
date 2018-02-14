@@ -31,19 +31,45 @@ $encoded = Bencode::encode([    // array will become dictionary
 // objects
 
 // traversable objects and stdClass become dictionaries
-Bencode::encode(new ArrayObject([1,2,3])); // "d1:0i1e1:1i2e1:2i3ee"
+$encoded = Bencode::encode(new ArrayObject([1,2,3])); // "d1:0i1e1:1i2e1:2i3ee"
 $std = new stdClass(); 
 $std->a = '123'; 
 $std->b = 456;
-Bencode::encode($std); // "d1:a3:1231:bi456ee"
+$encoded = Bencode::encode($std); // "d1:a3:1231:bi456ee"
 
 // you can force traversable to become a list by wrapping it with SandFoxMe\Bencode\Types\ListType
 // keys will be discarded in that case
 use SandFoxMe\Bencode\Types\ListType;
-Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
+$encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
 
 // other objects will be converted to string if possible or generate an error if not
-Bencode::encode(new class { function __toString() { return 'I am string'; } }); // "11:I am string"
+$encoded = Bencode::encode(new class { function __toString() { return 'I am string'; } }); // "11:I am string"
+```
+
+### BencodeSerializable
+
+You can also force object representation by implementing BencodeSerializable interface.
+This will work exactly like JsonSerializable interface.
+```php
+<?php
+
+use SandFoxMe\Bencode\Bencode;
+use SandFoxMe\Bencode\Types\BencodeSerializable;
+
+class MyFile implements BencodeSerializable
+{
+    public function bencodeSerialize() {
+        return [
+            'class' => static::class,
+            'name'  => 'myfile.torrent',
+            'size'  => 5 * 1024 * 1024,
+        ];
+    }
+}
+
+$file = new MyFile;
+
+$encoded = Bencode::encode($file); // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
 ```
 
 ## Decoding
@@ -54,7 +80,7 @@ Bencode::encode(new class { function __toString() { return 'I am string'; } }); 
 use SandFoxMe\Bencode\Bencode;
 
 // simple decoding, lists and dictionaries will be arrays
-Bencode::decode("d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste");
+$data = Bencode::decode("d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste");
 // [
 //   "arr" => [1,2,3,4],
 //   "bool" => 1,
@@ -64,7 +90,7 @@ Bencode::decode("d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9
 // ]
 
 // You can control lists and dictionaries types with options
-Bencode::decode("...", [
+$data = Bencode::decode("...", [
     'dictionaryType'    => ArrayObject::class, // pass class name, new $type($array) will be created
     'listType'          => function ($array) { // or callback for greater flexibility
         return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
@@ -91,12 +117,12 @@ Add this to your `composer.json`:
 ```json
 {
     "require": {
-        "sandfoxme/bencode": "^1.0.0"
+        "sandfoxme/bencode": "^1.2.0"
     }
 }
 ```
 
-or run `composer require 'sandfoxme/bencode:^1.0.0'`.
+or run `composer require 'sandfoxme/bencode:^1.2.0'`.
 
 ## License
 
