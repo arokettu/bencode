@@ -43,7 +43,9 @@ use SandFoxMe\Bencode\Types\ListType;
 $encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
 
 // other objects will be converted to string if possible or generate an error if not
-$encoded = Bencode::encode(new class { function __toString() { return 'I am string'; } }); // "11:I am string"
+$encoded = Bencode::encode(new class { 
+    function __toString() { return 'I am string'; } 
+}); // "11:I am string"
 ```
 
 ### BencodeSerializable
