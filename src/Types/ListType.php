@@ -7,11 +7,12 @@ class ListType implements \IteratorAggregate
     private $traversable;
 
     /**
-     * ArrayType constructor.
-     * @param iterable|array|\Traversable $iterable
+     * @param iterable|array|\Traversable $iterable Iterable to be wrapped
      */
     public function __construct($iterable)
     {
+        // Cannot typehint iterable in PHP 7.0
+        // so convert array to ArrayObject and then typehint Traversable
         if (is_array($iterable)) {
             $iterable = new \ArrayIterator($iterable);
         }
