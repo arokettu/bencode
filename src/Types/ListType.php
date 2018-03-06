@@ -12,7 +12,7 @@ class ListType implements \IteratorAggregate
     public function __construct($iterable)
     {
         // Cannot typehint iterable in PHP 7.0
-        // so convert array to ArrayObject and then typehint Traversable
+        // so wrap array with ArrayIterator and then typehint Traversable
         if (is_array($iterable)) {
             $iterable = new \ArrayIterator($iterable);
         }
