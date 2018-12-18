@@ -53,12 +53,12 @@ class Decoder
         $this->decoded      = null;
         $this->valueStack   = [];
 
-        do {
+        while (!$this->eof()) {
             $this->processChar();
             $this->index += 1;
-        } while(!$this->eof());
+        }
 
-        if ($this->state !== self::STATE_ROOT) {
+        if ($this->state !== self::STATE_ROOT || $this->decoded === null) {
             throw new ParseErrorException('Unexpected end of file');
         }
 
@@ -152,21 +152,14 @@ class Decoder
                 throw new ParseErrorException("Invalid string length value: '{$lenStr}'");
             }
 
-            $strChars = [];
-
             // we have length, just read all string here now
 
-            for ($i = 0; $i < $len; $i++) {
-                $this->index += 1;
+            $str = substr($this->bencoded, $this->index + 1, $len);
+            $this->index += $len;
 
-                if ($this->eof()) {
-                    throw new ParseErrorException('Unexpected end of file while processing string');
-                }
-
-                $strChars []= $this->char();
+            if (strlen($str) !== $len) {
+                throw new ParseErrorException('Unexpected end of file while processing string');
             }
-
-            $str = implode($strChars);
 
             $this->pop($str);
         } else {
