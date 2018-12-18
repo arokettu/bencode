@@ -40,7 +40,7 @@ class Decoder
     {
         Util::detectMbstringOverload();
 
-        $this->bencoded = str_split($bencoded); // make array out of string for speed
+        $this->bencoded = $bencoded;
         $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
     }
 
@@ -49,7 +49,7 @@ class Decoder
         $this->state        = self::STATE_ROOT;
         $this->stateStack   = [];
         $this->index        = 0;
-        $this->eof          = count($this->bencoded);
+        $this->eof          = strlen($this->bencoded);
         $this->decoded      = null;
         $this->valueStack   = [];
 
