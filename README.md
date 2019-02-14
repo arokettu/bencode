@@ -16,7 +16,7 @@ This is a pure PHP library that allows you to encode and decode Bencode data.
 ```php
 <?php
 
-use SandFoxMe\Bencode\Bencode;
+use SandFox\Bencode\Bencode;
 
 // scalars and arrays
 
@@ -39,7 +39,7 @@ $encoded = Bencode::encode($std); // "d1:a3:1231:bi456ee"
 
 // you can force traversable to become a list by wrapping it with ListType
 // keys will be discarded in that case
-use SandFoxMe\Bencode\Types\ListType;
+use SandFox\Bencode\Types\ListType;
 $encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
 
 // other objects will be converted to string if possible or generate an error if not
@@ -55,8 +55,8 @@ This will work exactly like [JsonSerializable](http://php.net/manual/en/class.js
 ```php
 <?php
 
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Types\BencodeSerializable;
+use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Types\BencodeSerializable;
 
 class MyFile implements BencodeSerializable
 {
@@ -79,7 +79,7 @@ $encoded = Bencode::encode($file); // "d5:class6:MyFile4:name14:myfile.torrent4:
 ```php
 <?php
 
-use SandFoxMe\Bencode\Bencode;
+use SandFox\Bencode\Bencode;
 
 // simple decoding, lists and dictionaries will be arrays
 $data = Bencode::decode("d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste");
@@ -106,7 +106,7 @@ $data = Bencode::decode("...", [
 ```php
 <?php
 
-use SandFoxMe\Bencode\Bencode;
+use SandFox\Bencode\Bencode;
 
 $data = Bencode::load('testfile.torrent'); // load data from bencoded file
 Bencode::dump('testfile.torrent', $data); // save data to the bencoded file
