@@ -24,4 +24,4 @@ script:
   - vendor/bin/phpunit tests --coverage-clover clover.xml --whitelist src
 after_script:
   # only if generated
-  - if [ -f clover.xml ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then vendor/bin/test-reporter --coverage-report reports/coverage/clover.xml; fi
+  - if [ -f clover.xml ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
