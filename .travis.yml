@@ -3,6 +3,7 @@ php:
   - '7.0'
   - '7.1'
   - '7.2'
+  - '7.3'
   - nightly
 cache:
   directories:
@@ -10,7 +11,7 @@ cache:
 install:
   - composer install
 script:
-  - vendor/bin/phpunit tests --bootstrap vendor/autoload.php --coverage-clover reports/coverage/clover.xml --whitelist src
+  - vendor/bin/phpunit tests --coverage-clover reports/coverage/clover.xml --whitelist src
 after_script:
   # only if generated
   - if [ -f reports/coverage/clover.xml ]; then vendor/bin/test-reporter --coverage-report reports/coverage/clover.xml; fi
