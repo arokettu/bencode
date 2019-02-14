@@ -1,10 +1,10 @@
 <?php
 
-namespace SandFoxMe\Bencode\Engine;
+namespace SandFox\Bencode\Engine;
 
-use SandFoxMe\Bencode\Types\BencodeSerializable;
-use SandFoxMe\Bencode\Types\ListType;
-use SandFoxMe\Bencode\Util\Util;
+use SandFox\Bencode\Types\BencodeSerializable;
+use SandFox\Bencode\Types\ListType;
+use SandFox\Bencode\Util\Util;
 
 /**
  * Class Encoder

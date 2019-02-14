@@ -1,8 +1,8 @@
 <?php
 
-namespace SandFoxMe\Bencode\Util;
+namespace SandFox\Bencode\Util;
 
-use SandFoxMe\Bencode\Exceptions\RuntimeException;
+use SandFox\Bencode\Exceptions\RuntimeException;
 
 abstract class Util
 {

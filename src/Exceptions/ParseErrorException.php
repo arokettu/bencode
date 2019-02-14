@@ -1,5 +1,5 @@
 <?php
 
-namespace SandFoxMe\Bencode\Exceptions;
+namespace SandFox\Bencode\Exceptions;
 
 class ParseErrorException extends InvalidArgumentException {}

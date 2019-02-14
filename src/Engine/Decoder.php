@@ -1,10 +1,10 @@
 <?php
 
-namespace SandFoxMe\Bencode\Engine;
+namespace SandFox\Bencode\Engine;
 
-use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
-use SandFoxMe\Bencode\Exceptions\ParseErrorException;
-use SandFoxMe\Bencode\Util\Util;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
+use SandFox\Bencode\Exceptions\ParseErrorException;
+use SandFox\Bencode\Util\Util;
 
 /**
  * Class Decoder

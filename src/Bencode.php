@@ -1,9 +1,9 @@
 <?php
 
-namespace SandFoxMe\Bencode;
+namespace SandFox\Bencode;
 
-use SandFoxMe\Bencode\Engine\Decoder;
-use SandFoxMe\Bencode\Engine\Encoder;
+use SandFox\Bencode\Engine\Decoder;
+use SandFox\Bencode\Engine\Encoder;
 
 /**
  * Class Bencode

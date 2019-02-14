@@ -1,6 +1,6 @@
 <?php
 
-namespace SandFoxMe\Bencode\Types;
+namespace SandFox\Bencode\Types;
 
 /**
  * Interface BencodeSerializable
