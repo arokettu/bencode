@@ -1,3 +1,6 @@
+# ide
+/.idea
+
 # composer
 /vendor/
 /composer.lock
