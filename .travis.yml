@@ -5,15 +5,23 @@ php:
   - '7.2'
   - '7.3'
   - nightly
+env:
+  global:
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 allow_failures:
   php: nightly
 cache:
   directories:
     - $HOME/.composer/cache/files
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 install:
   - composer install
+
 script:
-  - vendor/bin/phpunit tests --coverage-clover reports/coverage/clover.xml --whitelist src
+  - vendor/bin/phpunit tests --coverage-clover clover.xml --whitelist src
 after_script:
   # only if generated
-  - if [ -f reports/coverage/clover.xml ]; then vendor/bin/test-reporter --coverage-report reports/coverage/clover.xml; fi
+  - if [ -f clover.xml ] && ["$TRAVIS_PULL_REQUEST" == "false"]; then vendor/bin/test-reporter --coverage-report reports/coverage/clover.xml; fi

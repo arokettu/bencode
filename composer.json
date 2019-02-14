@@ -19,11 +19,10 @@
         ]
     },
     "require": {
-        "php": ">= 7.0"
+        "php": "^7.0|^8.0"
     },
     "require-dev": {
-        "codeclimate/php-test-reporter":    "*",
-        "phpunit/phpunit":                  "^6.0.0",
+        "phpunit/phpunit":                  "^8.0.0",
         "psy/psysh":                        "^0.8.3"
     },
     "suggest": {
