@@ -1,3 +1,11 @@
+# 1.3.0
+
+*Feb 14, 2019*
+
+* Increased parser speed and reduced memory consumption
+* Base namespace is now `SandFox\Bencode`. Compatibility is kept for now
+* Fixed tests for PHP 8
+
 # 1.2.0
 
 *Feb 14, 2018*
