@@ -4,7 +4,12 @@ namespace SandFox\Bencode\Util;
 
 use SandFox\Bencode\Exceptions\RuntimeException;
 
-abstract class Util
+/**
+ * Class Util
+ * @package SandFox\Bencode\Util
+ * @internal
+ */
+final class Util
 {
     const MBSTRING_OVERLOAD_CONFLICT = 2; //  strlen
 

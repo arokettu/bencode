@@ -8,7 +8,7 @@ use SandFox\Bencode\Util\Util;
 
 /**
  * Class Encoder
- * @package SandFoxMe\Bencode\Engine
+ * @package SandFox\Bencode\Engine
  * @author Anton Smirnov
  * @license MIT
  */

@@ -12,8 +12,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "SandFoxMe\\Bencode\\": "src"
-        }
+            "SandFox\\Bencode\\": "src"
+        },
+        "classmap": [
+            "legacy.php"
+        ]
     },
     "require": {
         "php": ">= 7.0"
