@@ -119,12 +119,12 @@ Add this to your `composer.json`:
 ```json
 {
     "require": {
-        "sandfoxme/bencode": "^1.2.0"
+        "sandfoxme/bencode": "^1.3"
     }
 }
 ```
 
-or run `composer require 'sandfoxme/bencode:^1.2.0'`.
+or run `composer require 'sandfoxme/bencode:^1.3'`.
 
 ## License
 
