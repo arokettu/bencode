@@ -11,9 +11,10 @@ Installation
 
 Run ``composer require 'sandfoxme/bencode:^1.3'``.
 
-Official repos
+Official pages
 ==============
 
+* https://packagist.org/packages/sandfoxme/bencode
 * https://github.com/sandfoxme/bencode
 * https://gitlab.com/sandfox/bencode
 * https://bitbucket.org/sandfox/bencode
@@ -21,13 +22,14 @@ Official repos
 Encoding
 ========
 
+Scalars and arrays
+------------------
+
 .. code-block:: php
 
    <?php
 
    use SandFox\Bencode\Bencode;
-
-   // scalars and arrays
 
    $encoded = Bencode::encode([    // array will become dictionary
        'arr'       => [1,2,3,4],       // sequential array will become a list
@@ -37,7 +39,14 @@ Encoding
        'string'    => "test\0test",    // string can contain any binary data
    ]); // "d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste"
 
-   // objects
+Objects
+-------
+
+.. code-block:: php
+
+   <?php
+
+   use SandFox\Bencode\Bencode;
 
    // traversable objects and stdClass become dictionaries
    $encoded = Bencode::encode(new ArrayObject([1,2,3])); // "d1:0i1e1:1i2e1:2i3ee"
@@ -52,9 +61,15 @@ Encoding
    $encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
 
    // other objects will be converted to string if possible or generate an error if not
-   $encoded = Bencode::encode(new class {
-       function __toString() { return 'I am string'; }
-   }); // "11:I am string"
+   class ToString
+   {
+       public function __toString()
+       {
+           return 'I am string';
+       }
+   }
+
+   $encoded = Bencode::encode(new ToString()); // "11:I am string"
 
 BencodeSerializable
 -------------------
