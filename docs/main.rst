@@ -1,6 +1,8 @@
 Bencode
 #######
 
+|Packagist| |GitHub| |Gitlab| |Bitbucket|
+
 PHP Bencode Encoder/Decoder
 
 Bencode_ is the encoding used by the peer-to-peer file sharing system
@@ -12,14 +14,6 @@ Installation
 ============
 
 Run ``composer require 'sandfoxme/bencode:^1.3'``.
-
-Official pages
-==============
-
-* https://packagist.org/packages/sandfoxme/bencode
-* https://github.com/sandfoxme/bencode
-* https://gitlab.com/sandfox/bencode
-* https://bitbucket.org/sandfox/bencode
 
 Encoding
 ========
@@ -150,3 +144,12 @@ The library is available as open source under the terms of the `MIT License`_.
 .. _BitTorrent:         https://en.wikipedia.org/wiki/BitTorrent
 .. _JsonSerializable:   http://php.net/manual/en/class.jsonserializable.php
 .. _MIT License:        https://opensource.org/licenses/MIT
+
+.. |Packagist|  image:: https://img.shields.io/packagist/v/sandfoxme/bencode.svg
+   :target: https://packagist.org/packages/sandfoxme/bencode
+.. |GitHub|     image:: https://img.shields.io/badge/GitHub-bencode-informational.svg?logo=github
+   :target: https://github.com/sandfoxme/bencode
+.. |Gitlab|     image:: https://img.shields.io/badge/Gitlab-bencode-informational.svg?logo=gitlab
+   :target: https://gitlab.com/sandfox/bencode
+.. |Bitbucket|  image:: https://img.shields.io/badge/Bitbucket-bencode-informational.svg?logo=bitbucket
+   :target: https://bitbucket.org/sandfox/bencode
