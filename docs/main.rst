@@ -1,5 +1,7 @@
-Bencode Encoder/Decoder
-#######################
+Bencode
+#######
+
+PHP Bencode Encoder/Decoder
 
 Bencode_ is the encoding used by the peer-to-peer file sharing system
 BitTorrent_ for storing and transmitting loosely structured data.
