@@ -20,7 +20,7 @@ Run ``composer require 'sandfoxme/bencode:^1.3'``.
 Documentation
 -------------
 
-Read full documentation here: <https://sandfox.dev/bencode.html>
+Read full documentation here: <https://sandfox.dev/php/bencode.html>
 
 License
 -------

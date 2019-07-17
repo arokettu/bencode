@@ -2,7 +2,7 @@
     "name": "sandfoxme/bencode",
     "description": "BitTorrent's Bencode encoder/decoder",
     "keywords": ["bittorrent", "torrent", "bencode", "serialize"],
-    "homepage": "https://sandfox.dev/bencode.html",
+    "homepage": "https://sandfox.dev/php/bencode.html",
     "type": "library",
     "license": "MIT",
     "authors": [
