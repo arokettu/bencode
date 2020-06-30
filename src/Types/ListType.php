@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Types;
 
 class ListType implements \IteratorAggregate
 {
-    private $traversable;
+    private \Traversable $traversable;
 
     /**
-     * @param iterable|array|\Traversable $iterable Iterable to be wrapped
+     * @param iterable $iterable Iterable to be wrapped
      */
-    public function __construct($iterable)
+    public function __construct(iterable $iterable)
     {
         // Cannot typehint iterable in PHP 7.0
         // so wrap array with ArrayIterator and then typehint Traversable
@@ -20,7 +22,7 @@ class ListType implements \IteratorAggregate
         $this->setIterator($iterable);
     }
 
-    private function setIterator(\Traversable $traversable)
+    private function setIterator(\Traversable $traversable): void
     {
         $this->traversable = $traversable;
     }

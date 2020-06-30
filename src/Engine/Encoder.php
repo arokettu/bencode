@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Engine;
 
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\ListType;
 
@@ -13,6 +16,7 @@ use SandFox\Bencode\Types\ListType;
  */
 class Encoder
 {
+    /** @var mixed */
     private $data;
 
     public function __construct($data, array $options = [])
@@ -30,7 +34,13 @@ class Encoder
         // first check if we have integer
         // boolean is converted to integer 1 or 0
         if (is_int($value) || is_bool($value)) {
-            return $this->encodeInteger($value);
+            return $this->encodeInteger(intval($value));
+        }
+
+        // process strings
+        // floats become strings
+        if (is_string($value) || is_float($value)) {
+            return $this->encodeString(strval($value));
         }
 
         // process arrays
@@ -42,8 +52,9 @@ class Encoder
             return $this->encodeObject($value);
         }
 
-        // everything else is a string
-        return $this->encodeString($value);
+        throw new InvalidArgumentException(
+            sprintf("Bencode doesn't know how to serialize an instance of %s", gettype($value))
+        );
     }
 
     private function encodeArray(array $value): string
@@ -76,7 +87,13 @@ class Encoder
         }
 
         // try to convert other objects to string
-        return $this->encodeString($value);
+        if ($value instanceof \Stringable) {
+            return $this->encodeString(strval($value));
+        }
+
+        throw new InvalidArgumentException(
+            sprintf("Bencode doesn't know how to serialize an instance of %s", get_class($value))
+        );
     }
 
     private function encodeInteger(int $integer): string

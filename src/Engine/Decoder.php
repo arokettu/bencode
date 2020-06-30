@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Engine;
 
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
@@ -13,24 +15,26 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
  */
 class Decoder
 {
-    private $bencoded;
+    private string $bencoded;
+    /** @var mixed */
     private $decoded;
-    private $options;
+    private array $options;
 
-    private $state;
-    private $stateStack;
-    private $index;
-    private $eof;
+    private int $state;
+    private array $stateStack;
+    private int $index;
+    private int $eof;
+    /** @var mixed */
     private $value;
-    private $valueStack;
+    private array $valueStack;
 
-    const STATE_ROOT = 1;
-    const STATE_LIST = 2;
-    const STATE_DICT = 3;
-    const STATE_INT  = 4;
-    const STATE_STR  = 5;
+    private const STATE_ROOT = 1;
+    private const STATE_LIST = 2;
+    private const STATE_DICT = 3;
+    private const STATE_INT  = 4;
+    private const STATE_STR  = 5;
 
-    const DEFAULT_OPTIONS = [
+    public const DEFAULT_OPTIONS = [
         'listType' => 'array',
         'dictionaryType' => 'array',
     ];
@@ -62,7 +66,7 @@ class Decoder
         return $this->decoded;
     }
 
-    private function processChar()
+    private function processChar(): void
     {
         if ($this->stateContainer()) {
             // we're inside a container, find its children
@@ -123,7 +127,7 @@ class Decoder
         }
     }
 
-    private function processInteger()
+    private function processInteger(): void
     {
         if ($this->char() === 'e') {
             $intStr = implode($this->value);
@@ -139,7 +143,7 @@ class Decoder
         }
     }
 
-    private function processString()
+    private function processString(): void
     {
         if ($this->char() === ':') {
             $lenStr = implode($this->value);
@@ -164,7 +168,7 @@ class Decoder
         }
     }
 
-    private function finalizeContainer()
+    private function finalizeContainer(): void
     {
         switch ($this->state) {
             case self::STATE_LIST:
@@ -183,14 +187,14 @@ class Decoder
         }
     }
 
-    private function finalizeList()
+    private function finalizeList(): void
     {
         $value = $this->convertArrayToType($this->value, 'listType');
 
         $this->pop($value);
     }
 
-    private function finalizeDict()
+    private function finalizeDict(): void
     {
         $dict = [];
 
@@ -223,7 +227,7 @@ class Decoder
      * Push previous layer to the stack and set new state
      * @param int $newState
      */
-    private function push(int $newState)
+    private function push(int $newState): void
     {
         array_push($this->stateStack, $this->state);
         $this->state = $newState;
@@ -238,7 +242,7 @@ class Decoder
      * Pop previous layer from the stack and give it a parsed value
      * @param mixed $valueToPrevLevel
      */
-    private function pop($valueToPrevLevel)
+    private function pop($valueToPrevLevel): void
     {
         $this->state = array_pop($this->stateStack);
 
