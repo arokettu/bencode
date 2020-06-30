@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Exceptions\ParseErrorException;
+use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\ParseErrorException;
 
 /**
  * Class DecodeTest

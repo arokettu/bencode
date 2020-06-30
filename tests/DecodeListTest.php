@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
+use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 
 class DecodeListTest extends TestCase
 {

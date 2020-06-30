@@ -1,9 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Types\BencodeSerializable;
-use SandFoxMe\Bencode\Types\ListType;
+use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Types\BencodeSerializable;
+use SandFox\Bencode\Types\ListType;
 
 class EncodeTest extends TestCase
 {

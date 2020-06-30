@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use SandFoxMe\Bencode\Bencode;
+use SandFox\Bencode\Bencode;
 
 class FileTest extends TestCase
 {
