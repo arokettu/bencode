@@ -58,6 +58,9 @@ class EncodeTest extends TestCase
                 return 'string';
             }
         }));
+
+        // null
+        $this->assertEquals('0:', Bencode::encode(null));
     }
 
     public function testList()

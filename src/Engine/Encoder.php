@@ -39,7 +39,7 @@ class Encoder
 
         // process strings
         // floats become strings
-        if (is_string($value) || is_float($value)) {
+        if (is_string($value) || is_float($value) || is_null($value)) {
             return $this->encodeString(strval($value));
         }
 
