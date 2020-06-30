@@ -3,10 +3,7 @@
     @see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset
 -->
 <ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
-    <rule ref="PSR12">
-        <!-- We target versions < 7.1 -->
-        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
-    </rule>
+    <rule ref="PSR12"/>
     <file>.</file>
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/tests/*</exclude-pattern>
