@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\ListType;
 
@@ -271,5 +272,20 @@ class EncodeTest extends TestCase
         $this->assertEquals('4:Test',       Bencode::encode($dataScalar));
         $this->assertEquals('4:Test',       Bencode::encode($dataRecursion));
         $this->assertEquals('li1ei2ei3ee',  Bencode::encode($dataArray));
+    }
+
+    public function testUnknown()
+    {
+        // We can't serialize resources
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of resource");
+
+        Bencode::encode(fopen(__FILE__, 'r'));
+
+        // We can't serialize non-stringable objects
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of " . get_class($this));
+
+        Bencode::encode($this);
     }
 }
