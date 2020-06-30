@@ -22,6 +22,10 @@ Documentation
 
 Read full documentation here: <https://sandfox.dev/php/bencode.html>
 
+## Support
+
+Please file issues on our main repo at GitLab: <https://gitlab.com/sandfox/bencode/-/issues>
+
 License
 -------
 
