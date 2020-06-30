@@ -4,7 +4,6 @@ namespace SandFox\Bencode\Engine;
 
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\ListType;
-use SandFox\Bencode\Util\Util;
 
 /**
  * Class Encoder
@@ -18,8 +17,6 @@ class Encoder
 
     public function __construct($data, array $options = [])
     {
-        Util::detectMbstringOverload();
-
         $this->data = $data;
     }
 

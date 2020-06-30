@@ -4,7 +4,6 @@ namespace SandFox\Bencode\Engine;
 
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
-use SandFox\Bencode\Util\Util;
 
 /**
  * Class Decoder
@@ -38,8 +37,6 @@ class Decoder
 
     public function __construct(string $bencoded, array $options = [])
     {
-        Util::detectMbstringOverload();
-
         $this->bencoded = $bencoded;
         $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
     }
