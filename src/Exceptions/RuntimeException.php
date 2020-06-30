@@ -2,4 +2,6 @@
 
 namespace SandFox\Bencode\Exceptions;
 
-class RuntimeException extends \RuntimeException implements BencodeException {}
+class RuntimeException extends \RuntimeException implements BencodeException
+{
+}

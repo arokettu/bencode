@@ -2,4 +2,6 @@
 
 namespace SandFox\Bencode\Exceptions;
 
-interface BencodeException {}
+interface BencodeException
+{
+}

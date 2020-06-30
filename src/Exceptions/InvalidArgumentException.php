@@ -2,4 +2,6 @@
 
 namespace SandFox\Bencode\Exceptions;
 
-class InvalidArgumentException extends \InvalidArgumentException implements BencodeException {}
+class InvalidArgumentException extends \InvalidArgumentException implements BencodeException
+{
+}

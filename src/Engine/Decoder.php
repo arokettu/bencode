@@ -16,7 +16,7 @@ class Decoder
 {
     private $bencoded;
     private $decoded;
-    private $options = [];
+    private $options;
 
     private $state;
     private $stateStack;
@@ -122,7 +122,7 @@ class Decoder
 
             default:
                 $this->push(self::STATE_STR);
-                $this->value []= $this->char();
+                $this->value[] = $this->char();
         }
     }
 
@@ -138,7 +138,7 @@ class Decoder
 
             $this->pop($int);
         } else {
-            $this->value []= $this->char();
+            $this->value[] = $this->char();
         }
     }
 
@@ -163,7 +163,7 @@ class Decoder
 
             $this->pop($str);
         } else {
-            $this->value []= $this->char();
+            $this->value[] = $this->char();
         }
     }
 
@@ -247,7 +247,7 @@ class Decoder
 
         if ($this->state !== self::STATE_ROOT) {
             $this->value = array_pop($this->valueStack);
-            $this->value []= $valueToPrevLevel;
+            $this->value[] = $valueToPrevLevel;
         } else {
             // we have final result
             $this->decoded = $valueToPrevLevel;
@@ -284,6 +284,8 @@ class Decoder
             return new $type($array);
         }
 
-        throw new InvalidArgumentException("Invalid type option for '{$typeOption}'. Type should be 'array', 'object', class name, or callback");
+        throw new InvalidArgumentException(
+            "Invalid type option for '{$typeOption}'. Type should be 'array', 'object', class name, or callback"
+        );
     }
 }

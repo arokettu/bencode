@@ -97,7 +97,7 @@ class Encoder
         $listData = [];
 
         foreach ($array as $value) {
-            $listData []= $this->encodeValue($value);
+            $listData[] = $this->encodeValue($value);
         }
 
         $list = implode($listData);

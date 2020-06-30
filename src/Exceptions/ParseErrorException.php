@@ -2,4 +2,6 @@
 
 namespace SandFox\Bencode\Exceptions;
 
-class ParseErrorException extends InvalidArgumentException {}
+class ParseErrorException extends InvalidArgumentException
+{
+}
