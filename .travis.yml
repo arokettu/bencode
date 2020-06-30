@@ -1,9 +1,5 @@
 language: php
 php:
-  - '7.0'
-  - '7.1'
-  - '7.3'
-  - '7.4'
   - nightly
 matrix:
   allow_failures:
@@ -12,6 +8,6 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 install:
-  - if [ $(php -r 'echo PHP_MAJOR_VERSION;') == "8" ]; then composer install --ignore-platform-reqs; else composer install; fi
+  - composer install --ignore-platform-reqs
 script:
-  - vendor/bin/phpunit tests --coverage-clover clover.xml --whitelist src
+  - vendor/bin/phpunit tests
