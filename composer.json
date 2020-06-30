@@ -16,8 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SandFox\\Bencode\\": "src",
-            "SandFoxMe\\Bencode\\": "legacy"
+            "SandFox\\Bencode\\": "src"
         }
     },
     "require": {
