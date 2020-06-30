@@ -1,3 +1,11 @@
+# 2.0.0
+
+*Jun 30, 2020*
+
+* PHP 8 is required
+* Legacy namespace `SandFoxMe\Bencode` is removed
+* Encode now throws an error if it encounters a value that cannot be serialized
+
 # 1.3.0
 
 *Feb 14, 2019*
