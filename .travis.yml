@@ -5,23 +5,13 @@ php:
   - '7.3'
   - '7.4'
   - nightly
-env:
-  global:
-    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 matrix:
   allow_failures:
     - php: nightly
 cache:
   directories:
     - $HOME/.composer/cache/files
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
 install:
   - if [ $(php -r 'echo PHP_MAJOR_VERSION;') == "8" ]; then composer install --ignore-platform-reqs; else composer install; fi
 script:
   - vendor/bin/phpunit tests --coverage-clover clover.xml --whitelist src
-after_script:
-  # only if generated
-  - if [ -f clover.xml ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
