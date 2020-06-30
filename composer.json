@@ -11,13 +11,14 @@
             "email": "sandfox@sandfox.me"
         }
     ],
+    "config": {
+        "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
-            "SandFox\\Bencode\\": "src"
-        },
-        "classmap": [
-            "legacy.php"
-        ]
+            "SandFox\\Bencode\\": "src",
+            "SandFoxMe\\Bencode\\": "legacy"
+        }
     },
     "require": {
         "php": "^7.0|^8.0"
