@@ -135,6 +135,16 @@ Working with files
    $data = Bencode::load('testfile.torrent'); // load data from bencoded file
    Bencode::dump('testfile.torrent', $data); // save data to the bencoded file
 
+Upgrade from 1.x
+================
+
+Main breaking changes:
+
+* Required PHP version was bumped to 8.0.
+  Upgrade your interpreter.
+* Legacy namespace ``SandFoxMe`` was removed.
+  You can replace ``SandFoxMe\Bencode`` with ``SandFox\Bencode`` in your code if you haven't done it already.
+
 License
 =======
 
