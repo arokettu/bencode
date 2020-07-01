@@ -13,7 +13,7 @@ This is a pure PHP library that allows you to encode and decode Bencode data.
 Installation
 ------------
 
-Run ``composer require 'sandfoxme/bencode:^2.0'``.
+Run ``composer require 'sandfoxme/bencode'``.
 
 Documentation
 -------------
