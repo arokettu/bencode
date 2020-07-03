@@ -53,7 +53,7 @@ class Encoder
         }
 
         throw new InvalidArgumentException(
-            sprintf("Bencode doesn't know how to serialize an instance of %s", gettype($value))
+            sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
         );
     }
 
@@ -92,7 +92,7 @@ class Encoder
         }
 
         throw new InvalidArgumentException(
-            sprintf("Bencode doesn't know how to serialize an instance of %s", get_class($value))
+            sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
         );
     }
 
