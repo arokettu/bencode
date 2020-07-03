@@ -145,7 +145,7 @@ Main breaking changes:
 * Required PHP version was bumped to 8.0.
   Upgrade your interpreter.
 * Legacy namespace ``SandFoxMe`` was removed.
-  You can replace ``SandFoxMe\Bencode`` with ``SandFox\Bencode`` in your code if you haven't done it already.
+  You should search and replace ``SandFoxMe\Bencode`` with ``SandFox\Bencode`` in your code if you haven't done it already.
 
 License
 =======
