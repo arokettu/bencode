@@ -66,7 +66,7 @@ class Encoder
         }
     }
 
-    private function encodeObject($value): string
+    private function encodeObject(object $value): string
     {
         // serializable
         if ($value instanceof BencodeSerializable) {
