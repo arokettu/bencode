@@ -102,6 +102,20 @@ class EncodeTest extends TestCase
             ])
         ));
 
+        // test list type consuming stdClass
+
+        $this->assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
+            new ListType((function () {
+                $obj = new stdClass();
+                $obj->key1 = 1;
+                $obj->key2 = 2;
+                $obj->key0 = '3';
+                $obj->qqqq = 'test';
+                $obj->{'423112'} = 5;
+                return $obj;
+            })())
+        ));
+
         // empty list
 
         $this->assertEquals('le', Bencode::encode([]));

@@ -9,12 +9,20 @@ class ListType implements \IteratorAggregate
     private \Traversable $traversable;
 
     /**
-     * @param iterable $iterable Iterable to be wrapped
+     * @param iterable|\stdClass $iterable Iterable to be wrapped
      */
-    public function __construct(iterable $iterable)
+    public function __construct(iterable|\stdClass $iterable)
     {
         if (is_array($iterable)) {
             $iterable = new \ArrayIterator($iterable);
+        }
+
+        if ($iterable instanceof \stdClass) {
+            $iterable = (static function (\stdClass $iterable) {
+                foreach ($iterable as $value) {
+                    yield $value;
+                }
+            })($iterable);
         }
 
         $this->setIterator($iterable);
