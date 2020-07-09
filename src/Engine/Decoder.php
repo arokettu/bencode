@@ -15,10 +15,8 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
  */
 class Decoder
 {
-    private string $bencoded;
     /** @var mixed */
     private $decoded;
-    private array $options;
 
     private int $state;
     private array $stateStack;
@@ -39,10 +37,11 @@ class Decoder
         'dictionaryType' => 'array',
     ];
 
-    public function __construct(string $bencoded, array $options = [])
-    {
-        $this->bencoded = $bencoded;
-        $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
+    public function __construct(
+        private string $bencoded,
+        private array $options = [],
+    ) {
+        $this->options = array_merge(self::DEFAULT_OPTIONS, $this->options);
     }
 
     public function decode()

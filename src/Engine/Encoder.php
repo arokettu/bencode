@@ -16,12 +16,10 @@ use SandFox\Bencode\Types\ListType;
  */
 class Encoder
 {
-    /** @var mixed */
-    private $data;
-
-    public function __construct($data, array $options = [])
-    {
-        $this->data = $data;
+    public function __construct(
+        private mixed $data,
+        private array $options = [],
+    ) {
     }
 
     public function encode(): string
