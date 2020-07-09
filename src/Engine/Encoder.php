@@ -127,9 +127,7 @@ class Encoder
         }
 
         // sort by keys - rfc requirement
-        usort($dictData, function ($a, $b) {
-            return strcmp($a[0], $b[0]);
-        });
+        usort($dictData, fn($a, $b) => strcmp($a[0], $b[0]));
 
         $dict = implode(array_map(function ($row) {
             list($key, $value) = $row;
