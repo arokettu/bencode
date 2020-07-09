@@ -22,7 +22,7 @@ class Bencode
      * @param array $options
      * @return string
      */
-    public static function encode($data, array $options = []): string
+    public static function encode(mixed $data, array $options = []): string
     {
         return (new Encoder($data, $options))->encode();
     }
@@ -34,7 +34,7 @@ class Bencode
      * @param array $options
      * @return mixed
      */
-    public static function decode(string $bencoded, array $options = [])
+    public static function decode(string $bencoded, array $options = []): mixed
     {
         return (new Decoder($bencoded, $options))->decode();
     }
@@ -47,7 +47,7 @@ class Bencode
      * @param array $options
      * @return bool success of file_put_contents
      */
-    public static function dump(string $filename, $data, array $options = []): bool
+    public static function dump(string $filename, mixed $data, array $options = []): bool
     {
         return file_put_contents($filename, self::encode($data, $options)) !== false;
     }
@@ -59,7 +59,7 @@ class Bencode
      * @param array $options
      * @return mixed
      */
-    public static function load(string $filename, array $options = [])
+    public static function load(string $filename, array $options = []): mixed
     {
         return self::decode(file_get_contents($filename), $options);
     }

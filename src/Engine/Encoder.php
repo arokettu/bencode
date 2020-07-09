@@ -27,7 +27,7 @@ class Encoder
         return $this->encodeValue($this->data);
     }
 
-    private function encodeValue($value): string
+    private function encodeValue(mixed $value): string
     {
         // first check if we have integer
         // boolean is converted to integer 1 or 0
@@ -104,7 +104,7 @@ class Encoder
         return implode([strlen($string), ':', $string]);
     }
 
-    private function encodeList($array): string
+    private function encodeList(iterable $array): string
     {
         $listData = [];
 
@@ -117,7 +117,7 @@ class Encoder
         return "l{$list}e";
     }
 
-    private function encodeDictionary($array): string
+    private function encodeDictionary(iterable|\stdClass $array): string
     {
         $dictData = [];
 

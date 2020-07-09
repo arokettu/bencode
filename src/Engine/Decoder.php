@@ -15,15 +15,13 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
  */
 class Decoder
 {
-    /** @var mixed */
-    private $decoded;
+    private mixed $decoded;
 
     private int $state;
     private array $stateStack;
     private int $index;
     private int $eof;
-    /** @var mixed */
-    private $value;
+    private mixed $value;
     private array $valueStack;
 
     private const STATE_ROOT = 1;
@@ -44,13 +42,14 @@ class Decoder
         $this->options = array_merge(self::DEFAULT_OPTIONS, $this->options);
     }
 
-    public function decode()
+    public function decode(): mixed
     {
         $this->state        = self::STATE_ROOT;
         $this->stateStack   = [];
         $this->index        = 0;
         $this->eof          = strlen($this->bencoded);
         $this->decoded      = null;
+        $this->value        = null;
         $this->valueStack   = [];
 
         while (!$this->eof()) {
@@ -97,7 +96,7 @@ class Decoder
             $this->state === self::STATE_DICT;
     }
 
-    private function nextObject()
+    private function nextObject(): void
     {
         if ($this->decoded !== null && $this->state === self::STATE_ROOT) {
             throw new ParseErrorException('Probably some junk after the end of the file');
@@ -241,7 +240,7 @@ class Decoder
      * Pop previous layer from the stack and give it a parsed value
      * @param mixed $valueToPrevLevel
      */
-    private function pop($valueToPrevLevel): void
+    private function pop(mixed $valueToPrevLevel): void
     {
         $this->state = array_pop($this->stateStack);
 
@@ -264,7 +263,7 @@ class Decoder
         return $this->index === $this->eof;
     }
 
-    private function convertArrayToType(array $array, string $typeOption)
+    private function convertArrayToType(array $array, string $typeOption): mixed
     {
         $type = $this->options[$typeOption];
 
