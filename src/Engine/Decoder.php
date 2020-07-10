@@ -54,7 +54,6 @@ class Decoder
 
         while (!$this->eof()) {
             $this->processChar();
-            $this->index += 1;
         }
 
         if ($this->state !== self::STATE_ROOT || $this->decoded === null) {
@@ -105,65 +104,76 @@ class Decoder
         switch ($this->char()) {
             case 'i':
                 $this->push(self::STATE_INT);
+                $this->index += 1; // skip i
                 return;
 
             case 'l':
                 $this->push(self::STATE_LIST);
+                $this->index += 1; // skip l
                 return;
 
             case 'd':
                 $this->push(self::STATE_DICT);
+                $this->index += 1; // skip d
                 return;
 
             case 'e':
                 $this->finalizeContainer();
+                $this->index += 1; // skip e
                 return;
 
             default:
                 $this->push(self::STATE_STR);
-                $this->value[] = $this->char();
         }
     }
 
     private function processInteger(): void
     {
-        if ($this->char() === 'e') {
-            $intStr = implode($this->value);
-            $int    = intval($intStr);
+        $intEndIndex = strpos($this->bencoded, 'e', $this->index);
 
-            if (strval($int) !== $intStr) {
-                throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
-            }
-
-            $this->pop($int);
-        } else {
-            $this->value[] = $this->char();
+        if ($intEndIndex === false) {
+            throw new ParseErrorException("Unexpected end of file while processing integer");
         }
+
+        $intStr = substr($this->bencoded, $this->index, $intEndIndex - $this->index);
+        $int    = intval($intStr);
+
+        if (strval($int) !== $intStr) {
+            throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
+        }
+
+        $this->index += strlen($intStr) + 1;
+
+        $this->pop($int);
     }
 
     private function processString(): void
     {
-        if ($this->char() === ':') {
-            $lenStr = implode($this->value);
-            $len    = intval($lenStr);
+        $lenEndIndex = strpos($this->bencoded, ':', $this->index);
 
-            if (strval($len) !== $lenStr || $len < 0) {
-                throw new ParseErrorException("Invalid string length value: '{$lenStr}'");
-            }
-
-            // we have length, just read all string here now
-
-            $str = substr($this->bencoded, $this->index + 1, $len);
-            $this->index += $len;
-
-            if (strlen($str) !== $len) {
-                throw new ParseErrorException('Unexpected end of file while processing string');
-            }
-
-            $this->pop($str);
-        } else {
-            $this->value[] = $this->char();
+        if ($lenEndIndex === false) {
+            throw new ParseErrorException('Unexpected end of file while processing string');
         }
+
+        $lenStr = substr($this->bencoded, $this->index, $lenEndIndex - $this->index);
+        $len    = intval($lenStr);
+
+        $this->index += strlen($lenStr) + 1;
+
+        if (strval($len) !== $lenStr || $len < 0) {
+            throw new ParseErrorException("Invalid string length value: '{$lenStr}'");
+        }
+
+        // we have length, just read all string here now
+
+        $str = substr($this->bencoded, $this->index, $len);
+        $this->index += $len;
+
+        if (strlen($str) !== $len) {
+            throw new ParseErrorException('Unexpected end of file while processing string');
+        }
+
+        $this->pop($str);
     }
 
     private function finalizeContainer(): void
