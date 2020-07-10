@@ -101,7 +101,8 @@ class Encoder
 
     private function encodeString(string $string): string
     {
-        return implode([strlen($string), ':', $string]);
+        $length = strlen($string);
+        return "{$length}:$string";
     }
 
     private function encodeList(iterable $array): string
@@ -130,7 +131,7 @@ class Encoder
         usort($dictData, fn($a, $b) => strcmp($a[0], $b[0]));
 
         $dict = implode(array_map(function ($row) {
-            list($key, $value) = $row;
+            [$key, $value] = $row;
             return $this->encodeString($key) . $this->encodeValue($value); // key is always a string
         }, $dictData));
 
