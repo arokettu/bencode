@@ -238,7 +238,8 @@ class EncodeTest extends TestCase
         $expected = 'd' .
             '4:dictd3:inti123e4:listlee' .
             '7:integeri1e' .
-            '4:listli1ei2ei3e4:testl4:list2:in4:listed4:dict7:in listee6:string3:str' .
+            '4:listli1ei2ei3e4:testl4:list2:in4:listed4:dict7:in listee' .
+            '6:string3:str' .
             'e';
 
         $result1 = Bencode::encode($data1);
