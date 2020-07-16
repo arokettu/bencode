@@ -1,7 +1,11 @@
 <?php
 
+namespace SandFox\Bencode\Tests;
+
+use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
+use stdClass;
 
 class DecodeIntegrationTest extends TestCase
 {

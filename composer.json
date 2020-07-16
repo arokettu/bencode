@@ -19,6 +19,11 @@
             "SandFox\\Bencode\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "SandFox\\Bencode\\Tests\\": "tests"
+        }
+    },
     "require": {
         "php": "^8.0"
     },

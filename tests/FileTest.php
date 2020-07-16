@@ -1,5 +1,7 @@
 <?php
 
+namespace SandFox\Bencode\Tests;
+
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
 
