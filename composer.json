@@ -28,8 +28,11 @@
         "php": "^8.0"
     },
     "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "phpcompatibility/php-compatibility": "*",
         "phpunit/phpunit": "^9.2",
         "psy/psysh": "*",
+        "slevomat/coding-standard": "*",
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
