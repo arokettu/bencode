@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -54,7 +56,9 @@ class DecodeDictTest extends TestCase
     public function testDuplicateKey()
     {
         $this->expectException(ParseErrorException::class);
-        $this->expectExceptionMessage("Invalid order of dictionary keys: 'a' after 'a'"); // this may be confusing but it catches this bug
+        $this->expectExceptionMessage(
+            "Invalid order of dictionary keys: 'a' after 'a'"
+        ); // this may be confusing but it catches this bug
 
         Bencode::decode('d1:a1:b1:a1:de');
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Tests;
 
 use ArrayObject;
@@ -40,7 +42,7 @@ class DecodeIntegrationTest extends TestCase
                 'e' .
                 '1:i' . 'i213e' .
                 '1:l' . 'le' .
-                '1:s' . '6:string'.
+                '1:s' . '6:string' .
             'e' .
             'i456e' .
         'e';
@@ -52,6 +54,6 @@ class DecodeIntegrationTest extends TestCase
 
         $this->assertEquals($value, $decoded);
         $this->assertEquals(ArrayObject::class, get_class($decoded[3]));
-        $this->assertEquals(stdClass::class,    get_class($decoded[4]));
+        $this->assertEquals(stdClass::class, get_class($decoded[4]));
     }
 }

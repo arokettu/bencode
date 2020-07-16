@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Tests;
 
 use ArrayObject;
@@ -115,7 +117,10 @@ class EncodeTest extends TestCase
     {
         // array with string keys
 
-        $this->assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode(['key' => 'value', 'test' => 'whatever']));
+        $this->assertEquals(
+            'd3:key5:value4:test8:whatevere',
+            Bencode::encode(['key' => 'value', 'test' => 'whatever'])
+        );
 
         // any non-sequential array
 
@@ -230,13 +235,17 @@ class EncodeTest extends TestCase
             'list'      => [1, 2, 3, 'test', ['list', 'in', 'list'], ['dict' => 'in list']],
         ];
 
-        $expected = 'd4:dictd3:inti123e4:listlee7:integeri1e4:listli1ei2ei3e4:testl4:list2:in4:listed4:dict7:in listee6:string3:stre';
+        $expected = 'd' .
+            '4:dictd3:inti123e4:listlee' .
+            '7:integeri1e' .
+            '4:listli1ei2ei3e4:testl4:list2:in4:listed4:dict7:in listee6:string3:str' .
+            'e';
 
         $result1 = Bencode::encode($data1);
         $result2 = Bencode::encode($data2);
 
-        $this->assertEquals($expected,  $result1);
-        $this->assertEquals($result1,   $result2); // different order of dict keys should not change the result
+        $this->assertEquals($expected, $result1);
+        $this->assertEquals($result1, $result2); // different order of dict keys should not change the result
     }
 
     public function testSerializable()
@@ -250,7 +259,7 @@ class EncodeTest extends TestCase
         };
 
         // test returning object which is also serializable
-        $dataRecursion = new class($dataScalar) implements BencodeSerializable {
+        $dataRecursion = new class ($dataScalar) implements BencodeSerializable {
             private $data;
 
             public function __construct($data)
@@ -276,9 +285,9 @@ class EncodeTest extends TestCase
             }
         };
 
-        $this->assertEquals('4:Test',       Bencode::encode($dataScalar));
-        $this->assertEquals('4:Test',       Bencode::encode($dataRecursion));
-        $this->assertEquals('li1ei2ei3ee',  Bencode::encode($dataArray));
+        $this->assertEquals('4:Test', Bencode::encode($dataScalar));
+        $this->assertEquals('4:Test', Bencode::encode($dataRecursion));
+        $this->assertEquals('li1ei2ei3ee', Bencode::encode($dataArray));
     }
 
     public function testUnknown()

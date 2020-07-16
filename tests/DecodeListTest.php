@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Tests;
 
 use ArrayObject;
@@ -49,7 +51,7 @@ class DecodeListTest extends TestCase
 
         // callback
         // use same array object as above
-        $decodedCallback = Bencode::decode($encoded, ['listType' => function($array) use($list) {
+        $decodedCallback = Bencode::decode($encoded, ['listType' => function ($array) use ($list) {
             $this->assertEquals($list, $array); // check thar array is passed here
 
             // you can pass extra parameter to the constructor for example
@@ -63,7 +65,9 @@ class DecodeListTest extends TestCase
     public function testIncorrectType()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Invalid type option for 'listType'. Type should be 'array', 'object', class name, or callback");
+        $this->expectExceptionMessage(
+            "Invalid type option for 'listType'. Type should be 'array', 'object', class name, or callback"
+        );
 
         Bencode::decode('le', ['listType' => "\0NonExistentClass"]);
     }
