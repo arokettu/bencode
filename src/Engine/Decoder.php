@@ -221,9 +221,7 @@ class Decoder
         array_push($this->stateStack, $this->state);
         $this->state = $newState;
 
-        if ($this->state !== self::STATE_ROOT) {
-            array_push($this->valueStack, $this->value);
-        }
+        array_push($this->valueStack, $this->value);
         $this->value = [];
     }
 
