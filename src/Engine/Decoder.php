@@ -63,34 +63,7 @@ class Decoder
 
     private function processChar(): void
     {
-        if ($this->stateContainer()) {
-            // we're inside a container, find its children
-            $this->nextObject();
-        } else {
-            switch ($this->state) {
-                case self::STATE_INT:
-                    $this->processInteger();
-                    break;
-
-                case self::STATE_STR:
-                    $this->processString();
-                    break;
-
-                default:
-                    // @codeCoverageIgnoreStart
-                    // This exception means that we have a bug in our own code
-                    throw new ParseErrorException('Parser entered invalid state while parsing char');
-                    // @codeCoverageIgnoreEnd
-            }
-        }
-    }
-
-    private function stateContainer(): bool
-    {
-        return
-            $this->state === self::STATE_ROOT ||
-            $this->state === self::STATE_LIST ||
-            $this->state === self::STATE_DICT;
+        $this->nextObject();
     }
 
     private function nextObject(): void
