@@ -27,8 +27,6 @@ class Decoder
     private const STATE_ROOT = 1;
     private const STATE_LIST = 2;
     private const STATE_DICT = 3;
-    private const STATE_INT  = 4;
-    private const STATE_STR  = 5;
 
     public const DEFAULT_OPTIONS = [
         'listType' => 'array',
@@ -103,8 +101,7 @@ class Decoder
 
         switch ($this->char()) {
             case 'i':
-                $this->push(self::STATE_INT);
-                $this->index += 1; // skip i
+                $this->processInteger();
                 return;
 
             case 'l':
@@ -123,12 +120,14 @@ class Decoder
                 return;
 
             default:
-                $this->push(self::STATE_STR);
+                $this->processString();
         }
     }
 
     private function processInteger(): void
     {
+        $this->index += 1; // skip 'i'
+
         $intEndIndex = strpos($this->bencoded, 'e', $this->index);
 
         if ($intEndIndex === false) {
@@ -144,7 +143,7 @@ class Decoder
 
         $this->index += strlen($intStr) + 1;
 
-        $this->pop($int);
+        $this->finalizeScalar($int);
     }
 
     private function processString(): void
@@ -173,7 +172,7 @@ class Decoder
             throw new ParseErrorException('Unexpected end of file while processing string');
         }
 
-        $this->pop($str);
+        $this->finalizeScalar($str);
     }
 
     private function finalizeContainer(): void
@@ -229,6 +228,20 @@ class Decoder
         $value = $this->convertArrayToType($dict, 'dictionaryType');
 
         $this->pop($value);
+    }
+
+    /**
+     * Send parsed value to the current container
+     * @param mixed $value
+     */
+    private function finalizeScalar(mixed $value): void
+    {
+        if ($this->state !== self::STATE_ROOT) {
+            $this->value[] = $value;
+        } else {
+            // we have final result
+            $this->decoded = $value;
+        }
     }
 
     /**
