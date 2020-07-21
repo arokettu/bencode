@@ -109,7 +109,8 @@ class Decoder
             throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
         }
 
-        $this->index += strlen($intStr) + 1;
+        $this->index += strlen($intStr);
+        $this->index += 1; // skip 'e'
 
         $this->finalizeScalar($int);
     }
