@@ -63,11 +63,6 @@ class Decoder
 
     private function processChar(): void
     {
-        $this->nextObject();
-    }
-
-    private function nextObject(): void
-    {
         if ($this->decoded !== null && $this->state === self::STATE_ROOT) {
             throw new ParseErrorException('Probably some junk after the end of the file');
         }
