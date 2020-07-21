@@ -29,69 +29,62 @@ final class Encoder
 
     private function encodeValue(mixed $value): string
     {
-        // first check if we have integer
-        // boolean is converted to integer 1 or 0
-        if (is_int($value) || is_bool($value)) {
-            return $this->encodeInteger(intval($value));
-        }
-
-        // process strings
-        // floats become strings
-        if (is_string($value) || is_float($value) || is_null($value)) {
-            return $this->encodeString(strval($value));
-        }
-
-        // process arrays
-        if (is_array($value)) {
-            return $this->encodeArray($value);
-        }
-
-        if (is_object($value)) {
-            return $this->encodeObject($value);
-        }
-
-        throw new InvalidArgumentException(
-            sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
-        );
+        return match (true) {
+            // first check if we have integer
+            // boolean is converted to integer 1 or 0
+            is_int($value), is_bool($value) =>
+                $this->encodeInteger(intval($value)),
+            // process strings
+            // floats become strings
+            // nulls become empty strings
+            is_string($value), is_float($value), is_null($value) =>
+                $this->encodeString(strval($value)),
+            // process arrays
+            is_array($value) =>
+                $this->encodeArray($value),
+            // process objects
+            is_object($value) =>
+                $this->encodeObject($value),
+            // other types like resources
+            default =>
+                throw new InvalidArgumentException(
+                    sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
+                ),
+        };
     }
 
     private function encodeArray(array $value): string
     {
-        if ($this->isSequentialArray($value)) {
-            return $this->encodeList($value);
-        } else {
-            return $this->encodeDictionary($value);
-        }
+        return match ($this->isSequentialArray($value)) {
+            true  => $this->encodeList($value),
+            false => $this->encodeDictionary($value),
+        };
     }
 
     private function encodeObject(object $value): string
     {
-        // serializable
-        if ($value instanceof BencodeSerializable) {
+        return match (true) {
+            // serializable
             // Start again with method result
-            return $this->encodeValue($value->bencodeSerialize());
-        }
-
-        // traversables
-        if ($value instanceof ListType) {
+            $value instanceof BencodeSerializable =>
+                $this->encodeValue($value->bencodeSerialize()),
+            // traversables
             // ListType forces traversable object to be list
-            return $this->encodeList($value);
-        }
-
-        // all other traversables are dictionaries
-        // also treat stdClass as a dictionary
-        if ($value instanceof \Traversable || $value instanceof \stdClass) {
-            return $this->encodeDictionary($value);
-        }
-
-        // try to convert other objects to string
-        if ($value instanceof \Stringable) {
-            return $this->encodeString(strval($value));
-        }
-
-        throw new InvalidArgumentException(
-            sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
-        );
+            $value instanceof ListType =>
+                $this->encodeList($value),
+            // all other traversables are dictionaries
+            // also treat stdClass as a dictionary
+            $value instanceof \Traversable, $value instanceof \stdClass =>
+                $this->encodeDictionary($value),
+            // try to convert other objects to string
+            $value instanceof \Stringable =>
+                $this->encodeString(strval($value)),
+            // other classes
+            default =>
+                throw new InvalidArgumentException(
+                    sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
+                ),
+        };
     }
 
     private function encodeInteger(int $integer): string
