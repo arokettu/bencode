@@ -13,7 +13,7 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
  * @author Anton Smirnov
  * @license MIT
  */
-class Decoder
+final class Decoder
 {
     private mixed $decoded;
 

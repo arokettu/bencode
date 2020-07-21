@@ -14,7 +14,7 @@ use SandFox\Bencode\Types\ListType;
  * @author Anton Smirnov
  * @license MIT
  */
-class Encoder
+final class Encoder
 {
     public function __construct(
         private mixed $data,
