@@ -126,7 +126,8 @@ final class Decoder
         $lenStr = substr($this->bencoded, $this->index, $lenEndIndex - $this->index);
         $len    = intval($lenStr);
 
-        $this->index += strlen($lenStr) + 1;
+        $this->index += strlen($lenStr);
+        $this->index += 1; // skip ':'
 
         if (strval($len) !== $lenStr || $len < 0) {
             throw new ParseErrorException("Invalid string length value: '{$lenStr}'");
