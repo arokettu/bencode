@@ -158,7 +158,7 @@ The library is available as open source under the terms of the `MIT License`_.
 .. _MIT License:        https://opensource.org/licenses/MIT
 
 .. |Packagist|  image:: https://img.shields.io/packagist/v/sandfoxme/bencode.svg
-   :target: https://packagist.org/packages/sandfoxme/bencode
+   :target:     https://packagist.org/packages/sandfoxme/bencode
 .. |GitHub|     image:: https://img.shields.io/badge/get%20on-GitHub-informational.svg?logo=github
    :target:     https://github.com/arokettu/bencode
 .. |GitLab|     image:: https://img.shields.io/badge/get%20on-GitLab-informational.svg?logo=gitlab
