@@ -77,53 +77,55 @@ This will work exactly like JsonSerializable_ interface.
 
 .. code-block:: php
 
-   <?php
+    <?php
 
-   use SandFox\Bencode\Bencode;
-   use SandFox\Bencode\Types\BencodeSerializable;
+    use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Types\BencodeSerializable;
 
-   class MyFile implements BencodeSerializable
-   {
-       public function bencodeSerialize() {
-           return [
-               'class' => static::class,
-               'name'  => 'myfile.torrent',
-               'size'  => 5 * 1024 * 1024,
-           ];
-       }
-   }
+    class MyFile implements BencodeSerializable
+    {
+        public function bencodeSerialize()
+        {
+            return [
+                'class' => static::class,
+                'name'  => 'myfile.torrent',
+                'size'  => 5 * 1024 * 1024,
+            ];
+        }
+    }
 
-   $file = new MyFile;
+    $file = new MyFile;
 
-   $encoded = Bencode::encode($file); // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
+    $encoded = Bencode::encode($file); // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
 
 Decoding
 ========
 
 .. code-block:: php
 
-   <?php
+    <?php
 
-   use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Bencode;
 
-   // simple decoding, lists and dictionaries will be arrays
-   $data = Bencode::decode("d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste");
-   // [
-   //   "arr" => [1,2,3,4],
-   //   "bool" => 1,
-   //   "float" => "3.1415",
-   //   "int" => 123,
-   //   "string" => "test\0test",
-   // ]
+    // simple decoding, lists and dictionaries will be arrays
+    $data = Bencode::decode("d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste");
+    // [
+    //   "arr" => [1,2,3,4],
+    //   "bool" => 1,
+    //   "float" => "3.1415",
+    //   "int" => 123,
+    //   "string" => "test\0test",
+    // ]
 
-   // You can control lists and dictionaries types with options
-   $data = Bencode::decode("...", [
-       'dictionaryType'    => ArrayObject::class, // pass class name, new $type($array) will be created
-       'listType'          => function ($array) { // or callback for greater flexibility
-           return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
-       },
-   ]);
-   // default value for both types is 'array'. you can also use 'object' for stdClass
+    // You can control lists and dictionaries types with options
+    $data = Bencode::decode(
+        "...",
+        dictionaryType: ArrayObject::class, // pass class name, new $type($array) will be created
+        listType:       function ($array) { // or callback for greater flexibility
+            return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
+        },
+    ]);
+    // default value for both types is 'array'. you can also use 'object' for stdClass
 
 Working with files
 ==================
