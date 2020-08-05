@@ -1,3 +1,11 @@
+# 2.1.0
+
+*Aug 5, 2020*
+
+* Replace Becnode::decode() options array with named parameters.
+  Options array is now deprecated and will be removed in 3.0
+* Engine optimizations
+
 # 2.0.0
 
 *Jun 30, 2020*
