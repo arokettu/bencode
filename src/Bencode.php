@@ -22,9 +22,9 @@ final class Bencode
      * @param array $options
      * @return string
      */
-    public static function encode(mixed $data, array $options = []): string
+    public static function encode(mixed $data): string
     {
-        return (new Encoder($data, $options))->encode();
+        return (new Encoder($data))->encode();
     }
 
     /**
@@ -32,11 +32,19 @@ final class Bencode
      *
      * @param string $bencoded
      * @param array $options
+     * @param string|callable $listType Type declaration for lists
+     * @param string|callable $dictionaryType Type declaration for dictionaries
      * @return mixed
      */
-    public static function decode(string $bencoded, array $options = []): mixed
-    {
-        return (new Decoder($bencoded, $options))->decode();
+    public static function decode(
+        string $bencoded,
+        array $options = [],
+        string|callable $listType = 'array',
+        string|callable $dictionaryType = 'array',
+    ): mixed {
+        $options = array_merge(compact('listType', 'dictionaryType'), $options);
+
+        return (new Decoder($bencoded, ...$options))->decode();
     }
 
     /**

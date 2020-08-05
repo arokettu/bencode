@@ -17,10 +17,8 @@ use SandFox\Bencode\Types\ListType;
  */
 final class Encoder
 {
-    public function __construct(
-        private mixed $data,
-        private array $options = [],
-    ) {
+    public function __construct(private mixed $data)
+    {
     }
 
     public function encode(): string

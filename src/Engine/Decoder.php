@@ -18,6 +18,8 @@ final class Decoder
 {
     private mixed $decoded;
 
+    private array $options = [];
+
     private int $state;
     private array $stateStack;
     private int $index;
@@ -29,16 +31,12 @@ final class Decoder
     private const STATE_LIST = 2;
     private const STATE_DICT = 3;
 
-    public const DEFAULT_OPTIONS = [
-        'listType' => 'array',
-        'dictionaryType' => 'array',
-    ];
-
     public function __construct(
         private string $bencoded,
-        private array $options = [],
+        string|callable $listType = 'array',
+        string|callable $dictionaryType = 'array',
     ) {
-        $this->options = array_merge(self::DEFAULT_OPTIONS, $this->options);
+        $this->options = compact('listType', 'dictionaryType');
     }
 
     public function decode(): mixed
