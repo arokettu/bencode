@@ -47,10 +47,11 @@ class DecodeIntegrationTest extends TestCase
             'i456e' .
         'e';
 
-        $decoded = Bencode::decode($bencode, [
-            'listType' => ArrayObject::class,
-            'dictionaryType' => 'object',
-        ]);
+        $decoded = Bencode::decode(
+            $bencode,
+            listType: ArrayObject::class,
+            dictionaryType: 'object',
+        );
 
         $this->assertEquals($value, $decoded);
         $this->assertEquals(ArrayObject::class, get_class($decoded[3]));

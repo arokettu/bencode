@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Tests;
 
+use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
 use SandFox\Bencode\Exceptions\ParseErrorException;
+use stdClass;
 
 class DecodeDictTest extends TestCase
 {
@@ -61,5 +63,49 @@ class DecodeDictTest extends TestCase
         ); // this may be confusing but it catches this bug
 
         Bencode::decode('d1:a1:b1:a1:de');
+    }
+
+    public function testListTypes()
+    {
+        $dict = [
+            'k1' => 2,
+            'k2' => 's1',
+            'k3' => 3,
+            'k4' => 's2',
+            'k5' => 5,
+        ];
+        $encoded = 'd2:k1i2e2:k22:s12:k3i3e2:k42:s22:k5i5ee';
+
+        // array
+        $decodedArray = Bencode::decode($encoded, dictionaryType: 'array');
+
+        $this->assertTrue(is_array($decodedArray));
+        $this->assertEquals($dict, $decodedArray);
+
+        // stdClass
+        $object = (object)$dict;
+        $decodedObject = Bencode::decode($encoded, dictionaryType: 'object');
+
+        $this->assertEquals(stdClass::class, get_class($decodedObject));
+        $this->assertEquals($object, $decodedObject);
+
+        // custom class
+        $arrayObject = new ArrayObject($dict);
+        $decodedAO = Bencode::decode($encoded, dictionaryType: ArrayObject::class);
+
+        $this->assertEquals(ArrayObject::class, get_class($decodedAO));
+        $this->assertEquals($arrayObject, $decodedAO);
+
+        // callback
+        // use same array object as above
+        $decodedCallback = Bencode::decode($encoded, dictionaryType: function ($array) use ($dict) {
+            $this->assertEquals($dict, $array); // check thar array is passed here
+
+            // you can pass extra parameter to the constructor for example
+            return new ArrayObject($dict, ArrayObject::ARRAY_AS_PROPS);
+        });
+
+        $this->assertEquals(ArrayObject::class, get_class($decodedCallback));
+        $this->assertEquals($arrayObject, $decodedCallback);
     }
 }
