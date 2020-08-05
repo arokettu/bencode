@@ -12,6 +12,7 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
  * @package SandFox\Bencode\Engine
  * @author Anton Smirnov
  * @license MIT
+ * @internal
  */
 final class Decoder
 {

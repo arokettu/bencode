@@ -13,6 +13,7 @@ use SandFox\Bencode\Types\ListType;
  * @package SandFox\Bencode\Engine
  * @author Anton Smirnov
  * @license MIT
+ * @internal
  */
 final class Encoder
 {
