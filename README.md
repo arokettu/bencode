@@ -1,5 +1,4 @@
-PHP Bencode Encoder/Decoder
-===========================
+# PHP Bencode Encoder/Decoder
 
 [![Packagist](https://img.shields.io/packagist/v/sandfoxme/bencode.svg)](https://packagist.org/packages/sandfoxme/bencode)
 [![Packagist](https://img.shields.io/github/license/sandfoxme/bencode.svg)](https://opensource.org/licenses/MIT)
@@ -10,13 +9,22 @@ PHP Bencode Encoder/Decoder
 
 This is a pure PHP library that allows you to encode and decode Bencode data.
 
-Installation
-------------
+## Installation
 
-Run ``composer require 'sandfoxme/bencode'``.
+```bash
+composer require 'sandfoxme/bencode'
+```
 
-Documentation
--------------
+## Simple use
+
+```php
+<?php
+
+\SandFox\Bencode\Bencode::encode(['info' => ['length' => 12345, 'name' => 'Bencoded demo']]);
+\SandFox\Bencode\Bencode::decode('d4:infod6:lengthi12345e4:name13:Bencoded demoee');
+```
+
+## Documentation
 
 Read full documentation here: <https://sandfox.dev/php/bencode.html>
 
@@ -24,8 +32,7 @@ Read full documentation here: <https://sandfox.dev/php/bencode.html>
 
 Please file issues on our main repo at GitLab: <https://gitlab.com/sandfox/bencode/-/issues>
 
-License
--------
+## License
 
 The library is available as open source under the terms of the [MIT License].
 
