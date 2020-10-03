@@ -8,6 +8,6 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 install:
-  - composer install --ignore-platform-reqs
+  - composer install
 script:
   - vendor/bin/phpunit tests
