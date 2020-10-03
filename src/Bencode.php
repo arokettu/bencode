@@ -19,7 +19,6 @@ final class Bencode
      * Encode arbitrary data to bencode string
      *
      * @param mixed $data
-     * @param array $options
      * @return string
      */
     public static function encode(mixed $data): string
@@ -52,12 +51,11 @@ final class Bencode
      *
      * @param string $filename
      * @param mixed $data
-     * @param array $options
      * @return bool success of file_put_contents
      */
-    public static function dump(string $filename, mixed $data, array $options = []): bool
+    public static function dump(string $filename, mixed $data): bool
     {
-        return file_put_contents($filename, self::encode($data, $options)) !== false;
+        return file_put_contents($filename, self::encode($data)) !== false;
     }
 
     /**
@@ -65,10 +63,16 @@ final class Bencode
      *
      * @param string $filename
      * @param array $options
+     * @param string|callable $listType Type declaration for lists
+     * @param string|callable $dictionaryType Type declaration for dictionaries
      * @return mixed
      */
-    public static function load(string $filename, array $options = []): mixed
-    {
-        return self::decode(file_get_contents($filename), $options);
+    public static function load(
+        string $filename,
+        array $options = [],
+        string|callable $listType = 'array',
+        string|callable $dictionaryType = 'array',
+    ): mixed {
+        return self::decode(file_get_contents($filename), $options, $listType, $dictionaryType);
     }
 }
