@@ -7,6 +7,9 @@ namespace SandFox\Bencode\Engine;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\ListType;
+use stdClass;
+use Stringable;
+use Traversable;
 
 /**
  * Class Encoder
@@ -73,10 +76,10 @@ final class Encoder
                 $this->encodeList($value),
             // all other traversables are dictionaries
             // also treat stdClass as a dictionary
-            $value instanceof \Traversable, $value instanceof \stdClass =>
+            $value instanceof Traversable, $value instanceof stdClass =>
                 $this->encodeDictionary($value),
             // try to convert other objects to string
-            $value instanceof \Stringable =>
+            $value instanceof Stringable =>
                 $this->encodeString(strval($value)),
             // other classes
             default =>
@@ -110,7 +113,7 @@ final class Encoder
         return "l{$list}e";
     }
 
-    private function encodeDictionary(iterable|\stdClass $array): string
+    private function encodeDictionary(iterable|stdClass $array): string
     {
         $dictData = [];
 
@@ -120,9 +123,9 @@ final class Encoder
         }
 
         // sort by keys - rfc requirement
-        usort($dictData, fn($a, $b) => strcmp($a[0], $b[0]));
+        usort($dictData, fn($a, $b): int => strcmp($a[0], $b[0]));
 
-        $dict = implode(array_map(function ($row) {
+        $dict = implode(array_map(function ($row): string {
             [$key, $value] = $row;
             return $this->encodeString($key) . $this->encodeValue($value); // key is always a string
         }, $dictData));

@@ -18,7 +18,7 @@ final class Decoder
 {
     private mixed $decoded;
 
-    private array $options = [];
+    private array $options;
 
     private int $state;
     private array $stateStack;
