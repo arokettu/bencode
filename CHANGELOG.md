@@ -1,3 +1,9 @@
+# 2.2.0
+
+*Oct 3, 2020*
+
+* Update `dump()` and `load()` signatures to match `encode()` and `decode()` 
+
 # 2.1.0
 
 *Aug 5, 2020*
