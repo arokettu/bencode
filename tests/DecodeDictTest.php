@@ -77,28 +77,28 @@ class DecodeDictTest extends TestCase
         $encoded = 'd2:k1i2e2:k22:s12:k3i3e2:k42:s22:k5i5ee';
 
         // array
-        $decodedArray = Bencode::decode($encoded, dictionaryType: 'array');
+        $decodedArray = Bencode::decode($encoded, dictType: 'array');
 
         $this->assertTrue(is_array($decodedArray));
         $this->assertEquals($dict, $decodedArray);
 
         // stdClass
         $object = (object)$dict;
-        $decodedObject = Bencode::decode($encoded, dictionaryType: 'object');
+        $decodedObject = Bencode::decode($encoded, dictType: 'object');
 
         $this->assertEquals(stdClass::class, get_class($decodedObject));
         $this->assertEquals($object, $decodedObject);
 
         // custom class
         $arrayObject = new ArrayObject($dict);
-        $decodedAO = Bencode::decode($encoded, dictionaryType: ArrayObject::class);
+        $decodedAO = Bencode::decode($encoded, dictType: ArrayObject::class);
 
         $this->assertEquals(ArrayObject::class, get_class($decodedAO));
         $this->assertEquals($arrayObject, $decodedAO);
 
         // callback
         // use same array object as above
-        $decodedCallback = Bencode::decode($encoded, dictionaryType: function ($array) use ($dict) {
+        $decodedCallback = Bencode::decode($encoded, dictType: function ($array) use ($dict) {
             $this->assertEquals($dict, $array); // check thar array is passed here
 
             // you can pass extra parameter to the constructor for example

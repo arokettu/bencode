@@ -34,9 +34,9 @@ final class Decoder
     public function __construct(
         private string $bencoded,
         string|callable $listType = 'array',
-        string|callable $dictionaryType = 'array',
+        string|callable $dictType = 'array',
     ) {
-        $this->options = compact('listType', 'dictionaryType');
+        $this->options = compact('listType', 'dictType');
     }
 
     public function decode(): mixed
@@ -194,7 +194,7 @@ final class Decoder
             $prevKey = $dictKey;
         }
 
-        $value = $this->convertArrayToType($dict, 'dictionaryType');
+        $value = $this->convertArrayToType($dict, 'dictType');
 
         $this->pop($value);
     }
