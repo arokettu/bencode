@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0
+*Oct 4, 2020*
+
+* Shorten `dictionaryType` to `dictType`. `dictionaryType` will be removed in 3.0
+* Trigger silent deprecations for deprecated stuff
+
 ## 2.2.0
 
 *Oct 3, 2020*

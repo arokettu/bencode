@@ -120,12 +120,14 @@ Decoding
     // You can control lists and dictionaries types with options
     $data = Bencode::decode(
         "...",
-        dictionaryType: ArrayObject::class, // pass class name, new $type($array) will be created
-        listType:       function ($array) { // or callback for greater flexibility
+        dictType: ArrayObject::class, // pass class name, new $type($array) will be created
+        listType: function ($array) { // or callback for greater flexibility
             return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
         },
     ]);
     // default value for both types is 'array'. you can also use 'object' for stdClass
+
+.. note:: Parameter order is not guaranteed for options, use named parameters
 
 Working with files
 ==================
