@@ -28,6 +28,9 @@ composer require 'sandfoxme/bencode'
 
 Read full documentation here: <https://sandfox.dev/php/bencode.html>
 
+Documentation for earlier versions can be found on Read the Docs:
+<https://bencode.readthedocs.io/en/1.x/>
+
 ## Support
 
 Please file issues on our main repo at GitLab: <https://gitlab.com/sandfox/bencode/-/issues>
