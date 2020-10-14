@@ -8,9 +8,16 @@
     "authors": [
         {
             "name": "Anton Smirnov",
+            "role": "developer",
+            "homepage": "https://sandfox.me",
             "email": "sandfox@sandfox.me"
         }
     ],
+    "support": {
+        "issues": "https://gitlab.com/sandfox/bencode/-/issues",
+        "source": "https://gitlab.com/sandfox/bencode",
+        "docs": "https://bencode.readthedocs.io/"
+    },
     "config": {
         "sort-packages": true
     },
