@@ -54,12 +54,6 @@ final class Bencode
         }
 
         if (count($options) > 0) {
-            trigger_deprecation(
-                'sandfoxme/bencode',
-                '2.1.0',
-                'Using options array is deprecated, use named function parameters instead',
-            );
-
             if (isset($options['dictionaryType'])) {
                 $options['dictType'] ??= $options['dictionaryType'];
                 unset($options['dictionaryType']);
