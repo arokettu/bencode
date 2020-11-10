@@ -1,3 +1,10 @@
+# 1.4.0
+
+*Nov 10, 2020*
+
+* Make spec compliant BitTorrent code simpler: `null` and `false` values are now skipped on encoding
+* Add `'dictType'` alias for `'dictionaryType'` for 2.3 compatibility
+
 # 1.3.0
 
 *Feb 14, 2019*

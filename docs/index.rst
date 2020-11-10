@@ -13,13 +13,19 @@ This is a pure PHP library that allows you to encode and decode Bencode data.
 Installation
 ============
 
-Run ``composer require 'sandfoxme/bencode:^1.3'``.
+Run ``composer require 'sandfoxme/bencode:^1.4'``.
 
 Encoding
 ========
 
 Scalars and arrays
 ------------------
+
+.. warning:: *Possibly breaking change in 1.4 and 2.4:*
+
+    Before 1.4 and 2.4 ``null`` was encoded as empty string and ``false`` was encoded as 0.
+    Since bencode spec doesn't have bool and null values, it is not considered a bc break.
+    Judging by info[private] behavior in BitTorrent spec, the old behavior could be considered as a bug.
 
 .. code-block:: php
 
@@ -31,9 +37,10 @@ Scalars and arrays
        'arr'       => [1,2,3,4],       // sequential array will become a list
        'int'       => 123,             // integer is stored as is
        'float'     => 3.1415,          // float will become a string
-       'bool'      => true,            // bool will be an integer 1 or 0
+       'true'      => true,            // true will be an integer 1
+       'false'     => false,           // false and null values will be skipped
        'string'    => "test\0test",    // string can contain any binary data
-   ]); // "d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste"
+   ]); // "d3:arrli1ei2ei3ei4ee5:float6:3.14153:inti123e6:string9:test\0test4:truei1ee"
 
 Objects
 -------
@@ -116,8 +123,8 @@ Decoding
 
    // You can control lists and dictionaries types with options
    $data = Bencode::decode("...", [
-       'dictionaryType'    => ArrayObject::class, // pass class name, new $type($array) will be created
-       'listType'          => function ($array) { // or callback for greater flexibility
+       'dictType' => ArrayObject::class, // pass class name, new $type($array) will be created
+       'listType' => function ($array) { // or callback for greater flexibility
            return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
        },
    ]);
