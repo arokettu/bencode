@@ -23,51 +23,58 @@ Encoding
 Scalars and arrays
 ------------------
 
+.. warning:: *Possibly breaking change in 1.4 and 2.4:*
+
+    Before 1.4 and 2.4 ``null`` was encoded as empty string and ``false`` was encoded as 0.
+    Since bencode spec doesn't have bool and null values, it is not considered a bc break.
+    Judging by info[private] behavior in BitTorrent spec, the old behavior could be considered as a bug.
+
 .. code-block:: php
 
-   <?php
+    <?php
 
-   use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Bencode;
 
-   $encoded = Bencode::encode([    // array will become dictionary
-       'arr'       => [1,2,3,4],       // sequential array will become a list
-       'int'       => 123,             // integer is stored as is
-       'float'     => 3.1415,          // float will become a string
-       'bool'      => true,            // bool will be an integer 1 or 0
-       'string'    => "test\0test",    // string can contain any binary data
-   ]); // "d3:arrli1ei2ei3ei4ee4:booli1e5:float6:3.14153:inti123e6:string9:test\0teste"
+    $encoded = Bencode::encode([    // array will become dictionary
+        'arr'       => [1,2,3,4],       // sequential array will become a list
+        'int'       => 123,             // integer is stored as is
+        'float'     => 3.1415,          // float will become a string
+        'true'      => true,            // true will be an integer 1
+        'false'     => false,           // false and null values will be skipped
+        'string'    => "test\0test",    // string can contain any binary data
+    ]); // "d3:arrli1ei2ei3ei4ee5:float6:3.14153:inti123e6:string9:test\0test4:truei1ee"
 
 Objects
 -------
 
 .. code-block:: php
 
-   <?php
+    <?php
 
-   use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Bencode;
 
-   // traversable objects and stdClass become dictionaries
-   $encoded = Bencode::encode(new ArrayObject([1,2,3])); // "d1:0i1e1:1i2e1:2i3ee"
-   $std = new stdClass();
-   $std->a = '123';
-   $std->b = 456;
-   $encoded = Bencode::encode($std); // "d1:a3:1231:bi456ee"
+    // traversable objects and stdClass become dictionaries
+    $encoded = Bencode::encode(new ArrayObject([1,2,3])); // "d1:0i1e1:1i2e1:2i3ee"
+    $std = new stdClass();
+    $std->a = '123';
+    $std->b = 456;
+    $encoded = Bencode::encode($std); // "d1:a3:1231:bi456ee"
 
-   // you can force traversable to become a list by wrapping it with ListType
-   // keys will be discarded in that case
-   use SandFox\Bencode\Types\ListType;
-   $encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
+    // you can force traversable to become a list by wrapping it with ListType
+    // keys will be discarded in that case
+    use SandFox\Bencode\Types\ListType;
+    $encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
 
-   // other objects will be converted to string if possible or generate an error if not
-   class ToString
-   {
-       public function __toString()
-       {
-           return 'I am string';
-       }
-   }
+    // other objects will be converted to string if possible or generate an error if not
+    class ToString
+    {
+        public function __toString()
+        {
+            return 'I am string';
+        }
+    }
 
-   $encoded = Bencode::encode(new ToString()); // "11:I am string"
+    $encoded = Bencode::encode(new ToString()); // "11:I am string"
 
 BencodeSerializable
 -------------------
@@ -134,12 +141,12 @@ Working with files
 
 .. code-block:: php
 
-   <?php
+    <?php
 
-   use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Bencode;
 
-   $data = Bencode::load('testfile.torrent'); // load data from bencoded file
-   Bencode::dump('testfile.torrent', $data); // save data to the bencoded file
+    $data = Bencode::load('testfile.torrent'); // load data from bencoded file
+    Bencode::dump('testfile.torrent', $data); // save data to the bencoded file
 
 Upgrade from 1.x
 ================
