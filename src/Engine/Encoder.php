@@ -2,6 +2,7 @@
 
 namespace SandFox\Bencode\Engine;
 
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\ListType;
 use SandFox\Bencode\Util\Util;
@@ -30,9 +31,12 @@ class Encoder
 
     private function encodeValue($value): string
     {
-        // first check if we have integer
-        // boolean is converted to integer 1 or 0
-        if (is_int($value) || is_bool($value)) {
+        if ($value === false || $value === null) {
+            throw new InvalidArgumentException('Unable to encode an empty value');
+        }
+
+        // true is converted to integer 1
+        if ($value === true || is_int($value)) {
             return $this->encodeInteger($value);
         }
 
@@ -97,6 +101,10 @@ class Encoder
         $listData = [];
 
         foreach ($array as $value) {
+            if ($value === false || $value === null) {
+                continue;
+            }
+
             $listData[] = $this->encodeValue($value);
         }
 
@@ -110,6 +118,10 @@ class Encoder
         $dictData = [];
 
         foreach ($array as $key => $value) {
+            if ($value === false || $value === null) {
+                continue;
+            }
+
             // do not use php array keys here to prevent numeric strings becoming integers again
             $dictData[] = [strval($key), $value];
         }
