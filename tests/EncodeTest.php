@@ -31,7 +31,6 @@ class EncodeTest extends TestCase
         // scalars converted to integer
 
         $this->assertEquals('i1e', Bencode::encode(true));
-        $this->assertEquals('i0e', Bencode::encode(false));
     }
 
     public function testString()
@@ -64,9 +63,6 @@ class EncodeTest extends TestCase
                 return 'string';
             }
         }));
-
-        // null
-        $this->assertEquals('0:', Bencode::encode(null));
     }
 
     public function testList()

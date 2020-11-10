@@ -33,13 +33,13 @@ final class Encoder
     {
         return match (true) {
             // first check if we have integer
-            // boolean is converted to integer 1 or 0
-            is_int($value), is_bool($value) =>
+            // true is converted to integer 1
+            is_int($value), $value === true =>
                 $this->encodeInteger(intval($value)),
             // process strings
             // floats become strings
             // nulls become empty strings
-            is_string($value), is_float($value), is_null($value) =>
+            is_string($value), is_float($value) =>
                 $this->encodeString(strval($value)),
             // process arrays
             is_array($value) =>
@@ -47,6 +47,9 @@ final class Encoder
             // process objects
             is_object($value) =>
                 $this->encodeObject($value),
+            // empty values
+            $value === false, $value === null =>
+                throw new InvalidArgumentException('Unable to encode an empty value'),
             // other types like resources
             default =>
                 throw new InvalidArgumentException(
@@ -105,6 +108,10 @@ final class Encoder
         $listData = [];
 
         foreach ($array as $value) {
+            if ($value === false || $value === null) {
+                continue;
+            }
+
             $listData[] = $this->encodeValue($value);
         }
 
@@ -118,6 +125,10 @@ final class Encoder
         $dictData = [];
 
         foreach ($array as $key => $value) {
+            if ($value === false || $value === null) {
+                continue;
+            }
+
             // do not use php array keys here to prevent numeric strings becoming integers again
             $dictData[] = [strval($key), $value];
         }
