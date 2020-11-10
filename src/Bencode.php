@@ -34,6 +34,10 @@ class Bencode
      */
     public static function decode(string $bencoded, array $options = [])
     {
+        if (isset($options['dictionaryType'])) {
+            $options['dictType'] = $options['dictType'] ?? $options['dictionaryType'];
+        }
+
         return (new Decoder($bencoded, $options))->decode();
     }
 

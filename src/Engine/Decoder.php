@@ -33,7 +33,7 @@ class Decoder
 
     const DEFAULT_OPTIONS = [
         'listType' => 'array',
-        'dictionaryType' => 'array',
+        'dictType' => 'array',
     ];
 
     public function __construct(string $bencoded, array $options = [])
@@ -217,7 +217,7 @@ class Decoder
             $prevKey = $dictKey;
         }
 
-        $value = $this->convertArrayToType($dict, 'dictionaryType');
+        $value = $this->convertArrayToType($dict, 'dictType');
 
         $this->pop($value);
     }
