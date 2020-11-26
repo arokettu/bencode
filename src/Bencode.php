@@ -23,7 +23,10 @@ final class Bencode
      */
     public static function encode(mixed $data): string
     {
-        return (new Encoder($data))->encode();
+        $stream = fopen('php://temp', 'r+');
+        (new Encoder($data, $stream))->encode();
+        rewind($stream);
+        return stream_get_contents($stream);
     }
 
     /**
@@ -66,6 +69,40 @@ final class Bencode
     }
 
     /**
+     * Dump data to bencoded stream
+     *
+     * @param mixed $data
+     * @param null $writeStream Write capable stream. If null, a new php://temp will be created
+     * @return resource Original or created stream
+     */
+    public static function encodeToStream(mixed $data, $writeStream = null)
+    {
+        if ($writeStream === null) {
+            $writeStream = fopen('php://temp', 'r+');
+        }
+
+        return (new Encoder($data, $writeStream))->encode();
+    }
+
+    /**
+     * @param resource $readStream Read capable stream
+     * @param array $options
+     * @param string|callable $listType
+     * @param string|callable $dictType
+     * @param string|callable|null $dictionaryType
+     * @return mixed
+     */
+    public static function decodeStream(
+        $readStream,
+        array $options = [],
+        string|callable $listType = 'array',
+        string|callable $dictType = 'array',
+        string|callable|null $dictionaryType = null,
+    ): mixed {
+        return null;
+    }
+
+    /**
      * Dump data to bencoded file
      *
      * @param string $filename
@@ -74,7 +111,18 @@ final class Bencode
      */
     public static function dump(string $filename, mixed $data): bool
     {
-        return file_put_contents($filename, self::encode($data)) !== false;
+        $stream = fopen($filename, 'w');
+
+        if ($stream === false) {
+            return false;
+        }
+
+        self::encodeToStream($data, $stream);
+
+        $stat = fstat($stream);
+        fclose($stream);
+
+        return $stat['size'] > 0;
     }
 
     /**

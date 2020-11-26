@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @noinspection PhpVoidFunctionResultUsedInspection
+ */
+
 declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
@@ -20,27 +24,35 @@ use Traversable;
  */
 final class Encoder
 {
-    public function __construct(private mixed $data)
+    public function __construct(private mixed $data, private $stream)
     {
+        if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+            throw new InvalidArgumentException('Invalid stream');
+        }
     }
 
-    public function encode(): string
+    /**
+     * @return resource
+     */
+    public function encode()
     {
-        return $this->encodeValue($this->data);
+        $this->encodeValue($this->data);
+
+        return $this->stream;
     }
 
-    private function encodeValue(mixed $value): string
+    private function encodeValue(mixed $value): void
     {
-        return match (true) {
+        match (true) {
             // first check if we have integer
             // true is converted to integer 1
             is_int($value), $value === true =>
-                $this->encodeInteger(intval($value)),
+                $this->encodeInteger((int)$value),
             // process strings
             // floats become strings
             // nulls become empty strings
             is_string($value), is_float($value) =>
-                $this->encodeString(strval($value)),
+                $this->encodeString((string)$value),
             // process arrays
             is_array($value) =>
                 $this->encodeArray($value),
@@ -58,17 +70,17 @@ final class Encoder
         };
     }
 
-    private function encodeArray(array $value): string
+    private function encodeArray(array $value): void
     {
-        return match ($this->isSequentialArray($value)) {
+        match ($this->isSequentialArray($value)) {
             true  => $this->encodeList($value),
             false => $this->encodeDictionary($value),
         };
     }
 
-    private function encodeObject(object $value): string
+    private function encodeObject(object $value): void
     {
-        return match (true) {
+        match (true) {
             // serializable
             // Start again with method result
             $value instanceof BencodeSerializable =>
@@ -83,7 +95,7 @@ final class Encoder
                 $this->encodeDictionary($value),
             // try to convert other objects to string
             $value instanceof Stringable =>
-                $this->encodeString(strval($value)),
+                $this->encodeString((string)$value),
             // other classes
             default =>
                 throw new InvalidArgumentException(
@@ -92,35 +104,36 @@ final class Encoder
         };
     }
 
-    private function encodeInteger(int $integer): string
+    private function encodeInteger(int $integer): void
     {
-        return "i{$integer}e";
+        fwrite($this->stream, 'i');
+        fwrite($this->stream, (string)$integer);
+        fwrite($this->stream, 'e');
     }
 
-    private function encodeString(string $string): string
+    private function encodeString(string $string): void
     {
-        $length = strlen($string);
-        return "{$length}:$string";
+        fwrite($this->stream, (string)strlen($string));
+        fwrite($this->stream, ':');
+        fwrite($this->stream, $string);
     }
 
-    private function encodeList(iterable $array): string
+    private function encodeList(iterable $array): void
     {
-        $listData = [];
+        fwrite($this->stream, 'l');
 
         foreach ($array as $value) {
             if ($value === false || $value === null) {
                 continue;
             }
 
-            $listData[] = $this->encodeValue($value);
+            $this->encodeValue($value);
         }
 
-        $list = implode($listData);
-
-        return "l{$list}e";
+        fwrite($this->stream, 'e');
     }
 
-    private function encodeDictionary(iterable|stdClass $array): string
+    private function encodeDictionary(iterable|stdClass $array): void
     {
         $dictData = [];
 
@@ -130,18 +143,20 @@ final class Encoder
             }
 
             // do not use php array keys here to prevent numeric strings becoming integers again
-            $dictData[] = [strval($key), $value];
+            $dictData[] = [(string)$key, $value];
         }
 
         // sort by keys - rfc requirement
         usort($dictData, fn($a, $b): int => strcmp($a[0], $b[0]));
 
-        $dict = implode(array_map(function ($row): string {
-            [$key, $value] = $row;
-            return $this->encodeString($key) . $this->encodeValue($value); // key is always a string
-        }, $dictData));
+        fwrite($this->stream, 'd');
 
-        return "d{$dict}e";
+        foreach ($dictData as [$key, $value]) {
+            $this->encodeString($key); // key is always a string
+            $this->encodeValue($value);
+        }
+
+        fwrite($this->stream, 'e');
     }
 
     private function isSequentialArray(array $array): bool
