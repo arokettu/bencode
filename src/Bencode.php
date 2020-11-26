@@ -26,14 +26,19 @@ final class Bencode
         $stream = fopen('php://temp', 'r+');
         (new Encoder($data, $stream))->encode();
         rewind($stream);
-        return stream_get_contents($stream);
+
+        $encoded = stream_get_contents($stream);
+
+        fclose($stream);
+
+        return $encoded;
     }
 
     /**
      * Decode bencoded data from string
      *
      * @param string $bencoded
-     * @param array $options @deprecated
+     * @param array $options
      * @param string|callable $listType Type declaration for lists
      * @param string|callable $dictType Type declaration for dictionaries
      * @param string|callable|null $dictionaryType Type declaration for dictionaries @deprecated
@@ -46,26 +51,15 @@ final class Bencode
         string|callable $dictType = 'array',
         string|callable|null $dictionaryType = null,
     ): mixed {
-        // resolve dictType / dictionaryType alias
-        if (isset($dictionaryType)) {
-            trigger_deprecation(
-                'sandfoxme/bencode',
-                '2.3.0',
-                'dictionaryType option is deprecated, use dictType instead',
-            );
-            $dictType = $dictionaryType;
-        }
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, $bencoded);
+        rewind($stream);
 
-        if (count($options) > 0) {
-            if (isset($options['dictionaryType'])) {
-                $options['dictType'] ??= $options['dictionaryType'];
-                unset($options['dictionaryType']);
-            }
-        }
+        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $dictionaryType);
 
-        $options = array_merge(compact('listType', 'dictType'), $options);
+        fclose($stream);
 
-        return (new Decoder($bencoded, ...$options))->decode();
+        return $decoded;
     }
 
     /**
@@ -99,7 +93,26 @@ final class Bencode
         string|callable $dictType = 'array',
         string|callable|null $dictionaryType = null,
     ): mixed {
-        return null;
+        // resolve dictType / dictionaryType alias
+        if (isset($dictionaryType)) {
+            trigger_deprecation(
+                'sandfoxme/bencode',
+                '2.3.0',
+                'dictionaryType option is deprecated, use dictType instead',
+            );
+            $dictType = $dictionaryType;
+        }
+
+        if (count($options) > 0) {
+            if (isset($options['dictionaryType'])) {
+                $options['dictType'] ??= $options['dictionaryType'];
+                unset($options['dictionaryType']);
+            }
+        }
+
+        $options = array_merge(compact('listType', 'dictType'), $options);
+
+        return (new Decoder($readStream, ...$options))->decode();
     }
 
     /**
@@ -129,7 +142,7 @@ final class Bencode
      * Load data from bencoded file
      *
      * @param string $filename
-     * @param array $options @deprecated
+     * @param array $options
      * @param string|callable $listType Type declaration for lists
      * @param string|callable $dictType Type declaration for dictionaries
      * @param string|callable|null $dictionaryType Type declaration for dictionaries @deprecated
@@ -142,6 +155,16 @@ final class Bencode
         string|callable $dictType = 'array',
         string|callable|null $dictionaryType = null,
     ): mixed {
-        return self::decode(file_get_contents($filename), $options, $listType, $dictType, $dictionaryType);
+        $stream = fopen($filename, 'r');
+
+        if ($stream === false) {
+            return false;
+        }
+
+        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $dictionaryType);
+
+        fclose($stream);
+
+        return $decoded;
     }
 }

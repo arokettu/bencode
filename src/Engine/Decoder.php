@@ -22,8 +22,6 @@ final class Decoder
 
     private int $state;
     private array $stateStack;
-    private int $index;
-    private int $eof;
     private mixed $value;
     private array $valueStack;
 
@@ -32,10 +30,14 @@ final class Decoder
     private const STATE_DICT = 3;
 
     public function __construct(
-        private string $bencoded,
+        private $stream,
         string|callable $listType = 'array',
         string|callable $dictType = 'array',
     ) {
+        if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+            throw new InvalidArgumentException('Input is not a valid stream');
+        }
+
         $this->options = compact('listType', 'dictType');
     }
 
@@ -43,13 +45,11 @@ final class Decoder
     {
         $this->state        = self::STATE_ROOT;
         $this->stateStack   = [];
-        $this->index        = 0;
-        $this->eof          = strlen($this->bencoded);
         $this->decoded      = null;
         $this->value        = null;
         $this->valueStack   = [];
 
-        while (!$this->eof()) {
+        while (!feof($this->stream)) {
             $this->processChar();
         }
 
@@ -62,80 +62,91 @@ final class Decoder
 
     private function processChar(): void
     {
+        $c = fread($this->stream, 1);
+
+        if (feof($this->stream) || $c === '') {
+            return;
+        }
+
         if ($this->decoded !== null && $this->state === self::STATE_ROOT) {
             throw new ParseErrorException('Probably some junk after the end of the file');
         }
 
-        switch ($this->char()) {
+        switch ($c) {
             case 'i':
                 $this->processInteger();
                 return;
 
             case 'l':
                 $this->push(self::STATE_LIST);
-                $this->index += 1; // skip l
                 return;
 
             case 'd':
                 $this->push(self::STATE_DICT);
-                $this->index += 1; // skip d
                 return;
 
             case 'e':
                 $this->finalizeContainer();
-                $this->index += 1; // skip e
                 return;
 
             default:
+                // rewind back 1 character because it's a part of string length
+                fseek($this->stream, -1, SEEK_CUR);
                 $this->processString();
         }
     }
 
+    private function readInteger(string $delimiter): string|false
+    {
+        $pos = ftell($this->stream);
+        $int = fread($this->stream, 64);
+
+        $position = strpos($int, $delimiter);
+
+        if ($position === false) {
+            return false;
+        }
+
+        $int = substr($int, 0, $position);
+        fseek($this->stream, $pos + $position + 1, SEEK_SET);
+
+        return $int;
+    }
+
     private function processInteger(): void
     {
-        $this->index += 1; // skip 'i'
+        $intStr = $this->readInteger('e');
 
-        $intEndIndex = strpos($this->bencoded, 'e', $this->index);
-
-        if ($intEndIndex === false) {
+        if ($intStr === false) {
             throw new ParseErrorException("Unexpected end of file while processing integer");
         }
 
-        $intStr = substr($this->bencoded, $this->index, $intEndIndex - $this->index);
-        $int    = intval($intStr);
+        $int = (int)$intStr;
 
-        if (strval($int) !== $intStr) {
+        if ((string)$int !== $intStr) {
             throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
         }
-
-        $this->index += strlen($intStr);
-        $this->index += 1; // skip 'e'
 
         $this->finalizeScalar($int);
     }
 
     private function processString(): void
     {
-        $lenEndIndex = strpos($this->bencoded, ':', $this->index);
+        $lenStr = $this->readInteger(':');
 
-        if ($lenEndIndex === false) {
+        if ($lenStr === false) {
             throw new ParseErrorException('Unexpected end of file while processing string');
         }
 
-        $lenStr = substr($this->bencoded, $this->index, $lenEndIndex - $this->index);
-        $len    = intval($lenStr);
+        $len = (int)$lenStr;
 
-        $this->index += strlen($lenStr);
-        $this->index += 1; // skip ':'
-
-        if (strval($len) !== $lenStr || $len < 0) {
+        if ((string)$len !== $lenStr || $len < 0) {
             throw new ParseErrorException("Invalid string length value: '{$lenStr}'");
         }
 
         // we have length, just read all string here now
 
-        $str = substr($this->bencoded, $this->index, $len);
-        $this->index += $len;
+        $str = $len === 0 ? '' : fread($this->stream, $len);
 
         if (strlen($str) !== $len) {
             throw new ParseErrorException('Unexpected end of file while processing string');
@@ -241,16 +252,6 @@ final class Decoder
             // we have final result
             $this->decoded = $valueToPrevLevel;
         }
-    }
-
-    private function char(): string
-    {
-        return $this->bencoded[$this->index];
-    }
-
-    private function eof(): bool
-    {
-        return $this->index === $this->eof;
     }
 
     private function convertArrayToType(array $array, string $typeOption): mixed

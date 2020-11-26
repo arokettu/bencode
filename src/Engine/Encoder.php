@@ -27,7 +27,7 @@ final class Encoder
     public function __construct(private mixed $data, private $stream)
     {
         if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
-            throw new InvalidArgumentException('Invalid stream');
+            throw new InvalidArgumentException('Output is not a valid stream');
         }
     }
 
