@@ -66,7 +66,7 @@ final class Bencode
      * Dump data to bencoded stream
      *
      * @param mixed $data
-     * @param null $writeStream Write capable stream. If null, a new php://temp will be created
+     * @param resource|null $writeStream Write capable stream. If null, a new php://temp will be created
      * @return resource Original or created stream
      */
     public static function encodeToStream(mixed $data, $writeStream = null)
