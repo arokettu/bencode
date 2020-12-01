@@ -90,8 +90,6 @@ final class Decoder
                 return;
 
             default:
-                // rewind back 1 character because it's a part of string length
-                fseek($this->stream, -1, SEEK_CUR);
                 $this->processString();
         }
     }
@@ -132,6 +130,9 @@ final class Decoder
 
     private function processString(): void
     {
+        // rewind back 1 character because it's a part of string length
+        fseek($this->stream, -1, SEEK_CUR);
+
         $lenStr = $this->readInteger(':');
 
         if ($lenStr === false) {
