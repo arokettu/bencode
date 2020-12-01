@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @noinspection PhpVoidFunctionResultUsedInspection
+ */
+
 declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
@@ -72,26 +76,13 @@ final class Decoder
             throw new ParseErrorException('Probably some junk after the end of the file');
         }
 
-        switch ($c) {
-            case 'i':
-                $this->processInteger();
-                return;
-
-            case 'l':
-                $this->push(self::STATE_LIST);
-                return;
-
-            case 'd':
-                $this->push(self::STATE_DICT);
-                return;
-
-            case 'e':
-                $this->finalizeContainer();
-                return;
-
-            default:
-                $this->processString();
-        }
+        match ($c) {
+            'i' => $this->processInteger(),
+            'l' => $this->push(self::STATE_LIST),
+            'd' => $this->push(self::STATE_DICT),
+            'e' => $this->finalizeContainer(),
+            default => $this->processString(),
+        };
     }
 
     private function readInteger(string $delimiter): string|false
@@ -158,21 +149,14 @@ final class Decoder
 
     private function finalizeContainer(): void
     {
-        switch ($this->state) {
-            case self::STATE_LIST:
-                $this->finalizeList();
-                break;
-
-            case self::STATE_DICT:
-                $this->finalizeDict();
-                break;
-
-            default:
-                // @codeCoverageIgnoreStart
-                // This exception means that we have a bug in our own code
-                throw new ParseErrorException('Parser entered invalid state while finalizing container');
-                // @codeCoverageIgnoreEnd
-        }
+        match ($this->state) {
+            self::STATE_LIST => $this->finalizeList(),
+            self::STATE_DICT => $this->finalizeDict(),
+            // @codeCoverageIgnoreStart
+            // This exception means that we have a bug in our own code
+            default => throw new ParseErrorException('Parser entered invalid state while finalizing container'),
+            // @codeCoverageIgnoreEnd
+        };
     }
 
     private function finalizeList(): void
