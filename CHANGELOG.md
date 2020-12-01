@@ -1,11 +1,15 @@
-# 1.4.0
+# Changelog
+
+## 1.x
+
+### 1.4.0
 
 *Nov 10, 2020*
 
 * Make spec compliant BitTorrent code simpler: `null` and `false` values are now skipped on encoding
 * Add `'dictType'` alias for `'dictionaryType'` for 2.3 compatibility
 
-# 1.3.0
+### 1.3.0
 
 *Feb 14, 2019*
 
@@ -13,25 +17,25 @@
 * Base namespace is now `SandFox\Bencode`. Compatibility is kept for now
 * Fixed tests for PHP 8
 
-# 1.2.0
+### 1.2.0
 
 *Feb 14, 2018*
 
 * Added `BencodeSerializable` interface
 
-# 1.1.2
+### 1.1.2
 
 *Dec 12, 2017*
 
 * Throw a Runtime Exception when trying to use the library with Mbstring Function Overloading on
 
-# 1.1.1
+### 1.1.1
 
 *Mar 30, 2017*
 
 * ListType can now wrap arrays
 
-# 1.1.0
+### 1.1.0
 
 *Mar 29, 2017*
 
@@ -41,13 +45,13 @@
 * PHP 7.0 is now required instead of PHP 7.1
 * Tests!
 
-# 1.0.1
+### 1.0.1
 
 *Mar 22, 2017*
 
 * Add stdClass as list/dict decoding option
 
-# 1.0.0
+### 1.0.0
 
 *Mar 22, 2017*
 
