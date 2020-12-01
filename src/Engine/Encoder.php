@@ -15,105 +15,128 @@ use SandFox\Bencode\Util\Util;
  */
 class Encoder
 {
+    /** @var mixed */
     private $data;
+    /** @var resource */
+    private $stream;
 
-    public function __construct($data, array $options = [])
+    public function __construct($data, $stream)
     {
         Util::detectMbstringOverload();
 
         $this->data = $data;
+        $this->stream = $stream;
+
+        if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+            throw new InvalidArgumentException('Output is not a valid stream');
+        }
     }
 
-    public function encode(): string
+    /**
+     * @return resource
+     */
+    public function encode()
     {
-        return $this->encodeValue($this->data);
+        $this->encodeValue($this->data);
+
+        return $this->stream;
     }
 
-    private function encodeValue($value): string
+    private function encodeValue($value)
     {
-        if ($value === false || $value === null) {
-            throw new InvalidArgumentException('Unable to encode an empty value');
-        }
+        switch (true) {
+            case $value === false:
+            case $value === null:
+                throw new InvalidArgumentException('Unable to encode an empty value');
 
-        // true is converted to integer 1
-        if ($value === true || is_int($value)) {
-            return $this->encodeInteger($value);
-        }
+            // true is converted to integer 1
+            case $value === true:
+            case is_int($value):
+                $this->encodeInteger($value);
+                break;
 
-        // process arrays
-        if (is_array($value)) {
-            return $this->encodeArray($value);
-        }
+            // process arrays
+            case is_array($value):
+                $this->encodeArray($value);
+                break;
 
-        if (is_object($value)) {
-            return $this->encodeObject($value);
-        }
+            case is_object($value):
+                $this->encodeObject($value);
+                break;
 
-        // everything else is a string
-        return $this->encodeString($value);
+            // everything else is a string
+            default:
+                $this->encodeString($value);
+        }
     }
 
-    private function encodeArray(array $value): string
+    private function encodeArray(array $value)
     {
         if ($this->isSequentialArray($value)) {
-            return $this->encodeList($value);
+            $this->encodeList($value);
         } else {
-            return $this->encodeDictionary($value);
+            $this->encodeDictionary($value);
         }
     }
 
-    private function encodeObject($value): string
+    private function encodeObject($value)
     {
-        // serializable
-        if ($value instanceof BencodeSerializable) {
-            // Start again with method result
-            return $this->encodeValue($value->bencodeSerialize());
-        }
+        switch (true) {
+            // serializable
+            case $value instanceof BencodeSerializable:
+                // Start again with method result
+                $this->encodeValue($value->bencodeSerialize());
+                break;
 
-        // traversables
-        if ($value instanceof ListType) {
-            // ListType forces traversable object to be list
-            return $this->encodeList($value);
-        }
+            // traversables
+            case $value instanceof ListType:
+                // ListType forces traversable object to be list
+                $this->encodeList($value);
+                break;
 
-        // all other traversables are dictionaries
-        // also treat stdClass as a dictionary
-        if ($value instanceof \Traversable || $value instanceof \stdClass) {
-            return $this->encodeDictionary($value);
-        }
+            // all other traversables are dictionaries
+            // also treat stdClass as a dictionary
+            case $value instanceof \Traversable:
+            case $value instanceof \stdClass:
+                $this->encodeDictionary($value);
+                break;
 
-        // try to convert other objects to string
-        return $this->encodeString($value);
+            // try to convert other objects to string
+            default:
+                $this->encodeString($value);
+        }
     }
 
-    private function encodeInteger(int $integer): string
+    private function encodeInteger(int $integer)
     {
-        return "i{$integer}e";
+        fwrite($this->stream, 'i');
+        fwrite($this->stream, (string)$integer);
+        fwrite($this->stream, 'e');
     }
 
-    private function encodeString(string $string): string
+    private function encodeString(string $string)
     {
-        return implode([strlen($string), ':', $string]);
+        fwrite($this->stream, (string)strlen($string));
+        fwrite($this->stream, ':');
+        fwrite($this->stream, $string);
     }
 
-    private function encodeList($array): string
+    private function encodeList($array)
     {
-        $listData = [];
+        fwrite($this->stream, 'l');
 
         foreach ($array as $value) {
             if ($value === false || $value === null) {
                 continue;
             }
 
-            $listData[] = $this->encodeValue($value);
+            $this->encodeValue($value);
         }
 
-        $list = implode($listData);
-
-        return "l{$list}e";
+        fwrite($this->stream, 'e');
     }
 
-    private function encodeDictionary($array): string
+    private function encodeDictionary($array)
     {
         $dictData = [];
 
@@ -131,12 +154,14 @@ class Encoder
             return strcmp($a[0], $b[0]);
         });
 
-        $dict = implode(array_map(function ($row) {
-            list($key, $value) = $row;
-            return $this->encodeString($key) . $this->encodeValue($value); // key is always a string
-        }, $dictData));
+        fwrite($this->stream, 'd');
 
-        return "d{$dict}e";
+        foreach ($dictData as [$key, $value]) {
+            $this->encodeString($key); // key is always a string
+            $this->encodeValue($value);
+        }
+
+        fwrite($this->stream, 'e');
     }
 
     private function isSequentialArray(array $array): bool
