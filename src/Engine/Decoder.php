@@ -111,9 +111,15 @@ final class Decoder
         }
 
         $int = (int)$intStr;
+        
 
         if ((string)$int !== $intStr) {
-            throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
+            
+            $int = (double)$intStr;
+            
+            if ((string)$int !== $intStr) {
+                throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr} !== {$int}'");
+            }
         }
 
         $this->finalizeScalar($int);

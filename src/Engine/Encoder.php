@@ -48,10 +48,12 @@ final class Encoder
             // true is converted to integer 1
             is_int($value), $value === true =>
                 $this->encodeInteger((int)$value),
+            // floats become int64 or string
+            is_float($value) =>
+                $this->encodeFloat((string)$value),
             // process strings
-            // floats become strings
             // nulls become empty strings
-            is_string($value), is_float($value) =>
+            is_string($value) =>
                 $this->encodeString((string)$value),
             // process arrays
             is_array($value) =>
@@ -67,6 +69,14 @@ final class Encoder
                 throw new InvalidArgumentException(
                     sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
                 ),
+        };
+    }
+    
+    private function encodeFloat(string $value): void
+    {
+        match (preg_match("/^-?[0-9]+$/", $value)) {
+            1  => $this->encodeInteger($value),
+            0,false => $this->encodeString($value),
         };
     }
 
@@ -104,7 +114,7 @@ final class Encoder
         };
     }
 
-    private function encodeInteger(int $integer): void
+    private function encodeInteger(int|string $integer): void
     {
         fwrite($this->stream, 'i');
         fwrite($this->stream, (string)$integer);
