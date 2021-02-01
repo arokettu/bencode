@@ -3,7 +3,13 @@
     @see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset
 -->
 <ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
-    <rule ref="PSR12"/>
+    <rule ref="PSR12">
+        <!-- Interference with PHP 8 syntax -->
+        <exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact"/>
+        <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterHint"/>
+        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceBefore"/>
+        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceAfter"/>
+    </rule>
     <rule ref="PHPCompatibility"/>
     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <properties>
