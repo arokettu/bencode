@@ -151,7 +151,7 @@ final class Encoder
 
         fwrite($this->stream, 'd');
 
-        foreach ($dictData as list($key, $value)) {
+        foreach ($dictData as [$key, $value]) {
             $this->encodeString($key); // key is always a string
             $this->encodeValue($value);
         }
