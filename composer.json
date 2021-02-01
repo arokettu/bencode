@@ -36,6 +36,7 @@
         "symfony/deprecation-contracts": "^2.1"
     },
     "require-dev": {
+        "ext-gmp": "*",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "phpcompatibility/php-compatibility": "*",
         "phpunit/phpunit": "^9.3",
@@ -44,6 +45,7 @@
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
-        "php-64bit": "Running 64 bit is recommended to prevent integer overflow"
+        "php-64bit": "Running 64 bit is recommended to prevent integer overflow",
+        "ext-gmp": "In case you need integers larger than your architecture supports"
     }
 }

@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
 
+use GMP;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\ListType;
@@ -46,8 +47,8 @@ final class Encoder
         match (true) {
             // first check if we have integer
             // true is converted to integer 1
-            is_int($value), $value === true =>
-                $this->encodeInteger((int)$value),
+            is_int($value), $value === true, $value instanceof GMP =>
+                $this->encodeInteger($value),
             // process strings
             // floats become strings
             // nulls become empty strings
@@ -104,7 +105,7 @@ final class Encoder
         };
     }
 
-    private function encodeInteger(int $integer): void
+    private function encodeInteger(int|bool|GMP $integer)
     {
         fwrite($this->stream, 'i');
         fwrite($this->stream, (string)$integer);
