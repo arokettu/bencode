@@ -24,11 +24,13 @@
         "php": "^7.0 | ^8.0"
     },
     "require-dev": {
+        "ext-gmp": "*",
         "phpunit/phpunit": ">=6.0.0 <10",
         "psy/psysh": "*",
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
-        "php-64bit": "Running 64 bit is recommended to prevent integer overflow"
+        "php-64bit": "Running 64 bit is recommended to prevent integer overflow",
+        "ext-gmp": "In case you need integers larger than your architecture supports"
     }
 }

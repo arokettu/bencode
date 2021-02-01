@@ -2,6 +2,7 @@
 
 namespace SandFox\Bencode\Engine;
 
+use GMP;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\ListType;
@@ -52,6 +53,7 @@ class Encoder
             // true is converted to integer 1
             case $value === true:
             case is_int($value):
+            case $value instanceof GMP:
                 $this->encodeInteger($value);
                 break;
 
@@ -107,7 +109,7 @@ class Encoder
         }
     }
 
-    private function encodeInteger(int $integer)
+    private function encodeInteger($integer)
     {
         fwrite($this->stream, 'i');
         fwrite($this->stream, (string)$integer);
