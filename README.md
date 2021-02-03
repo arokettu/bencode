@@ -17,6 +17,9 @@ This is a pure PHP library that allows you to encode and decode Bencode data.
 composer require 'sandfoxme/bencode'
 ```
 
+* Version 1.x supports PHP 7.0 and later
+* Version 2.x supports PHP 8.0 and later and has slightly better error handling
+
 ## Simple use
 
 ```php
