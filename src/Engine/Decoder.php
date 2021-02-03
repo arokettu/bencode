@@ -89,7 +89,7 @@ final class Decoder
     private function readInteger(string $delimiter): string|false
     {
         $pos = ftell($this->stream);
-        $readLength = 64;
+        $readLength = 32; // More than enough for 64 bit int (19 digits + minus + delimiter)
 
         do {
             fseek($this->stream, $pos, SEEK_SET);
@@ -104,7 +104,8 @@ final class Decoder
                 return $int;
             }
 
-            $readLength *= $readLength; // grow exponentially
+            fread($this->stream, 1); // trigger feof
+            $readLength *= 32; // grow exponentially
         } while (!feof($this->stream) && $readLength < PHP_INT_MAX);
 
         return false;
