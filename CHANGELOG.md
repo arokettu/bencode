@@ -2,6 +2,13 @@
 
 ## 2.x
 
+### 2.5.0
+
+*Feb 3, 2021*
+
+* Added stream API
+* Added GMP support
+
 ### 2.4.0
 
 *Nov 10, 2020*
@@ -33,6 +40,8 @@
 ### 2.0.0
 
 *Jun 30, 2020*
+
+2.0.0 was branched from 1.3.0
 
 * PHP 8 is required
 * Legacy namespace `SandFoxMe\Bencode` is removed
