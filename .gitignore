@@ -5,6 +5,9 @@
 /vendor/
 /composer.lock
 
+# docs
+/docs/index.html
+
 # tests
 /reports
 /.phpunit.result.cache
