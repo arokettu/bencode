@@ -76,6 +76,11 @@ Objects
 
     $encoded = Bencode::encode(new ToString()); // "11:I am string"
 
+    // Since 1.5 and 2.5: GMP object becomes integer
+    $encoded = Bencode::encode([
+        'gmp' => gmp_pow(2, 96),
+    ]); // "d3:gmpi79228162514264337593543950336ee"
+
 BencodeSerializable
 -------------------
 
@@ -134,6 +139,13 @@ Decoding
     ]);
     // default value for both types is 'array'. you can also use 'object' for stdClass
 
+    // Since 1.5 and 2.5:
+    // Enable useGMP option to decode huge integers to the GMP object
+    $data = Bencode::decode(
+        "d3:gmpi79228162514264337593543950336ee",
+        useGMP: true,
+    ]; // ['gmp' => gmp_init('79228162514264337593543950336')]
+
 .. note:: Parameter order is not guaranteed for options, use named parameters
 
 Working with files
@@ -145,8 +157,24 @@ Working with files
 
     use SandFox\Bencode\Bencode;
 
-    $data = Bencode::load('testfile.torrent'); // load data from bencoded file
-    Bencode::dump('testfile.torrent', $data); // save data to the bencoded file
+    // load data from a bencoded file
+    $data = Bencode::load('testfile.torrent');
+    // save data to a bencoded file
+    Bencode::dump('testfile.torrent', $data);
+
+Working with streams
+====================
+
+.. code-block:: php
+
+    <?php
+
+    use SandFox\Bencode\Bencode;
+
+    // load data from a bencoded seekable readable stream
+    $data = Bencode::decodeStream(fopen('...', 'r'));
+    // save data to a bencoded writable stream or to a new php://temp if no stream is specified
+    Bencode::encodeToStream($data, fopen('...', 'w'));
 
 Upgrade from 1.x
 ================
@@ -168,13 +196,13 @@ The library is available as open source under the terms of the `MIT License`_.
 .. _JsonSerializable:   http://php.net/manual/en/class.jsonserializable.php
 .. _MIT License:        https://opensource.org/licenses/MIT
 
-.. |Packagist|  image:: https://img.shields.io/packagist/v/sandfoxme/bencode.svg
+.. |Packagist|  image:: https://img.shields.io/packagist/v/sandfoxme/bencode.svg?style=flat-square
    :target:     https://packagist.org/packages/sandfoxme/bencode
-.. |GitHub|     image:: https://img.shields.io/badge/get%20on-GitHub-informational.svg?logo=github
+.. |GitHub|     image:: https://img.shields.io/badge/get%20on-GitHub-informational.svg?style=flat-square&logo=github
    :target:     https://github.com/arokettu/bencode
-.. |GitLab|     image:: https://img.shields.io/badge/get%20on-GitLab-informational.svg?logo=gitlab
+.. |GitLab|     image:: https://img.shields.io/badge/get%20on-GitLab-informational.svg?style=flat-square&logo=gitlab
    :target:     https://gitlab.com/sandfox/bencode
-.. |Bitbucket|  image:: https://img.shields.io/badge/get%20on-Bitbucket-informational.svg?logo=bitbucket
+.. |Bitbucket|  image:: https://img.shields.io/badge/get%20on-Bitbucket-informational.svg?style=flat-square&logo=bitbucket
    :target:     https://bitbucket.org/sandfox/bencode
-.. |Gitea|      image:: https://img.shields.io/badge/get%20on-Gitea-informational.svg?logo=gitea
-   :target:     https://sandfox.org/sandfox/bencode
+.. |Gitea|      image:: https://img.shields.io/badge/get%20on-Gitea-informational.svg?style=flat-square&logo=gitea
+   :target:     https://git.sandfox.dev/sandfox/bencode

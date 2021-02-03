@@ -37,12 +37,13 @@ final class Decoder
         private $stream,
         string|callable $listType = 'array',
         string|callable $dictType = 'array',
+        bool $useGMP = false,
     ) {
         if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Input is not a valid stream');
         }
 
-        $this->options = compact('listType', 'dictType');
+        $this->options = compact('listType', 'dictType', 'useGMP');
     }
 
     public function decode(): mixed
@@ -88,18 +89,25 @@ final class Decoder
     private function readInteger(string $delimiter): string|false
     {
         $pos = ftell($this->stream);
-        $int = fread($this->stream, 64);
+        $readLength = 64;
 
-        $position = strpos($int, $delimiter);
+        do {
+            fseek($this->stream, $pos, SEEK_SET);
+            $int = fread($this->stream, $readLength);
 
-        if ($position === false) {
-            return false;
-        }
+            $position = strpos($int, $delimiter);
 
-        $int = substr($int, 0, $position);
-        fseek($this->stream, $pos + $position + 1, SEEK_SET);
+            if ($position !== false) {
+                $int = substr($int, 0, $position);
+                fseek($this->stream, $pos + $position + 1, SEEK_SET);
 
-        return $int;
+                return $int;
+            }
+
+            $readLength *= $readLength; // grow exponentially
+        } while (!feof($this->stream) && $readLength < PHP_INT_MAX);
+
+        return false;
     }
 
     private function processInteger(): void
@@ -110,13 +118,29 @@ final class Decoder
             throw new ParseErrorException("Unexpected end of file while processing integer");
         }
 
+        if (!is_numeric($intStr)) {
+            throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
+        }
+
         $int = (int)$intStr;
+
+        if ((string)$int === $intStr) {
+            $this->finalizeScalar($int);
+            return;
+        }
+
+        if ($this->options['useGMP']) {
+            $int = gmp_init($intStr);
+
+            if ((string)$int === $intStr) {
+                $this->finalizeScalar($int);
+                return;
+            }
+        }
 
         if ((string)$int !== $intStr) {
             throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
         }
-
-        $this->finalizeScalar($int);
     }
 
     private function processString(): void
