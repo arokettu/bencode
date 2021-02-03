@@ -115,6 +115,7 @@ class Decoder
                 return $int;
             }
 
+            fread($this->stream, 1); // trigger feof
             $readLength *= $readLength; // grow exponentially
         } while (!feof($this->stream) && $readLength < PHP_INT_MAX);
 
