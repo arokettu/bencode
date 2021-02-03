@@ -42,6 +42,7 @@ final class Bencode
      * @param string|callable $listType Type declaration for lists
      * @param string|callable $dictType Type declaration for dictionaries
      * @param string|callable|null $dictionaryType Type declaration for dictionaries @deprecated
+     * @param bool $useGMP Use GMP library for large integers
      * @return mixed
      */
     public static function decode(
@@ -50,12 +51,13 @@ final class Bencode
         string|callable $listType = 'array',
         string|callable $dictType = 'array',
         string|callable|null $dictionaryType = null,
+        bool $useGMP = false,
     ): mixed {
         $stream = fopen('php://temp', 'r+');
         fwrite($stream, $bencoded);
         rewind($stream);
 
-        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $dictionaryType);
+        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $dictionaryType, $useGMP);
 
         fclose($stream);
 
@@ -81,9 +83,10 @@ final class Bencode
     /**
      * @param resource $readStream Read capable stream
      * @param array $options
-     * @param string|callable $listType
-     * @param string|callable $dictType
-     * @param string|callable|null $dictionaryType
+     * @param string|callable $listType Type declaration for lists
+     * @param string|callable $dictType Type declaration for dictionaries
+     * @param string|callable|null $dictionaryType Type declaration for dictionaries @deprecated
+     * @param bool $useGMP Use GMP library for large integers
      * @return mixed
      */
     public static function decodeStream(
@@ -92,6 +95,7 @@ final class Bencode
         string|callable $listType = 'array',
         string|callable $dictType = 'array',
         string|callable|null $dictionaryType = null,
+        bool $useGMP = false,
     ): mixed {
         // resolve dictType / dictionaryType alias
         if (isset($dictionaryType)) {
@@ -110,7 +114,7 @@ final class Bencode
             }
         }
 
-        $options = array_merge(compact('listType', 'dictType'), $options);
+        $options = array_merge(compact('listType', 'dictType', 'useGMP'), $options);
 
         return (new Decoder($readStream, ...$options))->decode();
     }
@@ -146,6 +150,7 @@ final class Bencode
      * @param string|callable $listType Type declaration for lists
      * @param string|callable $dictType Type declaration for dictionaries
      * @param string|callable|null $dictionaryType Type declaration for dictionaries @deprecated
+     * @param bool $useGMP Use GMP library for large integers
      * @return mixed
      */
     public static function load(
@@ -154,6 +159,7 @@ final class Bencode
         string|callable $listType = 'array',
         string|callable $dictType = 'array',
         string|callable|null $dictionaryType = null,
+        bool $useGMP = false,
     ): mixed {
         $stream = fopen($filename, 'r');
 
@@ -161,7 +167,7 @@ final class Bencode
             return false;
         }
 
-        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $dictionaryType);
+        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $dictionaryType, $useGMP);
 
         fclose($stream);
 

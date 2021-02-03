@@ -11,7 +11,7 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
 
 class LargeIntegerTest extends TestCase
 {
-    const POW_2_1024 =
+    private const POW_2_1024 =
         '1797693134862315907729305190789024733617976978942306572734300811577326758055009631' .
         '3270847732240753602112011387987139335765878976881441662249284743063947412437776789' .
         '3424865485276302219601246094119453082952085005768838150682342462881473913110540827' .
@@ -29,7 +29,7 @@ class LargeIntegerTest extends TestCase
 
     public function testDecodeLargeIntegerNoGMP()
     {
-        $encoded = 'i' . self::POW_2_1024 . 'e';;
+        $encoded = 'i' . self::POW_2_1024 . 'e';
 
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Invalid integer format or integer overflow: '" . self::POW_2_1024 . "'");
@@ -41,7 +41,7 @@ class LargeIntegerTest extends TestCase
         $encoded = 'i' . self::POW_2_1024 . 'e';
         $expected = gmp_pow(2, 1024);
 
-        $decoded = Bencode::decode($encoded, ['useGMP' => true]);
+        $decoded = Bencode::decode($encoded, useGMP: true);
         $this->assertInstanceOf(GMP::class, $decoded);
         $this->assertEquals($expected, $decoded);
     }
