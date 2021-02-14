@@ -19,8 +19,8 @@ final class BigIntType
 
     public function assertValidInteger(string $value)
     {
-        if (preg_match('/^-?(?:0|[1-9]\d*)$/', $value) !== 1) {
-            throw new InvalidArgumentException('Invalid integer string: ' . $value);
+        if (preg_match('/^(?:0|-?[1-9]\d*)$/', $value) !== 1) {
+            throw new InvalidArgumentException("Invalid integer string: '{$value}'");
         }
     }
 
