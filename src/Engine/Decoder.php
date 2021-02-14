@@ -2,6 +2,9 @@
 
 namespace SandFox\Bencode\Engine;
 
+use Brick\Math\BigInteger;
+use Math_BigInteger;
+use SandFox\Bencode\Bencode\BigInt;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Util\Util;
@@ -30,7 +33,7 @@ class Decoder
     const DEFAULT_OPTIONS = [
         'listType' => 'array',
         'dictType' => 'array',
-        'useGMP' => false,
+        'bigInt' => BigInt::NONE,
     ];
 
     public function __construct($stream, array $options = [])
@@ -141,8 +144,8 @@ class Decoder
             return;
         }
 
-        if ($this->options['useGMP']) {
-            $int = gmp_init($intStr);
+        if ($this->options['bigInt'] !== BigInt::NONE) {
+            $int = $this->stringToBigInt($intStr);
 
             if ((string)$int === $intStr) {
                 $this->finalizeScalar($int);
@@ -152,6 +155,22 @@ class Decoder
 
         if ((string)$int !== $intStr) {
             throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
+        }
+    }
+
+    private function stringToBigInt(string $intStr)
+    {
+        switch ($this->options['bigInt']) {
+            case BigInt::GMP:
+                return gmp_init($intStr);
+            case BigInt::BRICK_MATH:
+                return BigInteger::of($intStr);
+            case BigInt::PEAR:
+                return new Math_BigInteger($intStr);
+            default:
+                // @codeCoverageIgnoreStart
+                throw new ParseErrorException('Invalid BigMath mode');
+                // @codeCoverageIgnoreEnd
         }
     }
 

@@ -25,12 +25,16 @@
     },
     "require-dev": {
         "ext-gmp": "*",
+        "brick/math": "*",
+        "pear/math_biginteger": "^1.0",
         "phpunit/phpunit": ">=6.0.0 <10",
         "psy/psysh": "*",
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
         "php-64bit": "Running 64 bit is recommended to prevent integer overflow",
-        "ext-gmp": "In case you need integers larger than your architecture supports"
+        "ext-gmp": "In case you need integers larger than your architecture supports",
+        "brick/math": "In case you need integers larger than your architecture supports",
+        "pear/math_biginteger": "In case you need integers larger than your architecture supports"
     }
 }

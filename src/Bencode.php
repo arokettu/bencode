@@ -80,6 +80,10 @@ class Bencode
             $options['dictType'] = $options['dictType'] ?? $options['dictionaryType'];
         }
 
+        if (isset($options['useGMP']) && $options['useGMP']) {
+            $options['bigInt'] = $options['bigInt'] ?? Bencode\BigInt::GMP;
+        }
+
         return (new Decoder($readStream, $options))->decode();
     }
 
