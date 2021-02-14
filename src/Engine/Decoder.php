@@ -3,10 +3,10 @@
 namespace SandFox\Bencode\Engine;
 
 use Brick\Math\BigInteger;
-use Math_BigInteger;
 use SandFox\Bencode\Bencode\BigInt;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
+use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Util\Util;
 
 /**
@@ -160,18 +160,33 @@ class Decoder
 
     private function stringToBigInt(string $intStr)
     {
-        switch ($this->options['bigInt']) {
-            case BigInt::GMP:
-                return gmp_init($intStr);
-            case BigInt::BRICK_MATH:
-                return BigInteger::of($intStr);
-            case BigInt::PEAR:
-                return new Math_BigInteger($intStr);
-            default:
-                // @codeCoverageIgnoreStart
-                throw new ParseErrorException('Invalid BigMath mode');
-                // @codeCoverageIgnoreEnd
+        $bigInt = $this->options['bigInt'];
+
+        if ($bigInt === BigInt::INTERNAL) {
+            return new BigIntType($intStr);
         }
+
+        if ($bigInt === BigInt::GMP) {
+            return \gmp_init($intStr);
+        }
+
+        if ($bigInt === BigInt::BRICK_MATH) {
+            return BigInteger::of($intStr);
+        }
+
+        if ($bigInt === BigInt::PEAR) {
+            return new \Math_BigInteger($intStr);
+        }
+
+        if (is_callable($bigInt)) {
+            return $bigInt($bigInt);
+        }
+
+        if (class_exists($bigInt)) {
+            new $bigInt($intStr);
+        }
+
+        throw new ParseErrorException('Invalid BigMath mode');
     }
 
     private function processString()

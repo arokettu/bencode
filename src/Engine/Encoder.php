@@ -3,10 +3,9 @@
 namespace SandFox\Bencode\Engine;
 
 use Brick\Math\BigInteger;
-use GMP;
-use Math_BigInteger;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
+use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Types\ListType;
 use SandFox\Bencode\Util\Util;
 
@@ -55,9 +54,10 @@ class Encoder
             // true is converted to integer 1
             case $value === true:
             case is_int($value):
-            case $value instanceof GMP:
+            case $value instanceof BigIntType:
+            case $value instanceof \GMP:
             case $value instanceof BigInteger:
-            case $value instanceof Math_BigInteger:
+            case $value instanceof \Math_BigInteger:
                 $this->encodeInteger($value);
                 break;
 

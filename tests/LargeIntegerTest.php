@@ -2,6 +2,7 @@
 
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
+use SandFox\Bencode\Types\BigIntType;
 use SandFoxMe\Bencode\Bencode;
 use SandFoxMe\Bencode\Exceptions\ParseErrorException;
 
@@ -17,7 +18,7 @@ class LargeIntegerTest extends TestCase
 
     public function testDecodeLargeIntegerNoBigMath()
     {
-        $encoded = 'i' . self::POW_2_1024 . 'e';;
+        $encoded = 'i' . self::POW_2_1024 . 'e';
 
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Invalid integer format or integer overflow: '" . self::POW_2_1024 . "'");
@@ -26,7 +27,7 @@ class LargeIntegerTest extends TestCase
 
     public function testDecodeLargeNegIntegerNoBigMath()
     {
-        $encoded = 'i-' . self::POW_2_1024 . 'e';;
+        $encoded = 'i-' . self::POW_2_1024 . 'e';
 
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Invalid integer format or integer overflow: '-" . self::POW_2_1024 . "'");
@@ -138,6 +139,42 @@ class LargeIntegerTest extends TestCase
 
         $decodedNeg = Bencode::decode($encodedNeg, ['bigInt' => Bencode\BigInt::BRICK_MATH]);
         $this->assertInstanceOf(BigInteger::class, $decoded);
+        $this->assertEquals($expectedNeg, $decodedNeg);
+    }
+
+    // internal BigIntType
+
+    public function testEncodeLargeIntegerInternal()
+    {
+        $largeInt = new BigIntType(self::POW_2_1024); // no math, just a string internally
+        $expected = 'i' . self::POW_2_1024 . 'e';
+
+        $encoded = Bencode::encode($largeInt);
+
+        $this->assertEquals($expected, $encoded);
+
+        $largeNegInt = new BigIntType('-' . self::POW_2_1024);
+        $expected = 'i-' . self::POW_2_1024 . 'e';
+
+        $encoded = Bencode::encode($largeNegInt);
+
+        $this->assertEquals($expected, $encoded);
+    }
+
+    public function testDecodeLargeIntegerInternal()
+    {
+        $encoded = 'i' . self::POW_2_1024 . 'e';
+        $expected = new BigIntType(self::POW_2_1024);
+
+        $decoded = Bencode::decode($encoded, ['bigInt' => Bencode\BigInt::INTERNAL]);
+        $this->assertInstanceOf(BigIntType::class, $decoded);
+        $this->assertEquals($expected, $decoded);
+
+        $encodedNeg = 'i-' . self::POW_2_1024 . 'e';
+        $expectedNeg = new BigIntType('-' . self::POW_2_1024);
+
+        $decodedNeg = Bencode::decode($encodedNeg, ['bigInt' => Bencode\BigInt::INTERNAL]);
+        $this->assertInstanceOf(BigIntType::class, $decoded);
         $this->assertEquals($expectedNeg, $decodedNeg);
     }
 }

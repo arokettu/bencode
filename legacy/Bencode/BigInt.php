@@ -11,7 +11,7 @@ if (false) {
     /**
      * @deprecated \SandFox\Bencode\Bencode\BigInt
      */
-    interface BigInt extends \SandFox\Bencode\Bencode\BigInt
+    class BigInt extends \SandFox\Bencode\Bencode\BigInt
     {
     }
 }
