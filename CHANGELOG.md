@@ -64,7 +64,7 @@
 *Feb 14, 2021*
 
 * Fixed invalid `BigIntType::assertValidInteger` visibility
-* Added missing @internal and strict type markings
+* Added missing `@internal` and strict type markings
 
 ### 1.6.0
 

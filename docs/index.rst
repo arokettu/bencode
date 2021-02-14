@@ -118,6 +118,8 @@ This will work exactly like JsonSerializable_ interface.
 Decoding
 ========
 
+.. note:: Parameter order is not guaranteed for options, use named parameters
+
 .. code-block:: php
 
     <?php
@@ -144,8 +146,6 @@ Decoding
     ]);
     // default value for both types is 'array'. you can also use 'object' for stdClass
 
-.. note:: Parameter order is not guaranteed for options, use named parameters
-
 Large integers
 --------------
 
@@ -153,8 +153,8 @@ Large integers
     These math libraries are not explicit dependencies of this library.
     Install them separately before enabling.
 
-By default the library works with a native integer type but if you need to use large integers,
-for example if you try to parse a torrent file for a >= 4GB file on a 32 bit system,
+By default the library only works with a native integer type but if you need to use large integers,
+for example, if you try to parse a torrent file for a >= 4GB file on a 32 bit system,
 you can enable big integer support.
 
 Versions 1.5 and 2.5 added support for GMP_:
@@ -187,20 +187,20 @@ Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and c
 
     // brick/math
     $data = Bencode::decode(
-        "d3:gmpi79228162514264337593543950336ee",
+        "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::BRICK_MATH,
     ]; // ['int' => \Brick\Math\BigInteger::of('79228162514264337593543950336')]
 
     // Math_BigInteger from PEAR
     $data = Bencode::decode(
-        "d3:gmpi79228162514264337593543950336ee",
+        "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::PEAR,
     ]; // ['int' => new \Math_BigInteger('79228162514264337593543950336')]
 
     // Internal BigIntType class
     // does not require any external dependencies but also does not allow any manipulation
     $data = Bencode::decode(
-        "d3:gmpi79228162514264337593543950336ee",
+        "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::INTERNAL
     ]; // ['int' => new \SandFox\Bencode\Types\BigIntType('79228162514264337593543950336')]
     // BigIntType is a value object with several getters:
@@ -213,11 +213,11 @@ Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and c
 
     // like listType and dictType you can use a callable or a class name
     $data = Bencode::decode(
-        "d3:gmpi79228162514264337593543950336ee",
+        "d3:inti79228162514264337593543950336ee",
         bigInt: fn($v) => v,
     ]; // ['int' => '79228162514264337593543950336']
     $data = Bencode::decode(
-        "d3:gmpi79228162514264337593543950336ee",
+        "d3:inti79228162514264337593543950336ee",
         bigInt: MyBigIntHandler::class,
     ]; // ['int' => new MyBigIntHandler('79228162514264337593543950336')]]
 
