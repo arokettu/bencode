@@ -24,7 +24,7 @@ final class Bencode
     public static function encode(mixed $data): string
     {
         $stream = fopen('php://temp', 'r+');
-        (new Encoder($data, $stream))->encode();
+        self::encodeToStream($data, $stream);
         rewind($stream);
 
         $encoded = stream_get_contents($stream);
