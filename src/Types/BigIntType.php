@@ -18,7 +18,7 @@ final class BigIntType
         $this->value = $value;
     }
 
-    public function assertValidInteger(string $value)
+    private function assertValidInteger(string $value)
     {
         if (!IntUtil::isValid($value)) {
             throw new InvalidArgumentException("Invalid integer string: '{$value}'");
