@@ -34,6 +34,27 @@ class LargeIntegerTest extends TestCase
         Bencode::decode($encoded);
     }
 
+    public function testDecodeLargeIntegerCallback()
+    {
+        $encoded = 'i' . self::POW_2_1024 . 'e';
+
+        $decoded = Bencode::decode($encoded, ['bigInt' => function ($value) {
+            return $value;
+        }]);
+
+        $this->assertEquals(self::POW_2_1024, $decoded);
+    }
+
+    public function testDecodeLargeIntegerClassName()
+    {
+        $encoded = 'i' . self::POW_2_1024 . 'e';
+
+        $decoded = Bencode::decode($encoded, ['bigInt' => BigIntType::class]);
+
+        $this->assertInstanceOf(BigIntType::class, $decoded);
+        $this->assertEquals(self::POW_2_1024, $decoded->getValue());
+    }
+
     // GMP
 
     public function testEncodeLargeIntegerGMP()

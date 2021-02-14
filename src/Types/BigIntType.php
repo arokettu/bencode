@@ -6,6 +6,7 @@ namespace SandFox\Bencode\Types;
 
 use Brick\Math\BigInteger;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
+use SandFox\Bencode\Util\IntUtil;
 
 final class BigIntType
 {
@@ -19,7 +20,7 @@ final class BigIntType
 
     public function assertValidInteger(string $value)
     {
-        if (preg_match('/^(?:0|-?[1-9]\d*)$/', $value) !== 1) {
+        if (!IntUtil::isValid($value)) {
             throw new InvalidArgumentException("Invalid integer string: '{$value}'");
         }
     }

@@ -7,6 +7,7 @@ use SandFox\Bencode\Bencode\BigInt;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Types\BigIntType;
+use SandFox\Bencode\Util\IntUtil;
 use SandFox\Bencode\Util\Util;
 
 /**
@@ -133,24 +134,21 @@ class Decoder
             throw new ParseErrorException("Unexpected end of file while processing integer");
         }
 
-        if (!is_numeric($intStr)) {
+        if (!IntUtil::isValid($intStr)) {
             throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
         }
 
         $int = (int)$intStr;
 
+        // detect overflow
         if ((string)$int === $intStr) {
             $this->finalizeScalar($int);
             return;
         }
 
         if ($this->options['bigInt'] !== BigInt::NONE) {
-            $int = $this->stringToBigInt($intStr);
-
-            if ((string)$int === $intStr) {
-                $this->finalizeScalar($int);
-                return;
-            }
+            $this->finalizeScalar($this->stringToBigInt($intStr));
+            return;
         }
 
         if ((string)$int !== $intStr) {
@@ -179,11 +177,11 @@ class Decoder
         }
 
         if (is_callable($bigInt)) {
-            return $bigInt($bigInt);
+            return $bigInt($intStr);
         }
 
         if (class_exists($bigInt)) {
-            new $bigInt($intStr);
+            return new $bigInt($intStr);
         }
 
         throw new ParseErrorException('Invalid BigMath mode');
