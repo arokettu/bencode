@@ -8,8 +8,13 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
 
+use Brick\Math\BigInteger;
+use SandFox\Bencode\Bencode\BigInt;
+use SandFox\Bencode\Bencode\Collection;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
+use SandFox\Bencode\Types\BigIntType;
+use SandFox\Bencode\Util\IntUtil;
 
 /**
  * Class Decoder
@@ -119,29 +124,57 @@ final class Decoder
             throw new ParseErrorException("Unexpected end of file while processing integer");
         }
 
-        if (!is_numeric($intStr)) {
+        if (!IntUtil::isValid($intStr)) {
             throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
         }
 
         $int = (int)$intStr;
 
+        // detect overflow
         if ((string)$int === $intStr) {
             $this->finalizeScalar($int);
             return;
         }
 
-        if ($this->options['useGMP']) {
-            $int = gmp_init($intStr);
-
-            if ((string)$int === $intStr) {
-                $this->finalizeScalar($int);
-                return;
-            }
+        if ($this->options['bigInt'] !== BigInt::NONE) {
+            $this->finalizeScalar($this->stringToBigInt($intStr));
+            return;
         }
 
         if ((string)$int !== $intStr) {
             throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
         }
+    }
+
+    private function stringToBigInt(string $intStr)
+    {
+        $bigInt = $this->options['bigInt'];
+
+        if ($bigInt === BigInt::INTERNAL) {
+            return new BigIntType($intStr);
+        }
+
+        if ($bigInt === BigInt::GMP) {
+            return \gmp_init($intStr);
+        }
+
+        if ($bigInt === BigInt::BRICK_MATH) {
+            return BigInteger::of($intStr);
+        }
+
+        if ($bigInt === BigInt::PEAR) {
+            return new \Math_BigInteger($intStr);
+        }
+
+        if (is_callable($bigInt)) {
+            return $bigInt($intStr);
+        }
+
+        if (class_exists($bigInt)) {
+            return new $bigInt($intStr);
+        }
+
+        throw new ParseErrorException('Invalid BigMath mode');
     }
 
     private function processString(): void
@@ -268,11 +301,11 @@ final class Decoder
     {
         $type = $this->options[$typeOption];
 
-        if ($type === 'array') {
+        if ($type === Collection::ARRAY) {
             return $array;
         }
 
-        if ($type === 'object') {
+        if ($type === Collection::OBJECT) {
             return (object)$array;
         }
 

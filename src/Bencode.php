@@ -114,6 +114,10 @@ final class Bencode
             }
         }
 
+        if (isset($options['useGMP']) && $options['useGMP']) {
+            $options['bigInt'] = $options['bigInt'] ?? Bencode\BigInt::GMP;
+        }
+
         $options = array_merge(compact('listType', 'dictType', 'useGMP'), $options);
 
         return (new Decoder($readStream, ...$options))->decode();

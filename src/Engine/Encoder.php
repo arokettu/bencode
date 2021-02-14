@@ -8,9 +8,10 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
 
-use GMP;
+use Brick\Math\BigInteger;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
+use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Types\ListType;
 use stdClass;
 use Stringable;
@@ -47,22 +48,26 @@ final class Encoder
         match (true) {
             // first check if we have integer
             // true is converted to integer 1
-            is_int($value), $value === true, $value instanceof GMP =>
-                $this->encodeInteger($value),
+            is_int($value),
+            $value === true,
+            $value instanceof \GMP,
+            $value instanceof BigInteger,
+            $value instanceof \Math_BigInteger
+                => $this->encodeInteger($value),
             // process strings
             // floats become strings
             // nulls become empty strings
-            is_string($value), is_float($value) =>
-                $this->encodeString((string)$value),
+            is_string($value),
+            is_float($value)
+                => $this->encodeString((string)$value),
             // process arrays
-            is_array($value) =>
-                $this->encodeArray($value),
+            is_array($value) => $this->encodeArray($value),
             // process objects
-            is_object($value) =>
-                $this->encodeObject($value),
+            is_object($value) => $this->encodeObject($value),
             // empty values
-            $value === false, $value === null =>
-                throw new InvalidArgumentException('Unable to encode an empty value'),
+            $value === false,
+            $value === null
+                => throw new InvalidArgumentException('Unable to encode an empty value'),
             // other types like resources
             default =>
                 throw new InvalidArgumentException(

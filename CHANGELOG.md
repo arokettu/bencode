@@ -49,6 +49,16 @@
 
 ## 1.x
 
+### 1.6.0
+
+*Feb 14, 2021*
+
+* Expanded big integer support:
+    * `brick/math`
+    * `Math_BigInteger`
+    * Custom BigIntType numeric string wrapper
+    * Callback and custom class name
+
 ### 1.5.0
 
 *Feb 3, 2021*
