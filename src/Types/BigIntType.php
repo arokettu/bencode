@@ -8,17 +8,14 @@ use Brick\Math\BigInteger;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Util\IntUtil;
 
-final class BigIntType
+final class BigIntType implements \Stringable
 {
-    private $value;
-
-    public function __construct(string $value)
+    public function __construct(private string $value)
     {
         $this->assertValidInteger($value);
-        $this->value = $value;
     }
 
-    public function assertValidInteger(string $value)
+    private function assertValidInteger(string $value): void
     {
         if (!IntUtil::isValid($value)) {
             throw new InvalidArgumentException("Invalid integer string: '{$value}'");

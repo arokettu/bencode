@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace SandFox\Bencode\Tests;
+
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BigIntType;
@@ -71,6 +73,6 @@ class BigIntTypeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid integer string: '0x1234'");
 
-        new BigIntType('0x1234');
+        new BigIntType('0x1234'); // @phpcs:ignore PHPCompatibility.Miscellaneous.ValidIntegers.HexNumericStringFound
     }
 }

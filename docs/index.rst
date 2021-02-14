@@ -182,26 +182,26 @@ Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and c
     // GMP
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
-        ['bigInt' => Bencode\BigInt::GMP] // same as ['useGMP' => true]
+        bigInt: Bencode\BigInt::GMP, // same as ['useGMP' => true]
     ]; // ['int' => gmp_init('79228162514264337593543950336')]
 
     // brick/math
     $data = Bencode::decode(
         "d3:gmpi79228162514264337593543950336ee",
-        ['bigInt' => Bencode\BigInt::BRICK_MATH]
+        bigInt: Bencode\BigInt::BRICK_MATH,
     ]; // ['int' => \Brick\Math\BigInteger::of('79228162514264337593543950336')]
 
     // Math_BigInteger from PEAR
     $data = Bencode::decode(
         "d3:gmpi79228162514264337593543950336ee",
-        ['bigInt' => Bencode\BigInt::PEAR]
+        bigInt: Bencode\BigInt::PEAR,
     ]; // ['int' => new \Math_BigInteger('79228162514264337593543950336')]
 
     // Internal BigIntType class
     // does not require any external dependencies but also does not allow any manipulation
     $data = Bencode::decode(
         "d3:gmpi79228162514264337593543950336ee",
-        ['bigInt' => Bencode\BigInt::INTERNAL]
+        bigInt: Bencode\BigInt::INTERNAL
     ]; // ['int' => new \SandFox\Bencode\Types\BigIntType('79228162514264337593543950336')]
     // BigIntType is a value object with several getters:
     // simple string representation:
@@ -214,11 +214,11 @@ Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and c
     // like listType and dictType you can use a callable or a class name
     $data = Bencode::decode(
         "d3:gmpi79228162514264337593543950336ee",
-        ['bigInt' => fn($v) => v]
+        bigInt: fn($v) => v,
     ]; // ['int' => '79228162514264337593543950336']
     $data = Bencode::decode(
         "d3:gmpi79228162514264337593543950336ee",
-        ['bigInt' => MyBigIntHandler::class]
+        bigInt: MyBigIntHandler::class,
     ]; // ['int' => new MyBigIntHandler('79228162514264337593543950336')]]
 
 .. _GMP: https://www.php.net/manual/en/book.gmp.php

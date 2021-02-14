@@ -40,15 +40,15 @@ final class Decoder
 
     public function __construct(
         private $stream,
-        string|callable $listType = 'array',
-        string|callable $dictType = 'array',
-        bool $useGMP = false,
+        string|callable $listType = Collection::ARRAY,
+        string|callable $dictType = Collection::ARRAY,
+        string|callable $bigInt = BigInt::NONE,
     ) {
         if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Input is not a valid stream');
         }
 
-        $this->options = compact('listType', 'dictType', 'useGMP');
+        $this->options = compact('listType', 'dictType', 'bigInt');
     }
 
     public function decode(): mixed
@@ -146,35 +146,26 @@ final class Decoder
         }
     }
 
-    private function stringToBigInt(string $intStr)
+    private function stringToBigInt(string $intStr): mixed
     {
         $bigInt = $this->options['bigInt'];
 
-        if ($bigInt === BigInt::INTERNAL) {
-            return new BigIntType($intStr);
-        }
-
-        if ($bigInt === BigInt::GMP) {
-            return \gmp_init($intStr);
-        }
-
-        if ($bigInt === BigInt::BRICK_MATH) {
-            return BigInteger::of($intStr);
-        }
-
-        if ($bigInt === BigInt::PEAR) {
-            return new \Math_BigInteger($intStr);
-        }
-
-        if (is_callable($bigInt)) {
-            return $bigInt($intStr);
-        }
-
-        if (class_exists($bigInt)) {
-            return new $bigInt($intStr);
-        }
-
-        throw new ParseErrorException('Invalid BigMath mode');
+        return match (true) {
+            $bigInt === BigInt::INTERNAL
+                => new BigIntType($intStr),
+            $bigInt === BigInt::GMP
+                => \gmp_init($intStr),
+            $bigInt === BigInt::BRICK_MATH
+                => BigInteger::of($intStr),
+            $bigInt === BigInt::PEAR
+                => new \Math_BigInteger($intStr),
+            is_callable($bigInt)
+                => $bigInt($intStr),
+            class_exists($bigInt)
+                => new $bigInt($intStr),
+            default
+                => throw new ParseErrorException('Invalid BigMath mode'),
+        };
     }
 
     private function processString(): void

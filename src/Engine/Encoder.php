@@ -13,9 +13,6 @@ use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Types\ListType;
-use stdClass;
-use Stringable;
-use Traversable;
 
 /**
  * Class Encoder
@@ -50,15 +47,16 @@ final class Encoder
             // true is converted to integer 1
             is_int($value),
             $value === true,
+            $value instanceof BigIntType,
             $value instanceof \GMP,
             $value instanceof BigInteger,
-            $value instanceof \Math_BigInteger
+            $value instanceof \Math_BigInteger,
                 => $this->encodeInteger($value),
             // process strings
             // floats become strings
             // nulls become empty strings
             is_string($value),
-            is_float($value)
+            is_float($value),
                 => $this->encodeString((string)$value),
             // process arrays
             is_array($value) => $this->encodeArray($value),
@@ -66,11 +64,11 @@ final class Encoder
             is_object($value) => $this->encodeObject($value),
             // empty values
             $value === false,
-            $value === null
+            $value === null,
                 => throw new InvalidArgumentException('Unable to encode an empty value'),
             // other types like resources
-            default =>
-                throw new InvalidArgumentException(
+            default
+                => throw new InvalidArgumentException(
                     sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
                 ),
         };
@@ -97,10 +95,10 @@ final class Encoder
                 $this->encodeList($value),
             // all other traversables are dictionaries
             // also treat stdClass as a dictionary
-            $value instanceof Traversable, $value instanceof stdClass =>
+            $value instanceof \Traversable, $value instanceof \stdClass =>
                 $this->encodeDictionary($value),
             // try to convert other objects to string
-            $value instanceof Stringable =>
+            $value instanceof \Stringable =>
                 $this->encodeString((string)$value),
             // other classes
             default =>
@@ -110,7 +108,7 @@ final class Encoder
         };
     }
 
-    private function encodeInteger(int|bool|GMP $integer)
+    private function encodeInteger(int|bool|BigIntType|\GMP|BigInteger|\Math_BigInteger $integer)
     {
         fwrite($this->stream, 'i');
         fwrite($this->stream, (string)$integer);
@@ -139,7 +137,7 @@ final class Encoder
         fwrite($this->stream, 'e');
     }
 
-    private function encodeDictionary(iterable|stdClass $array): void
+    private function encodeDictionary(iterable|\stdClass $array): void
     {
         $dictData = [];
 
