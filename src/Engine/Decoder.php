@@ -4,6 +4,7 @@ namespace SandFox\Bencode\Engine;
 
 use Brick\Math\BigInteger;
 use SandFox\Bencode\Bencode\BigInt;
+use SandFox\Bencode\Bencode\Collection;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Types\BigIntType;
@@ -32,8 +33,8 @@ class Decoder
     const STATE_DICT = 3;
 
     const DEFAULT_OPTIONS = [
-        'listType' => 'array',
-        'dictType' => 'array',
+        'listType' => Collection::ARRAY,
+        'dictType' => Collection::ARRAY,
         'bigInt' => BigInt::NONE,
     ];
 
@@ -320,11 +321,11 @@ class Decoder
     {
         $type = $this->options[$typeOption];
 
-        if ($type === 'array') {
+        if ($type === Collection::ARRAY) {
             return $array;
         }
 
-        if ($type === 'object') {
+        if ($type === Collection::OBJECT) {
             return (object)$array;
         }
 
