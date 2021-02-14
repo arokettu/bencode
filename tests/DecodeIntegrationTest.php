@@ -1,7 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+namespace SandFox\Bencode\Tests;
+
+use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use SandFoxMe\Bencode\Bencode;
+use stdClass;
 
 class DecodeIntegrationTest extends TestCase
 {
@@ -36,7 +42,7 @@ class DecodeIntegrationTest extends TestCase
                 'e' .
                 '1:i' . 'i213e' .
                 '1:l' . 'le' .
-                '1:s' . '6:string'.
+                '1:s' . '6:string' .
             'e' .
             'i456e' .
         'e';

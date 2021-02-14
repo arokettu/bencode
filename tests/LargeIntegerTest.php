@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace SandFox\Bencode\Tests;
+
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Types\BigIntType;
@@ -80,14 +84,14 @@ class LargeIntegerTest extends TestCase
         $expected = gmp_pow(2, 1024);
 
         $decoded = Bencode::decode($encoded, ['useGMP' => true]);
-        $this->assertInstanceOf(GMP::class, $decoded);
+        $this->assertInstanceOf(\GMP::class, $decoded);
         $this->assertEquals($expected, $decoded);
 
         $encodedNeg = 'i-' . self::POW_2_1024 . 'e';
         $expectedNeg = -gmp_pow(2, 1024);
 
         $decodedNeg = Bencode::decode($encodedNeg, ['useGMP' => true]);
-        $this->assertInstanceOf(GMP::class, $decoded);
+        $this->assertInstanceOf(\GMP::class, $decoded);
         $this->assertEquals($expectedNeg, $decodedNeg);
     }
 
@@ -95,14 +99,14 @@ class LargeIntegerTest extends TestCase
 
     public function testEncodeLargeIntegerPear()
     {
-        $largeInt = (new Math_BigInteger(1))->bitwise_leftShift(1024);
+        $largeInt = (new \Math_BigInteger(1))->bitwise_leftShift(1024);
         $expected = 'i' . self::POW_2_1024 . 'e';
 
         $encoded = Bencode::encode($largeInt);
 
         $this->assertEquals($expected, $encoded);
 
-        $largeNegInt = $largeInt->multiply(new Math_BigInteger(-1));
+        $largeNegInt = $largeInt->multiply(new \Math_BigInteger(-1));
         $expected = 'i-' . self::POW_2_1024 . 'e';
 
         $encoded = Bencode::encode($largeNegInt);
@@ -113,17 +117,17 @@ class LargeIntegerTest extends TestCase
     public function testDecodeLargeIntegerPear()
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
-        $expected = (new Math_BigInteger(1))->bitwise_leftShift(1024);
+        $expected = (new \Math_BigInteger(1))->bitwise_leftShift(1024);
 
         $decoded = Bencode::decode($encoded, ['bigInt' => Bencode\BigInt::PEAR]);
-        $this->assertInstanceOf(Math_BigInteger::class, $decoded);
+        $this->assertInstanceOf(\Math_BigInteger::class, $decoded);
         $this->assertEquals($expected, $decoded);
 
         $encodedNeg = 'i-' . self::POW_2_1024 . 'e';
-        $expectedNeg = $expected->multiply(new Math_BigInteger(-1));
+        $expectedNeg = $expected->multiply(new \Math_BigInteger(-1));
 
         $decodedNeg = Bencode::decode($encodedNeg, ['bigInt' => Bencode\BigInt::PEAR]);
-        $this->assertInstanceOf(Math_BigInteger::class, $decoded);
+        $this->assertInstanceOf(\Math_BigInteger::class, $decoded);
         $this->assertEquals($expectedNeg, $decodedNeg);
     }
 

@@ -1,8 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+// phpcs:ignoreFile Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
+
+namespace SandFox\Bencode\Tests;
+
+use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use SandFoxMe\Bencode\Bencode;
 use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
+use stdClass;
 
 class DecodeListTest extends TestCase
 {
@@ -45,7 +53,7 @@ class DecodeListTest extends TestCase
 
         // callback
         // use same array object as above
-        $decodedCallback = Bencode::decode($encoded, ['listType' => function($array) use($list) {
+        $decodedCallback = Bencode::decode($encoded, ['listType' => function ($array) use($list) {
             $this->assertEquals($list, $array); // check thar array is passed here
 
             // you can pass extra parameter to the constructor for example

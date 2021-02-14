@@ -1,9 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+// phpcs:ignoreFile Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
+
+namespace SandFox\Bencode\Tests;
+
+use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use SandFoxMe\Bencode\Bencode;
 use SandFoxMe\Bencode\Types\BencodeSerializable;
 use SandFoxMe\Bencode\Types\ListType;
+use stdClass;
 
 class EncodeTest extends TestCase
 {

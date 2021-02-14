@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Engine;
 
 use Brick\Math\BigInteger;
@@ -14,6 +16,7 @@ use SandFox\Bencode\Util\Util;
  * @package SandFox\Bencode\Engine
  * @author Anton Smirnov
  * @license MIT
+ * @internal
  */
 class Encoder
 {
@@ -120,8 +123,10 @@ class Encoder
         fwrite($this->stream, 'e');
     }
 
-    private function encodeString(string $string)
+    private function encodeString($string)
     {
+        $string = (string)$string;
+
         fwrite($this->stream, (string)strlen($string));
         fwrite($this->stream, ':');
         fwrite($this->stream, $string);

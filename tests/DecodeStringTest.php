@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace SandFox\Bencode\Tests;
+
 use PHPUnit\Framework\TestCase;
 use SandFoxMe\Bencode\Bencode;
 use SandFoxMe\Bencode\Exceptions\ParseErrorException;

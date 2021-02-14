@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Engine;
 
 use Brick\Math\BigInteger;
@@ -16,6 +18,7 @@ use SandFox\Bencode\Util\Util;
  * @package SandFox\Bencode\Engine
  * @author Anton Smirnov
  * @license MIT
+ * @internal
  */
 class Decoder
 {

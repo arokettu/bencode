@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SandFox\Bencode\Util;
 
 use SandFox\Bencode\Exceptions\RuntimeException;
@@ -19,6 +21,7 @@ final class Util
         // to the version with mbstring.func_overload removed
 
         // false and empty string will be 0 and the test will pass
+        // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecated
         $funcOverload = intval(ini_get('mbstring.func_overload'));
 
         if ($funcOverload & self::MBSTRING_OVERLOAD_CONFLICT) {

@@ -20,6 +20,11 @@
             "SandFoxMe\\Bencode\\": "legacy"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "SandFox\\Bencode\\Tests\\": "tests"
+        }
+    },
     "require": {
         "php": "^7.0 | ^8.0"
     },
