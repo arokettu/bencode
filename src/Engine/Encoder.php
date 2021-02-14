@@ -18,7 +18,7 @@ use SandFox\Bencode\Util\Util;
  * @license MIT
  * @internal
  */
-class Encoder
+final class Encoder
 {
     /** @var mixed */
     private $data;

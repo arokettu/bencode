@@ -20,7 +20,7 @@ use SandFox\Bencode\Util\Util;
  * @license MIT
  * @internal
  */
-class Decoder
+final class Decoder
 {
     private $stream;
     private $decoded;

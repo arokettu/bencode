@@ -13,7 +13,7 @@ use SandFox\Bencode\Engine\Encoder;
  * @author Anton Smirnov
  * @license MIT
  */
-class Bencode
+final class Bencode
 {
     /**
      * Encode arbitrary data to bencode string
