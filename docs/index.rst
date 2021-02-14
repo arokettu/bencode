@@ -107,7 +107,8 @@ This will work exactly like JsonSerializable_ interface.
 
     class MyFile implements BencodeSerializable
     {
-        public function bencodeSerialize() {
+        public function bencodeSerialize()
+        {
             return [
                 'class' => static::class,
                 'name'  => 'myfile.torrent',
@@ -269,7 +270,7 @@ The library is available as open source under the terms of the `MIT License`_.
    :target:     https://packagist.org/packages/sandfoxme/bencode
 .. |GitHub|     image:: https://img.shields.io/badge/get%20on-GitHub-informational.svg?style=flat-square&logo=github
    :target:     https://github.com/arokettu/bencode
-.. |GitLab|     image:: https://img.shields.io/badge/get%20on-Gitlab-informational.svg?style=flat-square&logo=gitlab
+.. |GitLab|     image:: https://img.shields.io/badge/get%20on-GitLab-informational.svg?style=flat-square&logo=gitlab
    :target:     https://gitlab.com/sandfox/bencode
 .. |Bitbucket|  image:: https://img.shields.io/badge/get%20on-Bitbucket-informational.svg?style=flat-square&logo=bitbucket
    :target:     https://bitbucket.org/sandfox/bencode
