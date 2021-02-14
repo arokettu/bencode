@@ -26,9 +26,12 @@
     "require-dev": {
         "ext-gmp": "*",
         "brick/math": "*",
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
         "pear/math_biginteger": "^1.0",
+        "phpcompatibility/php-compatibility": "*",
         "phpunit/phpunit": ">=6.0.0 <10",
         "psy/psysh": "*",
+        "slevomat/coding-standard": "*",
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
