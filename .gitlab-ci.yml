@@ -10,8 +10,9 @@ cache:
   before_script:
     # install system packages
     - apt-get update && apt-get install -y git unzip libgmp-dev
-    # install gmp
+    # install extensions
     - docker-php-ext-install gmp
+    - if [ "$INSTALL_XDEBUG" -eq 1 ]; then docker-php-ext-install xdebug; fi
     # install composer
     - php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer.sig');"
     - php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
@@ -25,11 +26,19 @@ cache:
     - composer update
     - vendor/bin/phpunit
 
-# lowest version
+# lowest version && coverage
 test-8.0:
+  variables:
+    INSTALL_XDEBUG: 1
   extends: .test
   stage: test
   image: php:8.0
+  script:
+    - composer update
+    - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-cobertura=reports/coverage.xml --coverage-filter src
+  artifacts:
+    reports:
+      cobertura: reports/coverage.xml
 
 # latest unstable
 test-rc:
