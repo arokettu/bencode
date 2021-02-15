@@ -34,6 +34,7 @@ coverage:
   extends: .test
   stage: report
   only:
+    - 1.x
     - 2.x
   image: php:8.0
   script:
