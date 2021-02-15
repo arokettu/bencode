@@ -5,7 +5,7 @@
 [![PHP](https://img.shields.io/packagist/php-v/sandfoxme/bencode/2.x-dev.svg?style=flat-square&label=php%20for%202.x)](https://packagist.org/packages/sandfoxme/bencode)
 [![Packagist](https://img.shields.io/github/license/sandfoxme/bencode.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/sandfox/bencode/2.x.svg?style=flat-square)](https://gitlab.com/sandfox/bencode/-/pipelines)
-![Gitlab code coverage](https://img.shields.io/gitlab/coverage/sandfox/bencode/2.x)
+[![Codecov](https://img.shields.io/codecov/c/gl/sandfox/bencode?style=flat-square)](https://codecov.io/gl/sandfox/bencode/)
 
 [Bencode] is the encoding used by the peer-to-peer file sharing system
 [BitTorrent] for storing and transmitting loosely structured data.
