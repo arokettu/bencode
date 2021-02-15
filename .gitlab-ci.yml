@@ -1,5 +1,6 @@
 stages:
   - test
+  - report
 
 cache:
   key: composer-cache
@@ -26,19 +27,25 @@ cache:
     - composer update
     - vendor/bin/phpunit
 
-# lowest version && coverage
-test-8.0:
+# coverage
+coverage:
   variables:
     INSTALL_XDEBUG: 1
   extends: .test
-  stage: test
+  stage: report
+  only:
+    - 2.x
   image: php:8.0
   script:
     - composer update
-    - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-cobertura=reports/coverage.xml --coverage-filter src
-  artifacts:
-    reports:
-      cobertura: reports/coverage.xml
+    - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.xml
+    - bash <(curl -s https://codecov.io/bash)
+
+# lowest version
+test-8.0:
+  extends: .test
+  stage: test
+  image: php:8.0
 
 # latest unstable
 test-rc:
