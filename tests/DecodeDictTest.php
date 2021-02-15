@@ -17,12 +17,12 @@ class DecodeDictTest extends TestCase
     public function testValid()
     {
         // simple
-        $this->assertEquals(['a' => 'b', 'c' => 'd'], Bencode::decode('d1:a1:b1:c1:de'));
+        self::assertEquals(['a' => 'b', 'c' => 'd'], Bencode::decode('d1:a1:b1:c1:de'));
         // numeric keys
         // php converts numeric array keys to integers
-        $this->assertEquals([1 => 2, 3 => 4], Bencode::decode('d1:1i2e1:3i4ee'));
+        self::assertEquals([1 => 2, 3 => 4], Bencode::decode('d1:1i2e1:3i4ee'));
         // empty
-        $this->assertEquals([], Bencode::decode('de'));
+        self::assertEquals([], Bencode::decode('de'));
     }
 
     public function testKeyNotString()

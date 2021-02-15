@@ -20,46 +20,46 @@ class EncodeTest extends TestCase
     {
         // positive
 
-        $this->assertEquals('i314e', Bencode::encode(314));
+        self::assertEquals('i314e', Bencode::encode(314));
 
         // negative
 
-        $this->assertEquals('i-512e', Bencode::encode(-512));
+        self::assertEquals('i-512e', Bencode::encode(-512));
 
         // zero
 
-        $this->assertEquals('i0e', Bencode::encode(0));
+        self::assertEquals('i0e', Bencode::encode(0));
 
         // scalars converted to integer
 
-        $this->assertEquals('i1e', Bencode::encode(true));
+        self::assertEquals('i1e', Bencode::encode(true));
     }
 
     public function testString()
     {
         // arbitrary
 
-        $this->assertEquals('11:test string', Bencode::encode('test string'));
+        self::assertEquals('11:test string', Bencode::encode('test string'));
 
         // special characters
 
-        $this->assertEquals("25:zero\0newline\nsymblol05\x05ok", Bencode::encode("zero\0newline\nsymblol05\x05ok"));
+        self::assertEquals("25:zero\0newline\nsymblol05\x05ok", Bencode::encode("zero\0newline\nsymblol05\x05ok"));
 
         // empty
 
-        $this->assertEquals('0:', Bencode::encode(''));
+        self::assertEquals('0:', Bencode::encode(''));
 
         // unicode. prefix number reflects the number if bytes
 
-        $this->assertEquals('9:日本語', Bencode::encode('日本語'));
+        self::assertEquals('9:日本語', Bencode::encode('日本語'));
 
         // scalars converted to string
 
-        $this->assertEquals('6:3.1416', Bencode::encode(3.1416));
+        self::assertEquals('6:3.1416', Bencode::encode(3.1416));
 
         // object with __toString
 
-        $this->assertEquals('6:string', Bencode::encode(new class {
+        self::assertEquals('6:string', Bencode::encode(new class {
             public function __toString()
             {
                 return 'string';
@@ -71,18 +71,18 @@ class EncodeTest extends TestCase
     {
         // sequential array should become list
 
-        $this->assertEquals('li1ei2e1:34:testi5ee', Bencode::encode([1, 2, '3', 'test', 5]));
+        self::assertEquals('li1ei2e1:34:testi5ee', Bencode::encode([1, 2, '3', 'test', 5]));
 
         // list type wrapped traversable should become list
 
-        $this->assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
+        self::assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
             new ListType(
                 new ArrayObject([1, 2, '3', 'test', 5])
             )
         ));
 
         // sequential or not, we ignore the keys for ListType
-        $this->assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
+        self::assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
             new ListType(
                 new ArrayObject([
                     'key1' => 1,
@@ -96,7 +96,7 @@ class EncodeTest extends TestCase
 
         // test list type consuming an array
 
-        $this->assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
+        self::assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
             new ListType([
                 'key1' => 1,
                 'key2' => 2,
@@ -108,21 +108,21 @@ class EncodeTest extends TestCase
 
         // empty list
 
-        $this->assertEquals('le', Bencode::encode([]));
+        self::assertEquals('le', Bencode::encode([]));
     }
 
     public function testDictionary()
     {
         // array with string keys
 
-        $this->assertEquals(
+        self::assertEquals(
             'd3:key5:value4:test8:whatevere',
             Bencode::encode(['key' => 'value', 'test' => 'whatever'])
         );
 
         // any non-sequential array
 
-        $this->assertEquals('d1:0i1e1:1i2e1:21:31:3i5e1:44:teste', Bencode::encode([1, 2, '3', 4 => 'test', 3 => 5]));
+        self::assertEquals('d1:0i1e1:1i2e1:21:31:3i5e1:44:teste', Bencode::encode([1, 2, '3', 4 => 'test', 3 => 5]));
 
         // stdClass
 
@@ -131,21 +131,21 @@ class EncodeTest extends TestCase
         $std->key   = 'value';
         $std->test  = 'whatever';
 
-        $this->assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode($std));
+        self::assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode($std));
 
         // traversable
 
-        $this->assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode(
+        self::assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode(
             new ArrayObject(['key' => 'value', 'test' => 'whatever'])
         ));
 
         // even sequential
-        $this->assertEquals('d1:0i1e1:1i2e1:21:31:34:test1:4i5ee', Bencode::encode(
+        self::assertEquals('d1:0i1e1:1i2e1:21:31:34:test1:4i5ee', Bencode::encode(
             new ArrayObject([1, 2, '3', 'test', 5])
         ));
 
         // empty dict
-        $this->assertEquals('de', Bencode::encode(new ArrayObject()));
+        self::assertEquals('de', Bencode::encode(new ArrayObject()));
     }
 
     public function testDictKeys()
@@ -181,7 +181,7 @@ class EncodeTest extends TestCase
             '3:本0:' .
         'e';
 
-        $this->assertEquals($expectedWithStringKeys, Bencode::encode($stringKeys));
+        self::assertEquals($expectedWithStringKeys, Bencode::encode($stringKeys));
 
         // also check that php doesn't silently convert numeric keys to integer
         $numericKeys = [
@@ -208,7 +208,7 @@ class EncodeTest extends TestCase
             '3:9990:' .
         'e';
 
-        $this->assertEquals($expectedWithNumericKeys, Bencode::encode($numericKeys));
+        self::assertEquals($expectedWithNumericKeys, Bencode::encode($numericKeys));
     }
 
     public function testAllTypes()
@@ -243,8 +243,8 @@ class EncodeTest extends TestCase
         $result1 = Bencode::encode($data1);
         $result2 = Bencode::encode($data2);
 
-        $this->assertEquals($expected, $result1);
-        $this->assertEquals($result1, $result2); // different order of dict keys should not change the result
+        self::assertEquals($expected, $result1);
+        self::assertEquals($result1, $result2); // different order of dict keys should not change the result
     }
 
     public function testSerializable()
@@ -284,9 +284,9 @@ class EncodeTest extends TestCase
             }
         };
 
-        $this->assertEquals('4:Test', Bencode::encode($dataScalar));
-        $this->assertEquals('4:Test', Bencode::encode($dataRecursion));
-        $this->assertEquals('li1ei2ei3ee', Bencode::encode($dataArray));
+        self::assertEquals('4:Test', Bencode::encode($dataScalar));
+        self::assertEquals('4:Test', Bencode::encode($dataRecursion));
+        self::assertEquals('li1ei2ei3ee', Bencode::encode($dataArray));
     }
 
     public function testUnknown()

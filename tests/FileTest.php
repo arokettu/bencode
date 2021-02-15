@@ -18,10 +18,10 @@ class FileTest extends TestCase
         Bencode::dump($file, $value);
 
         $onDisk = file_get_contents($file);
-        $this->assertEquals($encoded, $onDisk);
+        self::assertEquals($encoded, $onDisk);
 
         $loaded = Bencode::load($file);
-        $this->assertEquals($loaded, $value);
+        self::assertEquals($loaded, $value);
 
         unlink($file);
     }
@@ -36,10 +36,10 @@ class FileTest extends TestCase
 
         rewind($stream);
         $inStream = stream_get_contents($stream);
-        $this->assertEquals($encoded, $inStream);
+        self::assertEquals($encoded, $inStream);
 
         rewind($stream);
         $loaded = Bencode::decodeStream($stream);
-        $this->assertEquals($loaded, $value);
+        self::assertEquals($loaded, $value);
     }
 }

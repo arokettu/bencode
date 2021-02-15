@@ -53,8 +53,8 @@ class DecodeIntegrationTest extends TestCase
             dictionaryType: 'object',
         );
 
-        $this->assertEquals($value, $decoded);
-        $this->assertEquals(ArrayObject::class, get_class($decoded[3]));
-        $this->assertEquals(stdClass::class, get_class($decoded[4]));
+        self::assertEquals($value, $decoded);
+        self::assertEquals(ArrayObject::class, get_class($decoded[3]));
+        self::assertEquals(stdClass::class, get_class($decoded[4]));
     }
 }
