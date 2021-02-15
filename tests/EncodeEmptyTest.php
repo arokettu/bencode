@@ -55,7 +55,7 @@ class EncodeEmptyTest extends TestCase
 
     public function testSkipInList()
     {
-        $this->assertEquals(
+        self::assertEquals(
             'li1ei2ei3ei4ei5ee',
             Bencode::encode([1, 2, false, 3, 4, null, 5])
         );
@@ -63,7 +63,7 @@ class EncodeEmptyTest extends TestCase
 
     public function testSkipInDict()
     {
-        $this->assertEquals(
+        self::assertEquals(
             'd1:ai1e1:ci2e1:ei3ee',
             Bencode::encode([
                 'a' => 1,

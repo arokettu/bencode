@@ -18,9 +18,9 @@ class DecodeIntegerTest extends TestCase
     public function testValid()
     {
         // valid values
-        $this->assertEquals(213, Bencode::decode('i213e'));
-        $this->assertEquals(-314, Bencode::decode('i-314e'));
-        $this->assertEquals(0, Bencode::decode('i0e'));
+        self::assertEquals(213, Bencode::decode('i213e'));
+        self::assertEquals(-314, Bencode::decode('i-314e'));
+        self::assertEquals(0, Bencode::decode('i0e'));
     }
 
     public function testEmptyValue()

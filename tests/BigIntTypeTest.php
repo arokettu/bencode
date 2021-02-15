@@ -13,19 +13,19 @@ class BigIntTypeTest extends TestCase
     public function testPositiveNumericString()
     {
         $int = new BigIntType('123');
-        $this->assertEquals('123', $int->getValue());
+        self::assertEquals('123', $int->getValue());
     }
 
     public function testNegativeNumericString()
     {
         $int = new BigIntType('-123');
-        $this->assertEquals('-123', $int->getValue());
+        self::assertEquals('-123', $int->getValue());
     }
 
     public function testZero()
     {
         $int = new BigIntType('0');
-        $this->assertEquals('0', $int->getValue());
+        self::assertEquals('0', $int->getValue());
     }
 
     public function testNoPlus()
