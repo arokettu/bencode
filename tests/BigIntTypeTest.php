@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Tests;
 
+use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BigIntType;
@@ -74,5 +75,14 @@ class BigIntTypeTest extends TestCase
         $this->expectExceptionMessage("Invalid integer string: '0x1234'");
 
         new BigIntType('0x1234'); // phpcs:ignore PHPCompatibility.Miscellaneous.ValidIntegers.HexNumericStringFound
+    }
+
+    public function testExport()
+    {
+        $int = new BigIntType('123');
+
+        self::assertEquals(gmp_init('123'), $int->toGMP());
+        self::assertEquals(true, (new \Math_BigInteger('123'))->equals($int->toPear()));
+        self::assertEquals(true, BigInteger::of('123')->isEqualTo($int->toBrickMath()));
     }
 }
