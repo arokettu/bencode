@@ -42,4 +42,31 @@ class FileTest extends TestCase
         $loaded = Bencode::decodeStream($stream);
         self::assertEquals($loaded, $value);
     }
+
+    public function testDefaultStream()
+    {
+        $value      = [1, 2, 3, 4, 5];
+        $encoded    = Bencode::encode($value);
+
+        $stream = Bencode::encodeToStream($value);
+
+        rewind($stream);
+        $inStream = stream_get_contents($stream);
+        self::assertEquals($encoded, $inStream);
+
+        rewind($stream);
+        $loaded = Bencode::decodeStream($stream);
+        self::assertEquals($loaded, $value);
+    }
+
+    public function testInvalidFile()
+    {
+        $file = tempnam('/tmp', 'invalid');
+        chmod($file, 0000);
+
+        @self::assertEquals(false, Bencode::dump($file, []));
+        @self::assertEquals(false, Bencode::load($file));
+
+        unlink($file);
+    }
 }
