@@ -66,7 +66,7 @@ class LargeIntegerTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Invalid BigMath mode');
 
-        Bencode::decode($encoded, ['bigInt' => 'invalid']);
+        Bencode::decode($encoded, bigInt: 'invalid');
     }
 
     // GMP

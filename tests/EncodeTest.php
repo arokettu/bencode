@@ -289,14 +289,17 @@ class EncodeTest extends TestCase
         self::assertEquals('li1ei2ei3ee', Bencode::encode($dataArray));
     }
 
-    public function testUnknown()
+    public function testUnknownType()
     {
         // We can't serialize resources
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of resource");
 
         Bencode::encode(fopen(__FILE__, 'r'));
+    }
 
+    public function testUnknownObject()
+    {
         // We can't serialize non-stringable objects
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of " . get_class($this));
