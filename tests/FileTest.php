@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Tests;
 
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
@@ -62,13 +63,11 @@ class FileTest extends TestCase
 
     public function testInvalidFile()
     {
-        $file = tempnam('/tmp', 'invalid');
-        chmod($file, 0000);
+        vfsStream::setup();
+        $stream = vfsStream::newFile('test', 0000);
 
-        @self::assertEquals(false, Bencode::dump($file, []));
-        @self::assertEquals(false, Bencode::load($file));
-
-        unlink($file);
+        @self::assertEquals(false, Bencode::dump($stream->url(), []));
+        @self::assertEquals(false, Bencode::load($stream->url()));
     }
 
     public function testEncodeToInvalidResource()
