@@ -6,6 +6,7 @@ namespace SandFox\Bencode\Tests;
 
 use PHPUnit\Framework\TestCase;
 use SandFoxMe\Bencode\Bencode;
+use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
 
 class FileTest extends TestCase
 {
@@ -68,5 +69,21 @@ class FileTest extends TestCase
         @self::assertEquals(false, Bencode::load($file));
 
         unlink($file);
+    }
+
+    public function testEncodeToInvalidResource()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Output is not a valid stream');
+
+        Bencode::encodeToStream([], false);
+    }
+
+    public function testDecodeFromInvalidResource()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Input is not a valid stream');
+
+        Bencode::decodeStream(false);
     }
 }
