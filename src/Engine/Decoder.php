@@ -141,9 +141,7 @@ final class Decoder
             return;
         }
 
-        if ((string)$int !== $intStr) {
-            throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
-        }
+        throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
     }
 
     private function stringToBigInt(string $intStr): mixed

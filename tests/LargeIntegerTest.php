@@ -59,6 +59,16 @@ class LargeIntegerTest extends TestCase
         self::assertEquals(self::POW_2_1024, $decoded->getValue());
     }
 
+    public function testInvalidMode()
+    {
+        $encoded = 'i' . self::POW_2_1024 . 'e';
+
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Invalid BigMath mode');
+
+        Bencode::decode($encoded, ['bigInt' => 'invalid']);
+    }
+
     // GMP
 
     public function testEncodeLargeIntegerGMP()

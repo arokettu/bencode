@@ -6,6 +6,7 @@ namespace SandFox\Bencode\Tests;
 
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 
 class FileTest extends TestCase
 {
@@ -41,5 +42,48 @@ class FileTest extends TestCase
         rewind($stream);
         $loaded = Bencode::decodeStream($stream);
         self::assertEquals($loaded, $value);
+    }
+
+    public function testDefaultStream()
+    {
+        $value      = [1, 2, 3, 4, 5];
+        $encoded    = Bencode::encode($value);
+
+        $stream = Bencode::encodeToStream($value);
+
+        rewind($stream);
+        $inStream = stream_get_contents($stream);
+        self::assertEquals($encoded, $inStream);
+
+        rewind($stream);
+        $loaded = Bencode::decodeStream($stream);
+        self::assertEquals($loaded, $value);
+    }
+
+    public function testInvalidFile()
+    {
+        $file = tempnam('/tmp', 'invalid');
+        chmod($file, 0000);
+
+        @self::assertEquals(false, Bencode::dump($file, []));
+        @self::assertEquals(false, Bencode::load($file));
+
+        unlink($file);
+    }
+
+    public function testEncodeToInvalidResource()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Output is not a valid stream');
+
+        Bencode::encodeToStream([], false);
+    }
+
+    public function testDecodeFromInvalidResource()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Input is not a valid stream');
+
+        Bencode::decodeStream(false);
     }
 }
