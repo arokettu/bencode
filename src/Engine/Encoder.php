@@ -76,7 +76,7 @@ final class Encoder
 
     private function encodeArray(array $value): void
     {
-        match ($this->isSequentialArray($value)) {
+        match (array_is_list($value)) {
             true  => $this->encodeList($value),
             false => $this->encodeDictionary($value),
         };
@@ -161,20 +161,5 @@ final class Encoder
         }
 
         fwrite($this->stream, 'e');
-    }
-
-    private function isSequentialArray(array $array): bool
-    {
-        $index = 0;
-
-        foreach ($array as $key => $value) {
-            if ($key !== $index) {
-                return false;
-            }
-
-            $index += 1;
-        }
-
-        return true;
     }
 }
