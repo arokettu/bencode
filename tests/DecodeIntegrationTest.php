@@ -53,7 +53,7 @@ class DecodeIntegrationTest extends TestCase
         ]);
 
         self::assertEquals($value, $decoded);
-        self::assertEquals(ArrayObject::class, get_class($decoded[3]));
-        self::assertEquals(stdClass::class,    get_class($decoded[4]));
+        self::assertEquals(ArrayObject::class, \get_class($decoded[3]));
+        self::assertEquals(stdClass::class,    \get_class($decoded[4]));
     }
 }

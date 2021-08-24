@@ -15,7 +15,7 @@ final class ListType implements \IteratorAggregate
     {
         // Cannot typehint iterable in PHP 7.0
         // so wrap array with ArrayIterator and then typehint Traversable
-        if (is_array($iterable)) {
+        if (\is_array($iterable)) {
             $iterable = new \ArrayIterator($iterable);
         }
 

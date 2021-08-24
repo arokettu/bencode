@@ -32,7 +32,7 @@ final class Encoder
         $this->data = $data;
         $this->stream = $stream;
 
-        if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+        if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Output is not a valid stream');
         }
     }
@@ -56,7 +56,7 @@ final class Encoder
 
             // true is converted to integer 1
             case $value === true:
-            case is_int($value):
+            case \is_int($value):
             case $value instanceof BigIntType:
             case $value instanceof \GMP:
             case $value instanceof BigInteger:
@@ -65,11 +65,11 @@ final class Encoder
                 break;
 
             // process arrays
-            case is_array($value):
+            case \is_array($value):
                 $this->encodeArray($value);
                 break;
 
-            case is_object($value):
+            case \is_object($value):
                 $this->encodeObject($value);
                 break;
 
@@ -127,7 +127,7 @@ final class Encoder
     {
         $string = (string)$string;
 
-        fwrite($this->stream, (string)strlen($string));
+        fwrite($this->stream, (string)\strlen($string));
         fwrite($this->stream, ':');
         fwrite($this->stream, $string);
     }
@@ -157,7 +157,7 @@ final class Encoder
             }
 
             // do not use php array keys here to prevent numeric strings becoming integers again
-            $dictData[] = [strval($key), $value];
+            $dictData[] = [\strval($key), $value];
         }
 
         // sort by keys - rfc requirement

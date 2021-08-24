@@ -22,7 +22,7 @@ final class Util
 
         // false and empty string will be 0 and the test will pass
         // phpcs:ignore PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecated
-        $funcOverload = intval(ini_get('mbstring.func_overload'));
+        $funcOverload = \intval(ini_get('mbstring.func_overload'));
 
         if ($funcOverload & self::MBSTRING_OVERLOAD_CONFLICT) {
             // @codeCoverageIgnoreStart

@@ -48,7 +48,7 @@ final class Decoder
         $this->stream = $stream;
         $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
 
-        if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+        if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Input is not a valid stream');
         }
     }
@@ -210,7 +210,7 @@ final class Decoder
 
         $str = $len === 0 ? '' : fread($this->stream, $len);
 
-        if (strlen($str) !== $len) {
+        if (\strlen($str) !== $len) {
             throw new ParseErrorException('Unexpected end of file while processing string');
         }
 
@@ -250,12 +250,12 @@ final class Decoder
         $prevKey = null;
 
         // we have an array [key1, value1, key2, value2, key3, value3, ...]
-        while (count($this->value)) {
+        while (\count($this->value)) {
             $dictKey = array_shift($this->value);
-            if (is_string($dictKey) === false) {
+            if (\is_string($dictKey) === false) {
                 throw new ParseErrorException('Non string key found in the dictionary');
             }
-            if (count($this->value) === 0) {
+            if (\count($this->value) === 0) {
                 throw new ParseErrorException("Dictionary key without corresponding value: '{$dictKey}'");
             }
             if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
@@ -331,7 +331,7 @@ final class Decoder
         }
 
         if (is_callable($type)) {
-            return call_user_func($type, $array);
+            return \call_user_func($type, $array);
         }
 
         if (class_exists($type)) {
