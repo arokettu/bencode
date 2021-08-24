@@ -15,7 +15,7 @@ class DecodeStringTest extends TestCase
         return "Invalid string length value: '{$value}'";
     }
 
-    public function testValid()
+    public function testValid(): void
     {
         // simple string
         self::assertEquals('String', Bencode::decode('6:String'));
@@ -27,7 +27,7 @@ class DecodeStringTest extends TestCase
         self::assertEquals('日本語', Bencode::decode('9:日本語'));
     }
 
-    public function testIncorrectLengthZeroPrefix()
+    public function testIncorrectLengthZeroPrefix(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsgLength('06'));
@@ -35,7 +35,7 @@ class DecodeStringTest extends TestCase
         Bencode::decode('06:String');
     }
 
-    public function testIncorrectLengthNegative()
+    public function testIncorrectLengthNegative(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsgLength('-6'));
@@ -43,7 +43,7 @@ class DecodeStringTest extends TestCase
         Bencode::decode('-6:String');
     }
 
-    public function testIncorrectLengthFloat()
+    public function testIncorrectLengthFloat(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsgLength('6.0'));
@@ -51,7 +51,7 @@ class DecodeStringTest extends TestCase
         Bencode::decode('6.0:String');
     }
 
-    public function testIncorrectLengthNotNumeric()
+    public function testIncorrectLengthNotNumeric(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsgLength('six'));
@@ -59,7 +59,7 @@ class DecodeStringTest extends TestCase
         Bencode::decode('six:String');
     }
 
-    public function testUnexpectedEof()
+    public function testUnexpectedEof(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file while processing string');

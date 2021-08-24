@@ -11,7 +11,7 @@ use SandFox\Bencode\Types\BencodeSerializable;
 
 class EncodeEmptyTest extends TestCase
 {
-    public function testNoRootNull()
+    public function testNoRootNull(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unable to encode an empty value');
@@ -19,7 +19,7 @@ class EncodeEmptyTest extends TestCase
         Bencode::encode(null);
     }
 
-    public function testNoRootFalse()
+    public function testNoRootFalse(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unable to encode an empty value');
@@ -27,7 +27,7 @@ class EncodeEmptyTest extends TestCase
         Bencode::encode(false);
     }
 
-    public function testNoSerializableNull()
+    public function testNoSerializableNull(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unable to encode an empty value');
@@ -40,7 +40,7 @@ class EncodeEmptyTest extends TestCase
         });
     }
 
-    public function testNoSerializableFalse()
+    public function testNoSerializableFalse(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unable to encode an empty value');
@@ -53,7 +53,7 @@ class EncodeEmptyTest extends TestCase
         });
     }
 
-    public function testSkipInList()
+    public function testSkipInList(): void
     {
         self::assertEquals(
             'li1ei2ei3ei4ei5ee',
@@ -61,7 +61,7 @@ class EncodeEmptyTest extends TestCase
         );
     }
 
-    public function testSkipInDict()
+    public function testSkipInDict(): void
     {
         self::assertEquals(
             'd1:ai1e1:ci2e1:ei3ee',

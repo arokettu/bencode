@@ -20,7 +20,7 @@ class LargeIntegerTest extends TestCase
 
     // common
 
-    public function testDecodeLargeIntegerNoBigMath()
+    public function testDecodeLargeIntegerNoBigMath(): void
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
@@ -29,7 +29,7 @@ class LargeIntegerTest extends TestCase
         Bencode::decode($encoded);
     }
 
-    public function testDecodeLargeNegIntegerNoBigMath()
+    public function testDecodeLargeNegIntegerNoBigMath(): void
     {
         $encoded = 'i-' . self::POW_2_1024 . 'e';
 
@@ -38,7 +38,7 @@ class LargeIntegerTest extends TestCase
         Bencode::decode($encoded);
     }
 
-    public function testDecodeLargeIntegerCallback()
+    public function testDecodeLargeIntegerCallback(): void
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
@@ -49,7 +49,7 @@ class LargeIntegerTest extends TestCase
         self::assertEquals(self::POW_2_1024, $decoded);
     }
 
-    public function testDecodeLargeIntegerClassName()
+    public function testDecodeLargeIntegerClassName(): void
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
@@ -59,7 +59,7 @@ class LargeIntegerTest extends TestCase
         self::assertEquals(self::POW_2_1024, $decoded->getValue());
     }
 
-    public function testInvalidMode()
+    public function testInvalidMode(): void
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
@@ -71,7 +71,7 @@ class LargeIntegerTest extends TestCase
 
     // GMP
 
-    public function testEncodeLargeIntegerGMP()
+    public function testEncodeLargeIntegerGMP(): void
     {
         $largeInt = gmp_pow(2, 1024);
         $expected = 'i' . self::POW_2_1024 . 'e';
@@ -88,7 +88,7 @@ class LargeIntegerTest extends TestCase
         self::assertEquals($expected, $encoded);
     }
 
-    public function testDecodeLargeIntegerGMP()
+    public function testDecodeLargeIntegerGMP(): void
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
         $expected = gmp_pow(2, 1024);
@@ -107,7 +107,7 @@ class LargeIntegerTest extends TestCase
 
     // Pear
 
-    public function testEncodeLargeIntegerPear()
+    public function testEncodeLargeIntegerPear(): void
     {
         $largeInt = (new \Math_BigInteger(1))->bitwise_leftShift(1024);
         $expected = 'i' . self::POW_2_1024 . 'e';
@@ -124,7 +124,7 @@ class LargeIntegerTest extends TestCase
         self::assertEquals($expected, $encoded);
     }
 
-    public function testDecodeLargeIntegerPear()
+    public function testDecodeLargeIntegerPear(): void
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
         $expected = (new \Math_BigInteger(1))->bitwise_leftShift(1024);
@@ -143,7 +143,7 @@ class LargeIntegerTest extends TestCase
 
     // brick/math
 
-    public function testEncodeLargeIntegerBrick()
+    public function testEncodeLargeIntegerBrick(): void
     {
         $largeInt = BigInteger::of(2)->power(1024);
         $expected = 'i' . self::POW_2_1024 . 'e';
@@ -160,7 +160,7 @@ class LargeIntegerTest extends TestCase
         self::assertEquals($expected, $encoded);
     }
 
-    public function testDecodeLargeIntegerBrick()
+    public function testDecodeLargeIntegerBrick(): void
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
         $expected = BigInteger::of(2)->power(1024);
@@ -179,7 +179,7 @@ class LargeIntegerTest extends TestCase
 
     // internal BigIntType
 
-    public function testEncodeLargeIntegerInternal()
+    public function testEncodeLargeIntegerInternal(): void
     {
         $largeInt = new BigIntType(self::POW_2_1024); // no math, just a string internally
         $expected = 'i' . self::POW_2_1024 . 'e';
@@ -196,7 +196,7 @@ class LargeIntegerTest extends TestCase
         self::assertEquals($expected, $encoded);
     }
 
-    public function testDecodeLargeIntegerInternal()
+    public function testDecodeLargeIntegerInternal(): void
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
         $expected = new BigIntType(self::POW_2_1024);

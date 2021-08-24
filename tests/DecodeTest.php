@@ -15,7 +15,7 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
  */
 class DecodeTest extends TestCase
 {
-    public function testJunk()
+    public function testJunk(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Probably some junk after the end of the file');
@@ -23,7 +23,7 @@ class DecodeTest extends TestCase
         Bencode::decode('i0ejunk');
     }
 
-    public function testValidBencodeJunkIsAlsoJunk()
+    public function testValidBencodeJunkIsAlsoJunk(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Probably some junk after the end of the file');
@@ -31,7 +31,7 @@ class DecodeTest extends TestCase
         Bencode::decode('i0ele');
     }
 
-    public function testNothing()
+    public function testNothing(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
@@ -39,7 +39,7 @@ class DecodeTest extends TestCase
         Bencode::decode('');
     }
 
-    public function testRootIntegerNotFinalized()
+    public function testRootIntegerNotFinalized(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
@@ -47,7 +47,7 @@ class DecodeTest extends TestCase
         Bencode::decode('i123');
     }
 
-    public function testRootStringNotFinalized()
+    public function testRootStringNotFinalized(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
@@ -55,7 +55,7 @@ class DecodeTest extends TestCase
         Bencode::decode('10:abc');
     }
 
-    public function testRootStringDeclNotFinalized()
+    public function testRootStringDeclNotFinalized(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
@@ -63,7 +63,7 @@ class DecodeTest extends TestCase
         Bencode::decode('10');
     }
 
-    public function testRootListNotFinalized()
+    public function testRootListNotFinalized(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
@@ -71,7 +71,7 @@ class DecodeTest extends TestCase
         Bencode::decode('li213ei123e');
     }
 
-    public function testRootDictionaryNotFinalized()
+    public function testRootDictionaryNotFinalized(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');

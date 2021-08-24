@@ -15,7 +15,7 @@ class DecodeIntegerTest extends TestCase
         return "Invalid integer format or integer overflow: '{$value}'";
     }
 
-    public function testValid()
+    public function testValid(): void
     {
         // valid values
         self::assertEquals(213, Bencode::decode('i213e'));
@@ -23,7 +23,7 @@ class DecodeIntegerTest extends TestCase
         self::assertEquals(0, Bencode::decode('i0e'));
     }
 
-    public function testEmptyValue()
+    public function testEmptyValue(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg(''));
@@ -31,7 +31,7 @@ class DecodeIntegerTest extends TestCase
         Bencode::decode('ie');
     }
 
-    public function testLeadingZero()
+    public function testLeadingZero(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('013'));
@@ -39,7 +39,7 @@ class DecodeIntegerTest extends TestCase
         Bencode::decode('i013e');
     }
 
-    public function testLeadingZeroNegative()
+    public function testLeadingZeroNegative(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('-013'));
@@ -47,7 +47,7 @@ class DecodeIntegerTest extends TestCase
         Bencode::decode('i-013e');
     }
 
-    public function testMinusZero()
+    public function testMinusZero(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('-0'));
@@ -55,7 +55,7 @@ class DecodeIntegerTest extends TestCase
         Bencode::decode('i-0e');
     }
 
-    public function testFloat()
+    public function testFloat(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('2.71828'));
@@ -63,7 +63,7 @@ class DecodeIntegerTest extends TestCase
         Bencode::decode('i2.71828e');
     }
 
-    public function testString()
+    public function testString(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('ffafw'));
@@ -71,7 +71,7 @@ class DecodeIntegerTest extends TestCase
         Bencode::decode('iffafwe');
     }
 
-    public function testOverflow()
+    public function testOverflow(): void
     {
         $this->expectException(ParseErrorException::class);
 
