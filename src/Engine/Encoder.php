@@ -25,7 +25,7 @@ final class Encoder
 {
     public function __construct(private mixed $data, private $stream)
     {
-        if (!is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+        if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Output is not a valid stream');
         }
     }
@@ -45,7 +45,7 @@ final class Encoder
         match (true) {
             // first check if we have integer
             // true is converted to integer 1
-            is_int($value),
+            \is_int($value),
             $value === true,
             $value instanceof BigIntType,
             $value instanceof \GMP,
@@ -55,13 +55,13 @@ final class Encoder
             // process strings
             // floats become strings
             // nulls become empty strings
-            is_string($value),
-            is_float($value),
+            \is_string($value),
+            \is_float($value),
                 => $this->encodeString((string)$value),
             // process arrays
-            is_array($value) => $this->encodeArray($value),
+            \is_array($value) => $this->encodeArray($value),
             // process objects
-            is_object($value) => $this->encodeObject($value),
+            \is_object($value) => $this->encodeObject($value),
             // empty values
             $value === false,
             $value === null,
@@ -108,7 +108,7 @@ final class Encoder
         };
     }
 
-    private function encodeInteger(int|bool|BigIntType|\GMP|BigInteger|\Math_BigInteger $integer)
+    private function encodeInteger(int|bool|BigIntType|\GMP|BigInteger|\Math_BigInteger $integer): void
     {
         fwrite($this->stream, 'i');
         fwrite($this->stream, (string)$integer);
@@ -117,7 +117,7 @@ final class Encoder
 
     private function encodeString(string $string): void
     {
-        fwrite($this->stream, (string)strlen($string));
+        fwrite($this->stream, (string)\strlen($string));
         fwrite($this->stream, ':');
         fwrite($this->stream, $string);
     }

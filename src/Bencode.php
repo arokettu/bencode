@@ -111,7 +111,7 @@ final class Bencode
             $dictType = $dictionaryType;
         }
 
-        if (count($options) > 0) {
+        if (\count($options) > 0) {
             if (isset($options['dictionaryType'])) {
                 $options['dictType'] ??= $options['dictionaryType'];
                 unset($options['dictionaryType']);

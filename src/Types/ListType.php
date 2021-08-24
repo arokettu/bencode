@@ -13,7 +13,7 @@ final class ListType implements \IteratorAggregate
      */
     public function __construct(iterable $iterable)
     {
-        if (is_array($iterable)) {
+        if (\is_array($iterable)) {
             $iterable = new \ArrayIterator($iterable);
         }
 

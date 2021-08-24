@@ -18,11 +18,14 @@
             <property name="spacesCountAroundEqualsSign" value="0"/>
         </properties>
     </rule>
-<!--    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">-->
-<!--        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>-->
-<!--    </rule>-->
-<!--    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>-->
-<!--    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>-->
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.UselessAnnotation"/>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation"/>
+    </rule>
     <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions">
         <properties>
             <property name="includeSpecialFunctions" value="1"/>
