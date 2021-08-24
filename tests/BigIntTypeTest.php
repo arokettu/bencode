@@ -81,7 +81,7 @@ class BigIntTypeTest extends TestCase
     {
         $int = new BigIntType('123');
 
-        self::assertEquals(gmp_init('123'), $int->toGMP());
+        self::assertEquals(\gmp_init('123'), $int->toGMP());
         self::assertEquals(true, (new \Math_BigInteger('123'))->equals($int->toPear()));
         self::assertEquals(true, BigInteger::of('123')->isEqualTo($int->toBrickMath()));
     }

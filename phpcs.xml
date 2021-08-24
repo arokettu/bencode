@@ -18,6 +18,22 @@
             <property name="spacesCountAroundEqualsSign" value="0"/>
         </properties>
     </rule>
+<!--    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">-->
+<!--        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>-->
+<!--    </rule>-->
+<!--    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>-->
+<!--    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>-->
+    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions">
+        <properties>
+            <property name="includeSpecialFunctions" value="1"/>
+            <property name="include" type="array">
+                <element value="gmp_init"/> <!-- ensure root level gmp -->
+            </property>
+        </properties>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+    <rule ref="SlevomatCodingStandard.PHP.OptimizedFunctionsWithoutUnpacking"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
     <config name="testVersion" value="8.0-"/>
     <file>src</file>
     <file>tests</file>
