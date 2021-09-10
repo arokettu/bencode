@@ -3,8 +3,9 @@
 [![Packagist](https://img.shields.io/packagist/v/sandfoxme/bencode.svg?style=flat-square)](https://packagist.org/packages/sandfoxme/bencode)
 [![PHP](https://img.shields.io/packagist/php-v/sandfoxme/bencode/1.x-dev.svg?style=flat-square&label=php%20for%201.x)](https://packagist.org/packages/sandfoxme/bencode)
 [![PHP](https://img.shields.io/packagist/php-v/sandfoxme/bencode/2.x-dev.svg?style=flat-square&label=php%20for%202.x)](https://packagist.org/packages/sandfoxme/bencode)
+[![PHP](https://img.shields.io/packagist/php-v/sandfoxme/bencode/3.x-dev.svg?style=flat-square&label=php%20for%203.x)](https://packagist.org/packages/sandfoxme/bencode)
 [![Packagist](https://img.shields.io/github/license/sandfoxme/bencode.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/sandfox/bencode/2.x.svg?style=flat-square)](https://gitlab.com/sandfox/bencode/-/pipelines)
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/sandfox/bencode/3.x.svg?style=flat-square)](https://gitlab.com/sandfox/bencode/-/pipelines)
 [![Codecov](https://img.shields.io/codecov/c/gl/sandfox/bencode?style=flat-square)](https://codecov.io/gl/sandfox/bencode/)
 
 [Bencode] is the encoding used by the peer-to-peer file sharing system
@@ -35,9 +36,13 @@ composer require 'sandfoxme/bencode'
 Read full documentation here: <https://sandfox.dev/php/bencode.html>
 
 Documentation for earlier versions can be found on Read the Docs:
-<https://bencode.readthedocs.io/en/1.x/>
+
+* 1.x: <https://bencode.readthedocs.io/en/1.x/>
+* 2.x: <https://bencode.readthedocs.io/en/2.x/>
 
 ## Support
+
+All major versions are in active support: 1.x for PHP 7.0+, 2.x for PHP 8.0+, 3.x for PHP 8.1+.
 
 Please file issues on our main repo at GitLab: <https://gitlab.com/sandfox/bencode/-/issues>
 
