@@ -10,22 +10,27 @@ use SandFox\Bencode\Types\BigIntType;
 
 enum BigInt
 {
-    case NONE;
-    case INTERNAL;
+    case None;
+    case Internal;
     case GMP;
-    case BRICK_MATH;
     case PEAR;
+    case BrickMath;
+
+    // aliases
+    public const NONE       = self::None;
+    public const INTERNAL   = self::Internal;
+    public const BRICK_MATH = self::BrickMath;
 
     public function getHandler(): \Closure
     {
         return match ($this) {
-            self::NONE       => fn ($value) => throw new ParseErrorException(
+            self::None       => fn ($value) => throw new ParseErrorException(
                 "Integer overflow: '{$value}'"
             ),
-            self::INTERNAL   => fn ($value) => new BigIntType($value),
-            self::GMP        => fn ($value) => \gmp_init($value),
-            self::BRICK_MATH => fn ($value) => BigInteger::of($value),
-            self::PEAR       => fn ($value) => new \Math_BigInteger($value),
+            self::Internal  => fn ($value) => new BigIntType($value),
+            self::GMP       => fn ($value) => \gmp_init($value),
+            self::PEAR      => fn ($value) => new \Math_BigInteger($value),
+            self::BrickMath => fn ($value) => BigInteger::of($value),
         };
     }
 }

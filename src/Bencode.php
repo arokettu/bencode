@@ -19,9 +19,9 @@ final class Bencode
     public static function decode(
         string $bencoded,
         array $options = [],
-        Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|string|callable $listType = Bencode\Collection::Array,
+        Bencode\Collection|string|callable $dictType = Bencode\Collection::Array,
+        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::None,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->decode($bencoded);
     }
@@ -39,9 +39,9 @@ final class Bencode
     public static function decodeStream(
         $readStream,
         array $options = [],
-        Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|string|callable $listType = Bencode\Collection::Array,
+        Bencode\Collection|string|callable $dictType = Bencode\Collection::Array,
+        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::None,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->decodeStream($readStream);
     }
@@ -59,9 +59,9 @@ final class Bencode
     public static function load(
         string $filename,
         array $options = [],
-        Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|string|callable $listType = Bencode\Collection::Array,
+        Bencode\Collection|string|callable $dictType = Bencode\Collection::Array,
+        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::None,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->load($filename);
     }

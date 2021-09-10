@@ -6,10 +6,13 @@ namespace SandFox\Bencode;
 
 final class Encoder
 {
+    private bool $useStringable;
+    private bool $useJsonSerializable;
+
     public function __construct(
         array $options = [],
-        private bool $useStringable = false,
-        private bool $useJsonSerializable = false,
+        bool $useStringable = false,
+        bool $useJsonSerializable = false,
     ) {
         $this->useStringable = $options['useStringable'] ?? $useStringable;
         $this->useJsonSerializable = $options['useJsonSerializable'] ?? $useJsonSerializable;

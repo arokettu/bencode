@@ -6,15 +6,20 @@ namespace SandFox\Bencode\Bencode;
 
 enum Collection
 {
-    case ARRAY;
-    case OBJECT;
-    public const STDCLASS = self::OBJECT;
+    case Array;
+    case Object;
+    public const stdClass   = self::Object;
+
+    // aliases
+    public const ARRAY      = self::Array;
+    public const OBJECT     = self::Object;
+    public const STDCLASS   = self::Object;
 
     public function getHandler(): \Closure
     {
         return match ($this) {
-            self::ARRAY  => fn ($value) => $value,
-            self::OBJECT => fn ($value) => (object)$value,
+            self::Array  => fn ($value) => $value,
+            self::Object => fn ($value) => (object)$value,
         };
     }
 }

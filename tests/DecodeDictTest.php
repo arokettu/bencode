@@ -81,14 +81,14 @@ class DecodeDictTest extends TestCase
         $encoded = 'd2:k1i2e2:k22:s12:k3i3e2:k42:s22:k5i5ee';
 
         // array
-        $decodedArray = Bencode::decode($encoded, dictType: Bencode\Collection::ARRAY);
+        $decodedArray = Bencode::decode($encoded, dictType: Bencode\Collection::Array);
 
         $this->assertTrue(is_array($decodedArray));
         $this->assertEquals($dict, $decodedArray);
 
         // stdClass
         $object = (object)$dict;
-        $decodedObject = Bencode::decode($encoded, dictType: Bencode\Collection::OBJECT);
+        $decodedObject = Bencode::decode($encoded, dictType: Bencode\Collection::Object);
 
         $this->assertEquals(stdClass::class, get_class($decodedObject));
         $this->assertEquals($object, $decodedObject);
