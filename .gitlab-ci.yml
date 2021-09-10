@@ -43,10 +43,10 @@ coverage:
     - bash <(curl -s https://codecov.io/bash)
 
 # lowest version
-test-8.0:
+test-8.1:
   extends: .test
   stage: test
-  image: php:8.0
+  image: php:8.1-rc
 
 # latest unstable
 test-rc:
