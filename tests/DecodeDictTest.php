@@ -9,7 +9,9 @@ namespace SandFox\Bencode\Tests;
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
+use SandFox\Bencode\Types\DictType;
 use stdClass;
 
 class DecodeDictTest extends TestCase
@@ -109,5 +111,18 @@ class DecodeDictTest extends TestCase
 
         $this->assertEquals(ArrayObject::class, get_class($decodedCallback));
         $this->assertEquals($arrayObject, $decodedCallback);
+    }
+
+    public function testNoRepeatedKeys(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Dictionary contains repeated keys: 'key'");
+
+        Bencode::encode(
+            new DictType((function () {
+                yield 'key' => 'value1';
+                yield 'key' => 'value2';
+            })())
+        );
     }
 }

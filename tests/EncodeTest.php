@@ -23,21 +23,8 @@ class EncodeTest extends TestCase
     {
         // We can't serialize non-stringable objects
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of " . get_class($this));
+        $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of " . \get_class($this));
 
         Bencode::encode($this);
-    }
-
-    public function testNoRepeatedKeys()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Dictionary contains repeated keys: 'key'");
-
-        Bencode::encode(
-            (function () {
-                yield 'key' => 'value1';
-                yield 'key' => 'value2';
-            })()
-        );
     }
 }
