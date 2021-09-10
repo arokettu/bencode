@@ -50,8 +50,7 @@ final class Bencode
         Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
         Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
-        $options = array_merge(compact('listType', 'dictType', 'bigInt'), $options);
-        return (new Decoder(...$options))->decode($bencoded);
+        return (new Decoder($options, $listType, $dictType, $bigInt))->decode($bencoded);
     }
 
     /**
@@ -87,8 +86,7 @@ final class Bencode
         Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
         Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
-        $options = array_merge(compact('listType', 'dictType', 'bigInt'), $options);
-        return (new Decoder(...$options))->decodeStream($readStream);
+        return (new Decoder($options, $listType, $dictType, $bigInt))->decodeStream($readStream);
     }
 
     /**
@@ -131,16 +129,6 @@ final class Bencode
         Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
         Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
-        $stream = fopen($filename, 'r');
-
-        if ($stream === false) {
-            return false;
-        }
-
-        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $bigInt);
-
-        fclose($stream);
-
-        return $decoded;
+        return (new Decoder($options, $listType, $dictType, $bigInt))->load($filename);
     }
 }

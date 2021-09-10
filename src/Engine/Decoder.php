@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @noinspection PhpVoidFunctionResultUsedInspection
- */
-
 declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;

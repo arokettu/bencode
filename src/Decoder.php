@@ -13,11 +13,16 @@ final class Decoder
     private \Closure $bigIntHandler;
 
     public function __construct(
+        array $options = [],
         Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
         Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
         Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
     ) {
-        $this->listHandler = match(true) {
+        $listType = $options['listType'] ?? $listType;
+        $dictType = $options['dictType'] ?? $dictType;
+        $bigInt   = $options['bigInt']   ?? $bigInt;
+
+        $this->listHandler = match (true) {
             $listType instanceof Bencode\Collection,
                 => $listType->getHandler(),
             is_callable($listType)
@@ -83,6 +88,27 @@ final class Decoder
         $stream = fopen('php://temp', 'r+');
         fwrite($stream, $bencoded);
         rewind($stream);
+
+        $decoded = self::decodeStream($stream);
+
+        fclose($stream);
+
+        return $decoded;
+    }
+
+    /**
+     * Load data from bencoded file
+     *
+     * @param string $filename
+     * @return mixed
+     */
+    public function load(string $filename): mixed
+    {
+        $stream = fopen($filename, 'r');
+
+        if ($stream === false) {
+            return false;
+        }
 
         $decoded = self::decodeStream($stream);
 
