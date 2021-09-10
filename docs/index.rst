@@ -107,7 +107,7 @@ This will work exactly like JsonSerializable_ interface.
 
     class MyFile implements BencodeSerializable
     {
-        public function bencodeSerialize()
+        public function bencodeSerialize(): mixed
         {
             return [
                 'class' => static::class,
@@ -293,9 +293,9 @@ This parameter is kept for compatibility with 1.x calls.
     );
     // is equivalent to
     $data = Bencode::decode("...", [
-        listType: Bencode\Collection::Array,
-        dictType: Bencode\Collection::Object,
-        bigInt:   Bencode\BigInt::Internal,
+        'listType' => Bencode\Collection::Array,
+        'dictType' => Bencode\Collection::Object,
+        'bigInt' =>   Bencode\BigInt::Internal,
     ]);
 
 Encoder and Decoder objects
@@ -317,7 +317,7 @@ Encoder and Decoder objects
     $encoder->encodeToStream($data, $stream);
     $encoder->dump($data, $filename);
 
-    $decoder = new Decoder(bigInt: Bencode/BigInt::Internal);
+    $decoder = new Decoder(bigInt: Bencode\BigInt::Internal);
     // all calls available:
     $decoder->decode($encoded);
     $decoder->decodeStream($encoded, $stream);
