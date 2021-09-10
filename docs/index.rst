@@ -149,7 +149,7 @@ Decoding
         listType: function ($array) { // or callback for greater flexibility
             return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
         },
-    ]);
+    );
 
 Large integers
 --------------
