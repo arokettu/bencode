@@ -23,12 +23,6 @@ Encoding
 Scalars and arrays
 ------------------
 
-.. warning:: *Possibly breaking change in 1.4 and 2.4:*
-
-    Before 1.4 and 2.4 ``null`` was encoded as empty string and ``false`` was encoded as 0.
-    Since bencode spec doesn't have bool and null values, it is not considered a bc break.
-    Judging by info[private] behavior in BitTorrent spec, the old behavior could be considered as a bug.
-
 .. code-block:: php
 
     <?php
@@ -47,25 +41,37 @@ Scalars and arrays
 Objects
 -------
 
+.. note:: Parameter order is not guaranteed for options, use named parameters
+
 .. code-block:: php
 
     <?php
 
     use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Types\DictType;
+    use SandFox\Bencode\Types\ListType;
 
-    // traversable objects and stdClass become dictionaries
+    // ArrayObject and stdClass become dictionaries
     $encoded = Bencode::encode(new ArrayObject([1,2,3])); // "d1:0i1e1:1i2e1:2i3ee"
     $std = new stdClass();
     $std->a = '123';
     $std->b = 456;
     $encoded = Bencode::encode($std); // "d1:a3:1231:bi456ee"
 
-    // you can force traversable to become a list by wrapping it with ListType
+    // you can use any traversable as a list by wrapping it with ListType
     // keys will be discarded in that case
-    use SandFox\Bencode\Types\ListType;
     $encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
 
-    // other objects will be converted to string if possible or generate an error if not
+    // you can use any traversable as a dictionary by wrapping it with DictType
+    // keys will be cast to string and must be unique
+    $encoded = Bencode::encode(new DictType(
+        (function () {
+            yield 'key1' => 'value1';
+            yield 'key2' => 'value2';
+        })()
+    )); // "d4:key16:value14:key26:value2e"
+
+    // optionally you can convert Stringable objects to strings
     class ToString
     {
         public function __toString()
@@ -74,11 +80,11 @@ Objects
         }
     }
 
-    $encoded = Bencode::encode(new ToString()); // "11:I am string"
+    $encoded = Bencode::encode(new ToString(), useStringable: true); // "11:I am string"
 
-    // Since 1.5 and 2.5: GMP object becomes integer
-    // Since 1.6 and 2.6 Pear's Math_BigInteger and brick/math
-    //      and internal type BigIntType (simple numeric string wrapper) are also supported
+    // GMP object, Pear's Math_BigInteger, brick/math,
+    // and internal type BigIntType (simple numeric string wrapper)
+    // become integer
     use SandFox\Bencode\Types\BigIntType;
     $encoded = Bencode::encode([
         'gmp' => gmp_pow(2, 96),
@@ -115,6 +121,31 @@ This will work exactly like JsonSerializable_ interface.
 
     $encoded = Bencode::encode($file); // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
 
+Optionally you can use JsonSerializable itself too:
+
+.. code-block:: php
+
+    <?php
+
+    use SandFox\Bencode\Bencode;
+
+    class MyFile implements JsonSerializable
+    {
+        public function jsonSerialize()
+        {
+            return [
+                'class' => static::class,
+                'name'  => 'myfile.torrent',
+                'size'  => 5 * 1024 * 1024,
+            ];
+        }
+    }
+
+    $file = new MyFile;
+
+    // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
+    $encoded = Bencode::encode($file, useJsonSerializable: true);
+
 Decoding
 ========
 
@@ -139,12 +170,17 @@ Decoding
     // You can control lists and dictionaries types with options
     $data = Bencode::decode(
         "...",
+        listType: Bencode\Collection::ARRAY,  // this is a default for both listType and dictType
+        dictType: Bencode\Collection::OBJECT, // convert to stdClass
+    );
+    // advanced variants:
+    $data = Bencode::decode(
+        "...",
         dictType: ArrayObject::class, // pass class name, new $type($array) will be created
         listType: function ($array) { // or callback for greater flexibility
             return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
         },
-    ]);
-    // default value for both types is 'array'. you can also use 'object' for stdClass
+    );
 
 Large integers
 --------------
@@ -155,23 +191,7 @@ Large integers
 
 By default the library only works with a native integer type but if you need to use large integers,
 for example, if you try to parse a torrent file for a >= 4GB file on a 32 bit system,
-you can enable big integer support.
-
-Versions 1.5 and 2.5 added support for GMP_:
-
-.. code-block:: php
-
-    <?php
-
-    use SandFox\Bencode\Bencode;
-
-    // Enable useGMP option to decode huge integers to the GMP object
-    $data = Bencode::decode(
-        "d3:gmpi79228162514264337593543950336ee",
-        useGMP: true,
-    ]; // ['gmp' => gmp_init('79228162514264337593543950336')]
-
-Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and custom handlers:
+you need to enable big integer support.
 
 .. code-block:: php
 
@@ -182,27 +202,27 @@ Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and c
     // GMP
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
-        bigInt: Bencode\BigInt::GMP, // same as ['useGMP' => true]
-    ]; // ['int' => gmp_init('79228162514264337593543950336')]
+        bigInt: Bencode\BigInt::GMP,
+    ); // ['int' => gmp_init('79228162514264337593543950336')]
 
     // brick/math
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::BRICK_MATH,
-    ]; // ['int' => \Brick\Math\BigInteger::of('79228162514264337593543950336')]
+    ); // ['int' => \Brick\Math\BigInteger::of('79228162514264337593543950336')]
 
     // Math_BigInteger from PEAR
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::PEAR,
-    ]; // ['int' => new \Math_BigInteger('79228162514264337593543950336')]
+    ); // ['int' => new \Math_BigInteger('79228162514264337593543950336')]
 
     // Internal BigIntType class
     // does not require any external dependencies but also does not allow any manipulation
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
-        bigInt: Bencode\BigInt::INTERNAL
-    ]; // ['int' => new \SandFox\Bencode\Types\BigIntType('79228162514264337593543950336')]
+        bigInt: Bencode\BigInt::INTERNAL,
+    ); // ['int' => new \SandFox\Bencode\Types\BigIntType('79228162514264337593543950336')]
     // BigIntType is a value object with several getters:
     // simple string representation:
     $str = $data->getValue();
@@ -215,11 +235,11 @@ Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and c
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
         bigInt: fn($v) => v,
-    ]; // ['int' => '79228162514264337593543950336']
+    ); // ['int' => '79228162514264337593543950336']
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
         bigInt: MyBigIntHandler::class,
-    ]; // ['int' => new MyBigIntHandler('79228162514264337593543950336')]]
+    ); // ['int' => new MyBigIntHandler('79228162514264337593543950336')]]
 
 .. _GMP: https://www.php.net/manual/en/book.gmp.php
 .. _brick/math: https://github.com/brick/math
@@ -253,15 +273,78 @@ Working with streams
     // save data to a bencoded writable stream or to a new php://temp if no stream is specified
     Bencode::encodeToStream($data, fopen('...', 'w'));
 
-Upgrade from 1.x
+Options Array
+=============
+
+You can still use 1.x style options array instead of named params.
+This parameter is kept for compatibility with 1.x calls.
+
+.. code-block::
+
+    <?php
+
+    use SandFox\Bencode\Bencode;
+
+    $data = Bencode::decode(
+        "...",
+        listType: Bencode\Collection::ARRAY,
+        dictType: Bencode\Collection::OBJECT,
+        bigInt:   Bencode\BigInt::INTERNAL,
+    );
+    // is equivalent to
+    $data = Bencode::decode("...", [
+        listType: Bencode\Collection::ARRAY,
+        dictType: Bencode\Collection::OBJECT,
+        bigInt:   Bencode\BigInt::INTERNAL,
+    ]);
+
+Encoder and Decoder objects
+===========================
+
+3.0 added Encoder and Decoder objects that can be configured first.
+
+.. code-block::
+
+    <?php
+
+    use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Encoder;
+    use SandFox\Bencode\Decoder;
+
+    $encoder = new Encoder(useStringable: true);
+    // all calls available:
+    $encoder->encode($data);
+    $encoder->encodeToStream($data, $stream);
+    $encoder->dump($data, $filename);
+
+    $decoder = new Decoder(bigInt: Bencode/BigInt::INTERNAL);
+    // all calls available:
+    $decoder->decode($encoded);
+    $decoder->decodeStream($encoded, $stream);
+    $decoder->load($filename);
+
+Upgrade from 2.x
 ================
 
 Main breaking changes:
 
-* Required PHP version was bumped to 8.0.
+* Required PHP version was bumped to 8.1.
   Upgrade your interpreter.
-* Legacy namespace ``SandFoxMe`` was removed.
-  You should search and replace ``SandFoxMe\Bencode`` with ``SandFox\Bencode`` in your code if you haven't done it already.
+* Decoding:
+
+  * Removed deprecated options: ``dictionaryType`` (use ``dictType``), ``useGMP`` (use ``bigInt: Bencode\BigInt::GMP``)
+  * ``Bencode\BigInt`` and ``Bencode\Collection`` are now enums,
+    therefore ``dictType``, ``listType``, ``bigInt`` params no longer accept bare string values
+    (like ``'array'`` or ``'object'`` or ``'gmp'``).
+    If you already use constants nothing will change for you.
+
+* Encoding:
+
+  * Traversables no longer become dictionaries by default.
+    You need to wrap them with ``DictType``.
+  * Stringables no longer become strings by default.
+    Use ``useStringable: true`` to return old behavior.
+  * ``dump($filename, $data)`` became ``dump($data, $filename)`` for consistency with streams.
 
 License
 =======
