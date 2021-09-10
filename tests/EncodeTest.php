@@ -306,4 +306,17 @@ class EncodeTest extends TestCase
 
         Bencode::encode($this);
     }
+
+    public function testNoRepeatedKeys()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Dictionary contains repeated keys: 'key'");
+
+        Bencode::encode(
+            (function () {
+                yield 'key' => 'value1';
+                yield 'key' => 'value2';
+            })()
+        );
+    }
 }
