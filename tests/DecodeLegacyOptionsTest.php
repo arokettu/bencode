@@ -17,7 +17,7 @@ class DecodeLegacyOptionsTest extends TestCase
 
         $decoded = Bencode::decode($encoded, [
             'listType' => ArrayObject::class,
-            'dictType' => Bencode\Collection::Object,
+            'dictType' => Bencode\Collection::OBJECT,
         ]);
 
         $this->assertInstanceOf(ArrayObject::class, $decoded->list);

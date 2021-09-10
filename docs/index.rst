@@ -170,8 +170,8 @@ Decoding
     // You can control lists and dictionaries types with options
     $data = Bencode::decode(
         "...",
-        listType: Bencode\Collection::Array,  // this is a default for both listType and dictType
-        dictType: Bencode\Collection::Object, // convert to stdClass
+        listType: Bencode\Collection::ARRAY,  // this is a default for both listType and dictType
+        dictType: Bencode\Collection::OBJECT, // convert to stdClass
     );
     // advanced variants:
     $data = Bencode::decode(
@@ -208,7 +208,7 @@ you can enable big integer support.
     // brick/math
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
-        bigInt: Bencode\BigInt::BrickMath,
+        bigInt: Bencode\BigInt::BRICK_MATH,
     ); // ['int' => \Brick\Math\BigInteger::of('79228162514264337593543950336')]
 
     // Math_BigInteger from PEAR
@@ -221,7 +221,7 @@ you can enable big integer support.
     // does not require any external dependencies but also does not allow any manipulation
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
-        bigInt: Bencode\BigInt::Internal,
+        bigInt: Bencode\BigInt::INTERNAL,
     ); // ['int' => new \SandFox\Bencode\Types\BigIntType('79228162514264337593543950336')]
     // BigIntType is a value object with several getters:
     // simple string representation:
@@ -287,15 +287,15 @@ This parameter is kept for compatibility with 1.x calls.
 
     $data = Bencode::decode(
         "...",
-        listType: Bencode\Collection::Array,
-        dictType: Bencode\Collection::Object,
-        bigInt:   Bencode\BigInt::Internal,
+        listType: Bencode\Collection::ARRAY,
+        dictType: Bencode\Collection::OBJECT,
+        bigInt:   Bencode\BigInt::INTERNAL,
     );
     // is equivalent to
     $data = Bencode::decode("...", [
-        'listType' => Bencode\Collection::Array,
-        'dictType' => Bencode\Collection::Object,
-        'bigInt' =>   Bencode\BigInt::Internal,
+        'listType' => Bencode\Collection::ARRAY,
+        'dictType' => Bencode\Collection::OBJECT,
+        'bigInt' =>   Bencode\BigInt::INTERNAL,
     ]);
 
 Encoder and Decoder objects
@@ -317,7 +317,7 @@ Encoder and Decoder objects
     $encoder->encodeToStream($data, $stream);
     $encoder->dump($data, $filename);
 
-    $decoder = new Decoder(bigInt: Bencode\BigInt::Internal);
+    $decoder = new Decoder(bigInt: Bencode\BigInt::INTERNAL);
     // all calls available:
     $decoder->decode($encoded);
     $decoder->decodeStream($encoded, $stream);

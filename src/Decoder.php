@@ -14,9 +14,9 @@ final class Decoder
 
     public function __construct(
         array $options = [],
-        Bencode\Collection|string|callable $listType = Bencode\Collection::Array,
-        Bencode\Collection|string|callable $dictType = Bencode\Collection::Array,
-        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::None,
+        Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
+        Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
+        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
     ) {
         $listType = $options['listType'] ?? $listType;
         $dictType = $options['dictType'] ?? $dictType;

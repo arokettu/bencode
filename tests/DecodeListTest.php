@@ -32,14 +32,14 @@ class DecodeListTest extends TestCase
         $encoded    = 'li2e2:s1i3e2:s2i5ee';
 
         // array
-        $decodedArray = Bencode::decode($encoded, listType: Bencode\Collection::Array);
+        $decodedArray = Bencode::decode($encoded, listType: Bencode\Collection::ARRAY);
 
         self::assertTrue(is_array($decodedArray));
         self::assertEquals($list, $decodedArray);
 
         // stdClass
         $object = (object)$list;
-        $decodedObject = Bencode::decode($encoded, listType: Bencode\Collection::Object);
+        $decodedObject = Bencode::decode($encoded, listType: Bencode\Collection::OBJECT);
 
         self::assertEquals(stdClass::class, get_class($decodedObject));
         self::assertEquals($object, $decodedObject);

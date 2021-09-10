@@ -50,7 +50,7 @@ class DecodeIntegrationTest extends TestCase
         $decoded = Bencode::decode(
             $bencode,
             listType: ArrayObject::class,
-            dictType: Bencode\Collection::Object,
+            dictType: Bencode\Collection::OBJECT,
         );
 
         self::assertEquals($value, $decoded);
