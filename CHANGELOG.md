@@ -2,6 +2,12 @@
 
 ## 1.x
 
+### 1.6.2
+
+*Sep 10, 2021*
+
+* Fixed possible invalid dictionary encoding when traversable returns non unique keys
+
 ### 1.6.1
 
 *Feb 14, 2021*
