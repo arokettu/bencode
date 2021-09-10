@@ -12,7 +12,7 @@ class DecodeIntegerTest extends TestCase
 {
     private function errorMsg($value)
     {
-        return "Invalid integer format or integer overflow: '{$value}'";
+        return "Invalid integer format: '{$value}'";
     }
 
     public function testValid(): void
@@ -78,7 +78,7 @@ class DecodeIntegerTest extends TestCase
         $value      = PHP_INT_MAX . '0000'; // PHP_INT_MAX * 10000
         $encoded    = "i{$value}e";
 
-        $this->expectExceptionMessage($this->errorMsg($value));
+        $this->expectExceptionMessage("Integer overflow: '{$value}'");
 
         Bencode::decode($encoded);
     }

@@ -4,11 +4,28 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Bencode;
 
-final class BigInt
+use Brick\Math\BigInteger;
+use SandFox\Bencode\Exceptions\ParseErrorException;
+use SandFox\Bencode\Types\BigIntType;
+
+enum BigInt
 {
-    public const NONE       = 'none';
-    public const INTERNAL   = 'internal';
-    public const GMP        = 'ext-gmp';
-    public const BRICK_MATH = 'brick/math';
-    public const PEAR       = 'pear/math_biginteger';
+    case NONE;
+    case INTERNAL;
+    case GMP;
+    case BRICK_MATH;
+    case PEAR;
+
+    public function getHandler(): \Closure
+    {
+        return match ($this) {
+            self::NONE       => fn ($value) => throw new ParseErrorException(
+                "Integer overflow: '{$value}'"
+            ),
+            self::INTERNAL   => fn ($value) => new BigIntType($value),
+            self::GMP        => fn ($value) => \gmp_init($value),
+            self::BRICK_MATH => fn ($value) => BigInteger::of($value),
+            self::PEAR       => fn ($value) => new \Math_BigInteger($value),
+        };
+    }
 }

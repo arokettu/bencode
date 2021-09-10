@@ -7,6 +7,7 @@ namespace SandFox\Bencode\Tests;
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Types\BigIntType;
 
@@ -25,7 +26,7 @@ class LargeIntegerTest extends TestCase
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
         $this->expectException(ParseErrorException::class);
-        $this->expectExceptionMessage("Invalid integer format or integer overflow: '" . self::POW_2_1024 . "'");
+        $this->expectExceptionMessage("Integer overflow: '" . self::POW_2_1024 . "'");
         Bencode::decode($encoded);
     }
 
@@ -34,7 +35,7 @@ class LargeIntegerTest extends TestCase
         $encoded = 'i-' . self::POW_2_1024 . 'e';
 
         $this->expectException(ParseErrorException::class);
-        $this->expectExceptionMessage("Invalid integer format or integer overflow: '-" . self::POW_2_1024 . "'");
+        $this->expectExceptionMessage("Integer overflow: '-" . self::POW_2_1024 . "'");
         Bencode::decode($encoded);
     }
 
@@ -63,8 +64,8 @@ class LargeIntegerTest extends TestCase
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
-        $this->expectException(ParseErrorException::class);
-        $this->expectExceptionMessage('Invalid BigMath mode');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('BigInt must be Bencode\BigInt enum value, class name, or callback');
 
         Bencode::decode($encoded, bigInt: 'invalid');
     }
@@ -93,14 +94,14 @@ class LargeIntegerTest extends TestCase
         $encoded = 'i' . self::POW_2_1024 . 'e';
         $expected = gmp_pow(2, 1024);
 
-        $decoded = Bencode::decode($encoded, useGMP: true);
+        $decoded = Bencode::decode($encoded, bigInt: Bencode\BigInt::GMP);
         self::assertInstanceOf(\GMP::class, $decoded);
         self::assertEquals($expected, $decoded);
 
         $encodedNeg = 'i-' . self::POW_2_1024 . 'e';
         $expectedNeg = -gmp_pow(2, 1024);
 
-        $decodedNeg = Bencode::decode($encodedNeg, useGMP: true);
+        $decodedNeg = Bencode::decode($encodedNeg, bigInt: Bencode\BigInt::GMP);
         self::assertInstanceOf(\GMP::class, $decoded);
         self::assertEquals($expectedNeg, $decodedNeg);
     }

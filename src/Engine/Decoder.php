@@ -8,12 +8,8 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
 
-use Brick\Math\BigInteger;
-use SandFox\Bencode\Bencode\BigInt;
-use SandFox\Bencode\Bencode\Collection;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
-use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Util\IntUtil;
 
 /**
@@ -27,28 +23,32 @@ final class Decoder
 {
     private mixed $decoded;
 
-    private array $options;
-
     private int $state;
-    private array $stateStack;
     private mixed $value;
+    /** @var int[] */
+    private array $stateStack;
+    /** @var mixed[] */
     private array $valueStack;
 
     private const STATE_ROOT = 1;
     private const STATE_LIST = 2;
     private const STATE_DICT = 3;
 
+    /**
+     * @param resource $stream
+     * @param \Closure $listHandler
+     * @param \Closure $dictHandler
+     * @param \Closure $bigIntHandler
+     */
     public function __construct(
         private $stream,
-        string|callable $listType = Collection::ARRAY,
-        string|callable $dictType = Collection::ARRAY,
-        string|callable $bigInt = BigInt::NONE,
+        private \Closure $listHandler,
+        private \Closure $dictHandler,
+        private \Closure $bigIntHandler,
     ) {
         if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Input is not a valid stream');
         }
-
-        $this->options = compact('listType', 'dictType', 'bigInt');
     }
 
     public function decode(): mixed
@@ -125,45 +125,16 @@ final class Decoder
         }
 
         if (!IntUtil::isValid($intStr)) {
-            throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
+            throw new ParseErrorException("Invalid integer format: '{$intStr}'");
         }
 
-        $int = (int)$intStr;
+        $int = \intval($intStr);
 
-        // detect overflow
-        if ((string)$int === $intStr) {
-            $this->finalizeScalar($int);
-            return;
-        }
-
-        if ($this->options['bigInt'] !== BigInt::NONE) {
-            $this->finalizeScalar($this->stringToBigInt($intStr));
-            return;
-        }
-
-        throw new ParseErrorException("Invalid integer format or integer overflow: '{$intStr}'");
-    }
-
-    private function stringToBigInt(string $intStr): mixed
-    {
-        $bigInt = $this->options['bigInt'];
-
-        return match (true) {
-            $bigInt === BigInt::INTERNAL
-                => new BigIntType($intStr),
-            $bigInt === BigInt::GMP
-                => \gmp_init($intStr),
-            $bigInt === BigInt::BRICK_MATH
-                => BigInteger::of($intStr),
-            $bigInt === BigInt::PEAR
-                => new \Math_BigInteger($intStr),
-            is_callable($bigInt)
-                => $bigInt($intStr),
-            class_exists($bigInt)
-                => new $bigInt($intStr),
-            default
-                => throw new ParseErrorException('Invalid BigMath mode'),
-        };
+        $this->finalizeScalar(
+            \strval($int) === $intStr ?         // detect overflow
+                $int :                          // not overflown: native int
+                ($this->bigIntHandler)($intStr) // overflown: handle big int
+        );
     }
 
     private function processString(): void
@@ -177,9 +148,9 @@ final class Decoder
             throw new ParseErrorException('Unexpected end of file while processing string');
         }
 
-        $len = (int)$lenStr;
+        $len = \intval($lenStr);
 
-        if ((string)$len !== $lenStr || $len < 0) {
+        if (\strval($len) !== $lenStr || $len < 0) {
             throw new ParseErrorException("Invalid string length value: '{$lenStr}'");
         }
 
@@ -208,9 +179,7 @@ final class Decoder
 
     private function finalizeList(): void
     {
-        $value = $this->convertArrayToType($this->value, 'listType');
-
-        $this->pop($value);
+        $this->pop(($this->listHandler)($this->value));
     }
 
     private function finalizeDict(): void
@@ -237,9 +206,7 @@ final class Decoder
             $prevKey = $dictKey;
         }
 
-        $value = $this->convertArrayToType($dict, 'dictType');
-
-        $this->pop($value);
+        $this->pop(($this->dictHandler)($dict));
     }
 
     /**
@@ -284,30 +251,5 @@ final class Decoder
             // we have final result
             $this->decoded = $valueToPrevLevel;
         }
-    }
-
-    private function convertArrayToType(array $array, string $typeOption): mixed
-    {
-        $type = $this->options[$typeOption];
-
-        if ($type === Collection::ARRAY) {
-            return $array;
-        }
-
-        if ($type === Collection::OBJECT) {
-            return (object)$array;
-        }
-
-        if (is_callable($type)) {
-            return \call_user_func($type, $array);
-        }
-
-        if (class_exists($type)) {
-            return new $type($array);
-        }
-
-        throw new InvalidArgumentException(
-            "Invalid type option for '{$typeOption}'. Type should be 'array', 'object', class name, or callback"
-        );
     }
 }

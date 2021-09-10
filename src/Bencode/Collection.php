@@ -4,9 +4,17 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode\Bencode;
 
-final class Collection
+enum Collection
 {
-    public const ARRAY      = 'array';
-    public const OBJECT     = 'object';
-    public const STDCLASS   = 'object';
+    case ARRAY;
+    case OBJECT;
+    public const STDCLASS = self::OBJECT;
+
+    public function getHandler(): \Closure
+    {
+        return match ($this) {
+            self::ARRAY  => fn ($value) => $value,
+            self::OBJECT => fn ($value) => (object)$value,
+        };
+    }
 }
