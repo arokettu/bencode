@@ -19,8 +19,11 @@ This is a pure PHP library that allows you to encode and decode Bencode data.
 composer require 'sandfoxme/bencode'
 ```
 
+Supported versions:
+
 * Version 1.x supports PHP 7.0 and later
 * Version 2.x supports PHP 8.0 and later and has slightly better error handling
+* Version 3.x supports PHP 8.1 and later and is a bit stricter about data type handling
 
 ## Simple use
 
@@ -41,8 +44,6 @@ Documentation for earlier versions can be found on Read the Docs:
 * 2.x: <https://bencode.readthedocs.io/en/2.x/>
 
 ## Support
-
-All major versions are in active support: 1.x for PHP 7.0+, 2.x for PHP 8.0+, 3.x for PHP 8.1+.
 
 Please file issues on our main repo at GitLab: <https://gitlab.com/sandfox/bencode/-/issues>
 
