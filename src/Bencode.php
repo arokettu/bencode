@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode;
 
-use SandFox\Bencode\Engine\Encoder;
-
-/**
- * Class Bencode
- * @package SandFox\Bencode
- * @author Anton Smirnov
- * @license MIT
- */
 final class Bencode
 {
     /**
@@ -78,57 +70,57 @@ final class Bencode
      * Encode arbitrary data to bencoded string
      *
      * @param mixed $data
+     * @param array $options
+     * @param bool $useStringable
+     * @param bool $useJsonSerializable
      * @return string
      */
-    public static function encode(mixed $data): string
-    {
-        $stream = fopen('php://temp', 'r+');
-        self::encodeToStream($data, $stream);
-        rewind($stream);
-
-        $encoded = stream_get_contents($stream);
-
-        fclose($stream);
-
-        return $encoded;
+    public static function encode(
+        mixed $data,
+        array $options = [],
+        bool $useStringable = false,
+        bool $useJsonSerializable = false,
+    ): string {
+        return (new Encoder($options, $useStringable, $useJsonSerializable))->encode($data);
     }
 
     /**
      * Dump data to bencoded stream
      *
      * @param mixed $data
-     * @param resource|null $writeStream Write capable stream. If null, a new php://temp will be created
+     * @param null $writeStream Write capable stream. If null, a new php://temp will be created
+     * @param array $options
+     * @param bool $useStringable
+     * @param bool $useJsonSerializable
      * @return resource Original or created stream
      */
-    public static function encodeToStream(mixed $data, $writeStream = null)
-    {
-        if ($writeStream === null) {
-            $writeStream = fopen('php://temp', 'r+');
-        }
-
-        return (new Encoder($data, $writeStream))->encode();
+    public static function encodeToStream(
+        mixed $data,
+        $writeStream = null,
+        array $options = [],
+        bool $useStringable = false,
+        bool $useJsonSerializable = false,
+    ) {
+        return (new Encoder($options, $useStringable, $useJsonSerializable))->encodeToStream($data, $writeStream);
     }
 
     /**
      * Dump data to bencoded file
      *
-     * @param string $filename
      * @param mixed $data
+     * @param string $filename
+     * @param array $options
+     * @param bool $useStringable
+     * @param bool $useJsonSerializable
      * @return bool success of file_put_contents
      */
-    public static function dump(string $filename, mixed $data): bool
-    {
-        $stream = fopen($filename, 'w');
-
-        if ($stream === false) {
-            return false;
-        }
-
-        self::encodeToStream($data, $stream);
-
-        $stat = fstat($stream);
-        fclose($stream);
-
-        return $stat['size'] > 0;
+    public static function dump(
+        mixed $data,
+        string $filename,
+        array $options = [],
+        bool $useStringable = false,
+        bool $useJsonSerializable = false,
+    ): bool {
+        return (new Encoder($options, $useStringable, $useJsonSerializable))->dump($data, $filename);
     }
 }

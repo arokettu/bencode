@@ -17,7 +17,7 @@ class FileTest extends TestCase
         $value      = [1, 2, 3, 4, 5];
         $encoded    = Bencode::encode($value);
 
-        Bencode::dump($file, $value);
+        Bencode::dump($value, $file);
 
         $onDisk = file_get_contents($file);
         self::assertEquals($encoded, $onDisk);
@@ -66,7 +66,7 @@ class FileTest extends TestCase
         vfsStream::setup();
         $stream = vfsStream::newFile('test', 0000);
 
-        @self::assertEquals(false, Bencode::dump($stream->url(), []));
+        @self::assertEquals(false, Bencode::dump([], $stream->url()));
         @self::assertEquals(false, Bencode::load($stream->url()));
     }
 

@@ -33,7 +33,7 @@ class EncodeEmptyTest extends TestCase
         $this->expectExceptionMessage('Unable to encode an empty value');
 
         Bencode::encode(new class implements BencodeSerializable {
-            public function bencodeSerialize()
+            public function bencodeSerialize(): mixed
             {
                 return null;
             }
@@ -46,7 +46,7 @@ class EncodeEmptyTest extends TestCase
         $this->expectExceptionMessage('Unable to encode an empty value');
 
         Bencode::encode(new class implements BencodeSerializable {
-            public function bencodeSerialize()
+            public function bencodeSerialize(): mixed
             {
                 return false;
             }

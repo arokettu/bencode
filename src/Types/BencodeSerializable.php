@@ -17,8 +17,6 @@ interface BencodeSerializable
 {
     /**
      * Specify data which should be serialized to Bencode
-     *
-     * @return mixed
      */
-    public function bencodeSerialize();
+    public function bencodeSerialize(): mixed;
 }

@@ -9,10 +9,6 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Util\IntUtil;
 
 /**
- * Class Decoder
- * @package SandFox\Bencode\Engine
- * @author Anton Smirnov
- * @license MIT
  * @internal
  */
 final class Decoder

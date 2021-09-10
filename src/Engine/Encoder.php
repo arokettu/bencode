@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @noinspection PhpVoidFunctionResultUsedInspection
- */
-
 declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
@@ -12,19 +8,26 @@ use Brick\Math\BigInteger;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\BigIntType;
+use SandFox\Bencode\Types\DictType;
 use SandFox\Bencode\Types\ListType;
 
 /**
- * Class Encoder
- * @package SandFox\Bencode\Engine
- * @author Anton Smirnov
- * @license MIT
  * @internal
  */
 final class Encoder
 {
-    public function __construct(private mixed $data, private $stream)
-    {
+    /**
+     * @param mixed $data
+     * @param resource $stream
+     * @param bool $useStringable
+     * @param bool $useJsonSerializable
+     */
+    public function __construct(
+        private mixed $data,
+        private $stream,
+        private bool $useStringable,
+        private bool $useJsonSerializable,
+    ) {
         if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Output is not a valid stream');
         }
@@ -54,12 +57,10 @@ final class Encoder
                 => $this->encodeInteger($value),
             // process strings
             // floats become strings
-            // nulls become empty strings
-            \is_string($value),
-            \is_float($value),
-                => $this->encodeString((string)$value),
+            \is_string($value) => $this->encodeString($value),
+            \is_float($value)  => $this->encodeString(\strval($value)),
             // process arrays
-            \is_array($value) => $this->encodeArray($value),
+            \is_array($value)  => $this->encodeArray($value),
             // process objects
             \is_object($value) => $this->encodeObject($value),
             // empty values
@@ -87,19 +88,23 @@ final class Encoder
         match (true) {
             // serializable
             // Start again with method result
-            $value instanceof BencodeSerializable =>
-                $this->encodeValue($value->bencodeSerialize()),
+            $value instanceof BencodeSerializable,
+                => $this->encodeValue($value->bencodeSerialize()),
+            $this->useJsonSerializable && $value instanceof \JsonSerializable,
+                => $this->encodeValue($value->jsonSerialize()),
             // traversables
             // ListType forces traversable object to be list
-            $value instanceof ListType =>
-                $this->encodeList($value),
+            $value instanceof ListType,
+                => $this->encodeList($value),
             // all other traversables are dictionaries
             // also treat stdClass as a dictionary
-            $value instanceof \Traversable, $value instanceof \stdClass =>
-                $this->encodeDictionary($value),
+            $value instanceof DictType,
+            $value instanceof \ArrayObject,
+            $value instanceof \stdClass,
+                => $this->encodeDictionary($value),
             // try to convert other objects to string
-            $value instanceof \Stringable =>
-                $this->encodeString((string)$value),
+            $this->useStringable && $value instanceof \Stringable,
+                => $this->encodeString(\strval($value)),
             // other classes
             default =>
                 throw new InvalidArgumentException(
@@ -111,13 +116,13 @@ final class Encoder
     private function encodeInteger(int|bool|BigIntType|\GMP|BigInteger|\Math_BigInteger $integer): void
     {
         fwrite($this->stream, 'i');
-        fwrite($this->stream, (string)$integer);
+        fwrite($this->stream, \strval($integer));
         fwrite($this->stream, 'e');
     }
 
     private function encodeString(string $string): void
     {
-        fwrite($this->stream, (string)\strlen($string));
+        fwrite($this->stream, \strval(\strlen($string)));
         fwrite($this->stream, ':');
         fwrite($this->stream, $string);
     }
@@ -147,7 +152,7 @@ final class Encoder
             }
 
             // do not use php array keys here to prevent numeric strings becoming integers again
-            $dictData[] = [(string)$key, $value];
+            $dictData[] = [\strval($key), $value];
         }
 
         // sort by keys - rfc requirement
