@@ -162,6 +162,10 @@ final class Encoder
 
         // sort by keys - rfc requirement
         usort($dictData, function ($a, $b) {
+            if ($a[0] === $b[0]) {
+                throw new InvalidArgumentException("Dictionary contains repeated keys: '{$a[0]}'");
+            }
+
             return strcmp($a[0], $b[0]);
         });
 

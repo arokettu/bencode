@@ -8,6 +8,7 @@ namespace SandFox\Bencode\Tests;
 
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFoxMe\Bencode\Bencode;
 use SandFoxMe\Bencode\Types\BencodeSerializable;
 use SandFoxMe\Bencode\Types\ListType;
@@ -278,5 +279,18 @@ class EncodeTest extends TestCase
         self::assertEquals('4:Test',       Bencode::encode($dataScalar));
         self::assertEquals('4:Test',       Bencode::encode($dataRecursion));
         self::assertEquals('li1ei2ei3ee',  Bencode::encode($dataArray));
+    }
+
+    public function testNoRepeatedKeys()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Dictionary contains repeated keys: 'key'");
+
+        Bencode::encode(
+            (function () {
+                yield 'key' => 'value1';
+                yield 'key' => 'value2';
+            })()
+        );
     }
 }
