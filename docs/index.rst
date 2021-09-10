@@ -345,6 +345,7 @@ Main breaking changes:
   * Stringables no longer become strings by default.
     Use ``useStringable: true`` to return old behavior.
   * ``dump($filename, $data)`` became ``dump($data, $filename)`` for consistency with streams.
+  * ``bencodeSerialize`` now declares ``mixed`` return type.
 
 License
 =======
