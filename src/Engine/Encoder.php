@@ -156,7 +156,9 @@ final class Encoder
         }
 
         // sort by keys - rfc requirement
-        usort($dictData, fn($a, $b): int => strcmp($a[0], $b[0]));
+        usort($dictData, fn($a, $b): int => (
+            strcmp($a[0], $b[0]) ?: throw new InvalidArgumentException("Dictionary contains repeated keys: '{$a[0]}'")
+        ));
 
         fwrite($this->stream, 'd');
 
