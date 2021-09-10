@@ -139,12 +139,17 @@ Decoding
     // You can control lists and dictionaries types with options
     $data = Bencode::decode(
         "...",
+        listType: Bencode\Collection::ARRAY,    // this is a default for both listType and dictType
+        dictType: Bencode\Collection::OBJECT,   // convert to stdClass
+    );
+    // advanced variants:
+    $data = Bencode::decode(
+        "...",
         dictType: ArrayObject::class, // pass class name, new $type($array) will be created
         listType: function ($array) { // or callback for greater flexibility
             return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
         },
     ]);
-    // default value for both types is 'array'. you can also use 'object' for stdClass
 
 Large integers
 --------------
@@ -154,23 +159,10 @@ Large integers
     Install them separately before enabling.
 
 By default the library only works with a native integer type but if you need to use large integers,
-for example, if you try to parse a torrent file for a >= 4GB file on a 32 bit system,
+for example, if you want to parse a torrent file for a >= 4GB file on a 32 bit system,
 you can enable big integer support.
 
-Versions 1.5 and 2.5 added support for GMP_:
-
-.. code-block:: php
-
-    <?php
-
-    use SandFox\Bencode\Bencode;
-
-    // Enable useGMP option to decode huge integers to the GMP object
-    $data = Bencode::decode(
-        "d3:gmpi79228162514264337593543950336ee",
-        useGMP: true,
-    ]; // ['gmp' => gmp_init('79228162514264337593543950336')]
-
+Versions 1.5 and 2.5 added support for GMP_.
 Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and custom handlers:
 
 .. code-block:: php
@@ -182,27 +174,27 @@ Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and c
     // GMP
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
-        bigInt: Bencode\BigInt::GMP, // same as ['useGMP' => true]
-    ]; // ['int' => gmp_init('79228162514264337593543950336')]
+        bigInt: Bencode\BigInt::GMP, // In 2.5: useGMP: true
+    ); // ['int' => gmp_init('79228162514264337593543950336')]
 
     // brick/math
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::BRICK_MATH,
-    ]; // ['int' => \Brick\Math\BigInteger::of('79228162514264337593543950336')]
+    ); // ['int' => \Brick\Math\BigInteger::of('79228162514264337593543950336')]
 
     // Math_BigInteger from PEAR
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::PEAR,
-    ]; // ['int' => new \Math_BigInteger('79228162514264337593543950336')]
+    ); // ['int' => new \Math_BigInteger('79228162514264337593543950336')]
 
     // Internal BigIntType class
     // does not require any external dependencies but also does not allow any manipulation
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::INTERNAL
-    ]; // ['int' => new \SandFox\Bencode\Types\BigIntType('79228162514264337593543950336')]
+    ); // ['int' => new \SandFox\Bencode\Types\BigIntType('79228162514264337593543950336')]
     // BigIntType is a value object with several getters:
     // simple string representation:
     $str = $data->getValue();
@@ -214,12 +206,12 @@ Versions 1.6 and 2.6 added support for `brick/math`_ and Math_BigInteger_, and c
     // like listType and dictType you can use a callable or a class name
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
-        bigInt: fn($v) => v,
-    ]; // ['int' => '79228162514264337593543950336']
+        bigInt: fn ($v) => $v,
+    ); // ['int' => '79228162514264337593543950336']
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
         bigInt: MyBigIntHandler::class,
-    ]; // ['int' => new MyBigIntHandler('79228162514264337593543950336')]]
+    ); // ['int' => new MyBigIntHandler('79228162514264337593543950336')]]
 
 .. _GMP: https://www.php.net/manual/en/book.gmp.php
 .. _brick/math: https://github.com/brick/math
