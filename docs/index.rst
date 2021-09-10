@@ -190,8 +190,8 @@ Large integers
     Install them separately before enabling.
 
 By default the library only works with a native integer type but if you need to use large integers,
-for example, if you try to parse a torrent file for a >= 4GB file on a 32 bit system,
-you need to enable big integer support.
+for example, if you want to parse a torrent file for a >= 4GB file on a 32 bit system,
+you can enable big integer support.
 
 .. code-block:: php
 
@@ -234,7 +234,7 @@ you need to enable big integer support.
     // like listType and dictType you can use a callable or a class name
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
-        bigInt: fn($v) => v,
+        bigInt: fn ($v) => $v,
     ); // ['int' => '79228162514264337593543950336']
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
