@@ -14,7 +14,7 @@ use stdClass;
 
 class DecodeDictTest extends TestCase
 {
-    public function testValid()
+    public function testValid(): void
     {
         // simple
         self::assertEquals(['a' => 'b', 'c' => 'd'], Bencode::decode('d1:a1:b1:c1:de'));
@@ -25,7 +25,7 @@ class DecodeDictTest extends TestCase
         self::assertEquals([], Bencode::decode('de'));
     }
 
-    public function testKeyNotString()
+    public function testKeyNotString(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Non string key found in the dictionary');
@@ -33,7 +33,7 @@ class DecodeDictTest extends TestCase
         Bencode::decode('di123ei321ee');
     }
 
-    public function testKeysNotSorted()
+    public function testKeysNotSorted(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Invalid order of dictionary keys: 'aaa' after 'zzz'");
@@ -41,7 +41,7 @@ class DecodeDictTest extends TestCase
         Bencode::decode('d3:zzz0:3:aaa0:e');
     }
 
-    public function testIntegerKeysNotSortedAsStrings()
+    public function testIntegerKeysNotSortedAsStrings(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Invalid order of dictionary keys: '11' after '2'");
@@ -49,7 +49,7 @@ class DecodeDictTest extends TestCase
         Bencode::decode('d1:11:a1:21:c2:111:b2:221:de'); // keys here are sorted as integers: 1, 2, 11, 22
     }
 
-    public function testMissingLastValue()
+    public function testMissingLastValue(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Dictionary key without corresponding value: 'c'");
@@ -57,7 +57,7 @@ class DecodeDictTest extends TestCase
         Bencode::decode('d1:a1:b1:ce'); // three elements: last key misses a value
     }
 
-    public function testDuplicateKey()
+    public function testDuplicateKey(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage(
@@ -67,7 +67,7 @@ class DecodeDictTest extends TestCase
         Bencode::decode('d1:a1:b1:a1:de');
     }
 
-    public function testListTypes()
+    public function testListTypes(): void
     {
         $dict = [
             'k1' => 2,

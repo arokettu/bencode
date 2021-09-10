@@ -14,7 +14,7 @@ use stdClass;
 
 class DecodeListTest extends TestCase
 {
-    public function testListSimple()
+    public function testListSimple(): void
     {
         // of integers
         self::assertEquals([2, 3, 5, 7, 11, 13], Bencode::decode('li2ei3ei5ei7ei11ei13ee'));
@@ -26,7 +26,7 @@ class DecodeListTest extends TestCase
         self::assertEquals([], Bencode::decode('le'));
     }
 
-    public function testListTypes()
+    public function testListTypes(): void
     {
         $list       = [2, 's1', 3, 's2', 5];
         $encoded    = 'li2e2:s1i3e2:s2i5ee';
@@ -64,7 +64,7 @@ class DecodeListTest extends TestCase
         self::assertEquals($arrayObject, $decodedCallback);
     }
 
-    public function testIncorrectType()
+    public function testIncorrectType(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(

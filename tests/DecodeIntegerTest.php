@@ -10,7 +10,7 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
 
 class DecodeIntegerTest extends TestCase
 {
-    private function errorMsg($value)
+    private function errorMsg(string $value): string
     {
         return "Invalid integer format: '{$value}'";
     }
