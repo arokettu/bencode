@@ -10,7 +10,7 @@ use SandFox\Bencode\Util\IntUtil;
 
 final class BigIntType implements \Stringable
 {
-    public function __construct(private string $value)
+    public function __construct(public readonly string $value)
     {
         $this->assertValidInteger($value);
     }
@@ -29,7 +29,7 @@ final class BigIntType implements \Stringable
 
     public function __toString(): string
     {
-        return $this->getValue();
+        return $this->value;
     }
 
     public function toGMP(): \GMP

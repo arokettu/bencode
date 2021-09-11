@@ -14,7 +14,7 @@ class BigIntTypeTest extends TestCase
     public function testPositiveNumericString(): void
     {
         $int = new BigIntType('123');
-        self::assertEquals('123', $int->getValue());
+        self::assertEquals('123', $int->value);
     }
 
     public function testNegativeNumericString(): void
@@ -26,7 +26,7 @@ class BigIntTypeTest extends TestCase
     public function testZero(): void
     {
         $int = new BigIntType('0');
-        self::assertEquals('0', $int->getValue());
+        self::assertEquals('0', (string)$int);
     }
 
     public function testNoPlus(): void
@@ -82,7 +82,7 @@ class BigIntTypeTest extends TestCase
         $int = new BigIntType('123');
 
         self::assertEquals(\gmp_init('123'), $int->toGMP());
-        self::assertEquals(true, (new \Math_BigInteger('123'))->equals($int->toPear()));
-        self::assertEquals(true, BigInteger::of('123')->isEqualTo($int->toBrickMath()));
+        self::assertTrue((new \Math_BigInteger('123'))->equals($int->toPear()));
+        self::assertTrue(BigInteger::of('123')->isEqualTo($int->toBrickMath()));
     }
 }
