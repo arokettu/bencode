@@ -12,47 +12,87 @@ Scalars and arrays
 
     use SandFox\Bencode\Bencode;
 
-    $encoded = Bencode::encode([    // array will become dictionary
-        'arr'       => [1,2,3,4],       // sequential array will become a list
-        'int'       => 123,             // integer is stored as is
-        'float'     => 3.1415,          // float will become a string
-        'true'      => true,            // true will be an integer 1
-        'false'     => false,           // false and null values will be skipped
-        'string'    => "test\0test",    // string can contain any binary data
-    ]); // "d3:arrli1ei2ei3ei4ee5:float6:3.14153:inti123e6:string9:test\0test4:truei1ee"
+    // non sequential array will become a dictionary
+    $encoded = Bencode::encode([
+        // sequential array will become a list
+        'arr' => [1,2,3,4],
+        // integer is stored as is
+        'int' => 123,
+        // float will become a string
+        'float' => 3.1415,
+        // true will be an integer 1
+        'true' => true,
+        // false and null values will be skipped
+        'false' => false,
+        // string can contain any binary data
+        'string' => "test\0test",
+    ]);
+    // "d" .
+    // "3:arr" . "l" . "i1e" . "i2e" . "i3e" . "i4e" . "e" .
+    // "5:float" . "6:3.1415" .
+    // "3:int" . "i123e" .
+    // "6:string" . "9:test\0test" .
+    // "4:true" . "i1e" .
+    // "e"
 
 Objects
 =======
+
+ArrayObject and stdClass
+------------------------
+
+ArrayObject and stdClass become dictionaries:
 
 .. code-block:: php
 
     <?php
 
     use SandFox\Bencode\Bencode;
-    use SandFox\Bencode\Types\DictType;
-    use SandFox\Bencode\Types\ListType;
 
-    // ArrayObject and stdClass become dictionaries
-    $encoded = Bencode::encode(new ArrayObject([1,2,3])); // "d1:0i1e1:1i2e1:2i3ee"
+    $encoded = Bencode::encode(
+        new ArrayObject([1,2,3])
+    ); // "d1:0i1e1:1i2e1:2i3ee"
+
     $std = new stdClass();
     $std->a = '123';
     $std->b = 456;
-    $encoded = Bencode::encode($std); // "d1:a3:1231:bi456ee"
+    $encoded = Bencode::encode($std);
+    // "d1:a3:1231:bi456ee"
 
-    // you can use any traversable as a list by wrapping it with ListType
-    // keys will be discarded in that case
-    $encoded = Bencode::encode(new ListType(new ArrayObject([1,2,3]))); // "li1ei2ei3ee"
+Big integer support
+-------------------
 
-    // you can use any traversable as a dictionary by wrapping it with DictType
-    // keys will be cast to string and must be unique
-    $encoded = Bencode::encode(new DictType(
-        (function () {
-            yield 'key1' => 'value1';
-            yield 'key2' => 'value2';
-        })()
-    )); // "d4:key16:value14:key26:value2e"
+.. note:: More in the :ref:`decoding section <bencode_decoding_bigint>`
 
-    // optionally you can convert Stringable objects to strings
+GMP object, Pear's Math_BigInteger, brick/math BigInteger, and internal type BigIntType (simple numeric string wrapper)
+will become integers:
+
+.. code-block:: php
+
+    <?php
+
+    use Brick\Math\BigInteger;
+    use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Types\BigIntType;
+
+    $encoded = Bencode::encode([
+        'gmp' => gmp_pow(2, 96),
+        'brick' => BigInteger::of(2)->power(96),
+        'pear' => (new Math_BigInteger(1))->bitwise_leftShift(96),
+        'internal' => new BigIntType('7922816251426433759354395033'),
+    ]); // "d5:bricki79228162514264337593543950336e3:gmpi792..."
+
+Stringable
+----------
+
+Optionally you can convert ``Stringable`` objects to strings:
+
+.. code-block:: php
+
+    <?php
+
+    use SandFox\Bencode\Bencode;
+
     class ToString
     {
         public function __toString()
@@ -61,20 +101,47 @@ Objects
         }
     }
 
-    $encoded = Bencode::encode(new ToString(), useStringable: true); // "11:I am string"
+    $encoded = Bencode::encode(
+        new ToString(),
+        useStringable: true,
+    ); // "11:I am string"
 
-    // GMP object, Pear's Math_BigInteger, brick/math,
-    // and internal type BigIntType (simple numeric string wrapper)
-    // become integer
-    use SandFox\Bencode\Types\BigIntType;
-    $encoded = Bencode::encode([
-        'gmp' => gmp_pow(2, 96),
-        'brick' => \Brick\Math\BigInteger::of(2)->power(96),
-        'internal' => new BigIntType('7922816251426433759354395033'),
-    ]); // "d5:bricki79228162514264337593543950336e3:gmpi792..."
+Object Wrappers
+---------------
+
+You can use any traversable as a list by wrapping it with ``ListType``.
+Keys will be discarded in that case.
+
+.. code-block:: php
+
+    <?php
+
+    use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Types\ListType;
+
+    $encoded = Bencode::encode(
+        new ListType(new ArrayObject([1,2,3]))
+    ); // "li1ei2ei3ee"
+
+You can use any traversable as a dictionary by wrapping it with ``DictType``.
+Keys will be cast to string and must be unique.
+
+.. code-block:: php
+
+    <?php
+
+    use SandFox\Bencode\Bencode;
+    use SandFox\Bencode\Types\DictType;
+
+    $encoded = Bencode::encode(new DictType(
+        (function () {
+            yield 'key1' => 'value1';
+            yield 'key2' => 'value2';
+        })()
+    )); // "d4:key16:value14:key26:value2e"
 
 BencodeSerializable
-===================
+-------------------
 
 You can also force object representation by implementing BencodeSerializable interface.
 This will work exactly like JsonSerializable_ interface.
@@ -100,9 +167,10 @@ This will work exactly like JsonSerializable_ interface.
 
     $file = new MyFile;
 
-    $encoded = Bencode::encode($file); // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
+    $encoded = Bencode::encode($file);
+    // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
 
-Optionally you can use JsonSerializable itself too:
+Optionally you can use JsonSerializable_ itself too:
 
 .. code-block:: php
 
@@ -124,11 +192,15 @@ Optionally you can use JsonSerializable itself too:
 
     $file = new MyFile;
 
-    // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
-    $encoded = Bencode::encode($file, useJsonSerializable: true);
+    $encoded = Bencode::encode(
+        $file,
+        useJsonSerializable: true,
+    ); // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
 
 Working with files
 ==================
+
+Save data to file:
 
 .. code-block:: php
 
@@ -136,19 +208,19 @@ Working with files
 
     use SandFox\Bencode\Bencode;
 
-    // save data to a bencoded file
     Bencode::dump('testfile.torrent', $data);
 
 Working with streams
 ====================
 
+Save data to a writable stream or to a new php://temp if no stream is specified
+
 .. code-block:: php
 
     <?php
 
     use SandFox\Bencode\Bencode;
 
-    // save data to a bencoded writable stream or to a new php://temp if no stream is specified
     Bencode::encodeToStream($data, fopen('...', 'w'));
 
 Options Array
@@ -177,7 +249,7 @@ This parameter is kept for compatibility with 1.x calls.
 Encoder object
 ==============
 
-3.0 added Encoder and Decoder objects that can be configured first.
+3.0 added Encoder and Decoder objects that can be configured on creation and used multiple times.
 
 .. code-block:: php
 

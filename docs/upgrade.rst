@@ -14,7 +14,7 @@ Main breaking changes:
   * ``Bencode\BigInt`` and ``Bencode\Collection`` are now enums,
     therefore ``dictType``, ``listType``, ``bigInt`` params no longer accept bare string values
     (like ``'array'`` or ``'object'`` or ``'gmp'``).
-    If you already use constants nothing will change for you.
+    If you already use constants, nothing will change for you.
 
 * Encoding:
 
@@ -32,8 +32,6 @@ Main breaking changes:
         if (class_exists(\SandFox\Bencode\Encoder::class)) {
             // bencode v3
             $success = (new \SandFox\Bencode\Encoder([...$optionsHere]))->dump($data, $filename);
-            // or
-            $success = \SandFox\Bencode\Bencode::dump($data, $filename, [...$optionsHere]);
         } else {
             // bencode v1/v2
             $success = \SandFox\Bencode\Bencode::dump($filename, $data, [...$optionsHere]);

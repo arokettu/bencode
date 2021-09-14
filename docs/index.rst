@@ -21,10 +21,11 @@ Documentation
 =============
 
 .. toctree::
+   :maxdepth: 2
 
-    encoding
-    decoding
-    upgrade
+   encoding
+   decoding
+   upgrade
 
 License
 =======
