@@ -7,7 +7,9 @@
 /composer.lock
 
 # docs
-/docs/index.html
+/docs/*.html
+/docs/conf.py
+/docs/build
 
 # tests
 /reports
