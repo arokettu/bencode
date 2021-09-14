@@ -279,7 +279,7 @@ Options Array
 You can still use 1.x style options array instead of named params.
 This parameter is kept for compatibility with 1.x calls.
 
-.. code-block::
+.. code-block:: php
 
     <?php
 
@@ -303,7 +303,7 @@ Encoder and Decoder objects
 
 3.0 added Encoder and Decoder objects that can be configured first.
 
-.. code-block::
+.. code-block:: php
 
     <?php
 
@@ -345,6 +345,29 @@ Main breaking changes:
   * Stringables no longer become strings by default.
     Use ``useStringable: true`` to return old behavior.
   * ``dump($filename, $data)`` became ``dump($data, $filename)`` for consistency with streams.
+
+    .. code-block:: php
+
+        <?php
+
+        // code that works in all versions:
+        if (class_exists(\SandFox\Bencode\Encoder::class)) {
+            // bencode v3
+            $success = (new \SandFox\Bencode\Encoder([...$optionsHere]))->dump($data, $filename);
+            // or
+            $success = \SandFox\Bencode\Bencode::dump($data, $filename, [...$optionsHere]);
+        } else {
+            // bencode v1/v2
+            $success = \SandFox\Bencode\Bencode::dump($filename, $data, [...$optionsHere]);
+        }
+
+        // Or use named parameters in PHP 8.0+:
+        $success = \SandFox\Bencode\Bencode::dump(
+            data: $data,
+            filename: $filename,
+            [...$optionsHere]
+        );
+
   * ``bencodeSerialize`` now declares ``mixed`` return type.
 
 License
