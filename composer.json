@@ -38,7 +38,7 @@
         "ext-gmp": "*",
         "brick/math": "*",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
-        "mikey179/vfsstream": "^1.6",
+        "mikey179/vfsstream": "^1.6.10@alpha",
         "pear/math_biginteger": "^1.0",
         "phpcompatibility/php-compatibility": "*",
         "phpunit/phpunit": "^9.4",
