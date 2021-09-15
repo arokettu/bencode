@@ -1,6 +1,5 @@
-/tests              export-ignore
-/.gitattributes     export-ignore
-/.gitignore         export-ignore
-/*.yml              export-ignore
-/*.yaml             export-ignore
-/*.xml              export-ignore
+/tests      export-ignore
+/.git*      export-ignore
+/*.yml      export-ignore
+/*.yaml     export-ignore
+/*.xml      export-ignore
