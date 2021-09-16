@@ -39,13 +39,11 @@
     "require-dev": {
         "ext-gmp": "*",
         "brick/math": "*",
-        "dealerdirect/phpcodesniffer-composer-installer": "*",
         "mikey179/vfsstream": "^1.6",
         "pear/math_biginteger": "^1.0",
-        "phpcompatibility/php-compatibility": "*",
         "phpunit/phpunit": "^9.4",
         "psy/psysh": "*",
-        "slevomat/coding-standard": "*",
+        "sandfox.dev/code-standard": "8.0.x@dev",
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {

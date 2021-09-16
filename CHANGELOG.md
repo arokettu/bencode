@@ -71,6 +71,10 @@
 
 ## 1.x
 
+### 1.next
+
+* Decoder and Encoder are backported from 3.x
+
 ### 1.6.2
 
 *Sep 10, 2021*
