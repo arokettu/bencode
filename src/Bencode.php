@@ -55,7 +55,7 @@ final class Bencode
      */
     public static function encode($data, array $options = []): string
     {
-        return (new Encoder())->encode($data);
+        return (new Encoder($options))->encode($data);
     }
 
     /**
@@ -65,9 +65,9 @@ final class Bencode
      * @param resource|null $writeStream Write capable stream. If null, a new php://temp will be created
      * @return resource Original or created stream
      */
-    public static function encodeToStream($data, $writeStream = null)
+    public static function encodeToStream($data, $writeStream = null, array $options = [])
     {
-        return (new Encoder())->encodeToStream($data, $writeStream);
+        return (new Encoder($options))->encodeToStream($data, $writeStream);
     }
 
     /**
@@ -80,6 +80,6 @@ final class Bencode
      */
     public static function dump(string $filename, $data, array $options = []): bool
     {
-        return (new Encoder())->dump($data, $filename);
+        return (new Encoder($options))->dump($data, $filename);
     }
 }

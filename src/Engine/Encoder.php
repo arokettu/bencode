@@ -24,13 +24,20 @@ final class Encoder
     private $data;
     /** @var resource */
     private $stream;
+    /** @var array */
+    private $options;
 
-    public function __construct($data, $stream)
+    const DEFAULT_OPTIONS = [
+        'useJsonSerializable' => false,
+    ];
+
+    public function __construct($data, $stream, array $options)
     {
         Util::detectMbstringOverload();
 
         $this->data = $data;
         $this->stream = $stream;
+        $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
 
         if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Output is not a valid stream');
@@ -95,6 +102,11 @@ final class Encoder
             case $value instanceof BencodeSerializable:
                 // Start again with method result
                 $this->encodeValue($value->bencodeSerialize());
+                break;
+
+            case $this->options['useJsonSerializable'] && $value instanceof \JsonSerializable:
+                // Start again with method result
+                $this->encodeValue($value->jsonSerialize());
                 break;
 
             // traversables

@@ -6,8 +6,11 @@ namespace SandFox\Bencode;
 
 final class Encoder
 {
-    public function __construct()
+    private $options;
+
+    public function __construct(array $options = [])
     {
+        $this->options = $options;
     }
 
     /**
@@ -23,7 +26,7 @@ final class Encoder
             $writeStream = fopen('php://temp', 'r+');
         }
 
-        return (new Engine\Encoder($data, $writeStream))->encode();
+        return (new Engine\Encoder($data, $writeStream, $this->options))->encode();
     }
 
     /**
