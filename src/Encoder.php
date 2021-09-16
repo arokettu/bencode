@@ -6,16 +6,16 @@ namespace SandFox\Bencode;
 
 final class Encoder
 {
-    private bool $useStringable;
     private bool $useJsonSerializable;
+    private bool $useStringable;
 
     public function __construct(
         array $options = [],
-        bool $useStringable = false,
         bool $useJsonSerializable = false,
+        bool $useStringable = false,
     ) {
-        $this->useStringable = $options['useStringable'] ?? $useStringable;
         $this->useJsonSerializable = $options['useJsonSerializable'] ?? $useJsonSerializable;
+        $this->useStringable = $options['useStringable'] ?? $useStringable;
     }
 
     /**
@@ -31,7 +31,7 @@ final class Encoder
             $writeStream = fopen('php://temp', 'r+');
         }
 
-        return (new Engine\Encoder($data, $writeStream, $this->useStringable, $this->useJsonSerializable))->encode();
+        return (new Engine\Encoder($data, $writeStream, $this->useJsonSerializable, $this->useStringable))->encode();
     }
 
     /**

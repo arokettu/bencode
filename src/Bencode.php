@@ -71,17 +71,17 @@ final class Bencode
      *
      * @param mixed $data
      * @param array $options
-     * @param bool $useStringable
      * @param bool $useJsonSerializable
+     * @param bool $useStringable
      * @return string
      */
     public static function encode(
         mixed $data,
         array $options = [],
-        bool $useStringable = false,
         bool $useJsonSerializable = false,
+        bool $useStringable = false,
     ): string {
-        return (new Encoder($options, $useStringable, $useJsonSerializable))->encode($data);
+        return (new Encoder($options, $useJsonSerializable, $useStringable))->encode($data);
     }
 
     /**
@@ -90,18 +90,18 @@ final class Bencode
      * @param mixed $data
      * @param null $writeStream Write capable stream. If null, a new php://temp will be created
      * @param array $options
-     * @param bool $useStringable
      * @param bool $useJsonSerializable
+     * @param bool $useStringable
      * @return resource Original or created stream
      */
     public static function encodeToStream(
         mixed $data,
         $writeStream = null,
         array $options = [],
-        bool $useStringable = false,
         bool $useJsonSerializable = false,
+        bool $useStringable = false,
     ) {
-        return (new Encoder($options, $useStringable, $useJsonSerializable))->encodeToStream($data, $writeStream);
+        return (new Encoder($options, $useJsonSerializable, $useStringable))->encodeToStream($data, $writeStream);
     }
 
     /**
@@ -110,17 +110,17 @@ final class Bencode
      * @param mixed $data
      * @param string $filename
      * @param array $options
-     * @param bool $useStringable
      * @param bool $useJsonSerializable
+     * @param bool $useStringable
      * @return bool success of file_put_contents
      */
     public static function dump(
         mixed $data,
         string $filename,
         array $options = [],
-        bool $useStringable = false,
         bool $useJsonSerializable = false,
+        bool $useStringable = false,
     ): bool {
-        return (new Encoder($options, $useStringable, $useJsonSerializable))->dump($data, $filename);
+        return (new Encoder($options, $useJsonSerializable, $useStringable))->dump($data, $filename);
     }
 }
