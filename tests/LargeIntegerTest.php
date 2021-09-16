@@ -104,11 +104,6 @@ class LargeIntegerTest extends TestCase
         $decodedNeg = Bencode::decode($encodedNeg, bigInt: Bencode\BigInt::GMP);
         self::assertInstanceOf(\GMP::class, $decoded);
         self::assertEquals($expectedNeg, $decodedNeg);
-
-        // legacy option
-        $decodedNeg = Bencode::decode($encodedNeg, ['useGMP' => true]);
-        self::assertInstanceOf(\GMP::class, $decoded);
-        self::assertEquals($expectedNeg, $decodedNeg);
     }
 
     // Pear
