@@ -4,6 +4,13 @@
 -->
 <ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
     <rule ref="Sandfox"/>
+    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions">
+        <properties>
+            <property name="include" type="array">
+                <element value="gmp_init"/> <!-- ensure root level gmp -->
+            </property>
+        </properties>
+    </rule>
     <config name="testVersion" value="8.0-"/>
     <file>src</file>
     <file>tests</file>
