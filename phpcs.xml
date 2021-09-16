@@ -3,36 +3,7 @@
     @see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset
 -->
 <ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
-    <rule ref="PSR12">
-        <!-- We target versions < 7.1 -->
-        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
-        <!-- Not part of PSR -->
-        <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
-    </rule>
-    <rule ref="PHPCompatibility"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
-        <properties>
-            <property name="newlinesCountBetweenOpenTagAndDeclare" value="2"/>
-            <property name="newlinesCountAfterDeclare" value="2"/>
-            <property name="spacesCountAroundEqualsSign" value="0"/>
-        </properties>
-    </rule>
-<!--    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">-->
-<!--        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>-->
-<!--    </rule>-->
-<!--    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>-->
-<!--    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>-->
-    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions">
-        <properties>
-            <property name="includeSpecialFunctions" value="1"/>
-            <property name="include" type="array">
-                <element value="gmp_init"/> <!-- ensure root level gmp -->
-            </property>
-        </properties>
-    </rule>
-    <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
-    <rule ref="SlevomatCodingStandard.PHP.OptimizedFunctionsWithoutUnpacking"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+    <rule ref="Sandfox"/>
     <config name="testVersion" value="7.0-"/>
     <file>src</file>
     <file>tests</file>

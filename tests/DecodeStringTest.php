@@ -10,7 +10,7 @@ use SandFoxMe\Bencode\Exceptions\ParseErrorException;
 
 class DecodeStringTest extends TestCase
 {
-    private function errorMsgLength($value)
+    private function errorMsgLength(string $value): string
     {
         return "Invalid string length value: '{$value}'";
     }
