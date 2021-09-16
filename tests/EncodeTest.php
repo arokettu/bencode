@@ -311,6 +311,48 @@ class EncodeTest extends TestCase
         Bencode::encode($this);
     }
 
+    public function testJsonSerializable()
+    {
+        // test returning scalar
+        $dataScalar = new class implements \JsonSerializable {
+            public function jsonSerialize()
+            {
+                return 'Test';
+            }
+        };
+
+        // test returning object which is also serializable
+        $dataRecursion = new class($dataScalar) implements \JsonSerializable {
+            private $data;
+
+            public function __construct($data)
+            {
+                $this->data = $data;
+            }
+
+            public function jsonSerialize()
+            {
+                return $this->data;
+            }
+        };
+
+        // Test returning array
+        $dataArray = new class implements \JsonSerializable {
+            public function jsonSerialize()
+            {
+                return [
+                    1,
+                    2,
+                    3,
+                ];
+            }
+        };
+
+        self::assertEquals('4:Test', Bencode::encode($dataScalar, ['useJsonSerializable' => true]));
+        self::assertEquals('4:Test', Bencode::encode($dataRecursion, ['useJsonSerializable' => true]));
+        self::assertEquals('li1ei2ei3ee', Bencode::encode($dataArray, ['useJsonSerializable' => true]));
+    }
+
     public function testNoRepeatedKeys()
     {
         $this->expectException(InvalidArgumentException::class);

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @noinspection PhpVoidFunctionResultUsedInspection
- */
-
 declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
@@ -26,9 +22,13 @@ final class Encoder
     /**
      * @param mixed $data
      * @param resource $stream
+     * @param bool $useJsonSerializable
      */
-    public function __construct(private mixed $data, private $stream)
-    {
+    public function __construct(
+        private mixed $data,
+        private $stream,
+        private bool $useJsonSerializable,
+    ) {
         if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Output is not a valid stream');
         }
@@ -93,6 +93,8 @@ final class Encoder
             // Start again with method result
             $value instanceof BencodeSerializable =>
                 $this->encodeValue($value->bencodeSerialize()),
+            $this->useJsonSerializable && $value instanceof \JsonSerializable =>
+                $this->encodeValue($value->jsonSerialize()),
             // traversables
             // ListType forces traversable object to be list
             $value instanceof ListType =>

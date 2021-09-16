@@ -38,6 +38,7 @@
     },
     "require-dev": {
         "ext-gmp": "*",
+        "ext-json": "*",
         "brick/math": "*",
         "mikey179/vfsstream": "^1.6",
         "pear/math_biginteger": "^1.0",
