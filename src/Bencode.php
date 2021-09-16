@@ -16,25 +16,6 @@ use SandFox\Bencode\Engine\Encoder;
 final class Bencode
 {
     /**
-     * Encode arbitrary data to bencode string
-     *
-     * @param mixed $data
-     * @return string
-     */
-    public static function encode(mixed $data): string
-    {
-        $stream = fopen('php://temp', 'r+');
-        self::encodeToStream($data, $stream);
-        rewind($stream);
-
-        $encoded = stream_get_contents($stream);
-
-        fclose($stream);
-
-        return $encoded;
-    }
-
-    /**
      * Decode bencoded data from string
      *
      * @param string $bencoded
@@ -64,22 +45,6 @@ final class Bencode
         fclose($stream);
 
         return $decoded;
-    }
-
-    /**
-     * Dump data to bencoded stream
-     *
-     * @param mixed $data
-     * @param resource|null $writeStream Write capable stream. If null, a new php://temp will be created
-     * @return resource Original or created stream
-     */
-    public static function encodeToStream(mixed $data, $writeStream = null)
-    {
-        if ($writeStream === null) {
-            $writeStream = fopen('php://temp', 'r+');
-        }
-
-        return (new Encoder($data, $writeStream))->encode();
     }
 
     /**
@@ -128,29 +93,6 @@ final class Bencode
     }
 
     /**
-     * Dump data to bencoded file
-     *
-     * @param string $filename
-     * @param mixed $data
-     * @return bool success of file_put_contents
-     */
-    public static function dump(string $filename, mixed $data): bool
-    {
-        $stream = fopen($filename, 'w');
-
-        if ($stream === false) {
-            return false;
-        }
-
-        self::encodeToStream($data, $stream);
-
-        $stat = fstat($stream);
-        fclose($stream);
-
-        return $stat['size'] > 0;
-    }
-
-    /**
      * Load data from bencoded file
      *
      * @param string $filename
@@ -182,5 +124,63 @@ final class Bencode
         fclose($stream);
 
         return $decoded;
+    }
+
+    /**
+     * Encode arbitrary data to bencode string
+     *
+     * @param mixed $data
+     * @return string
+     */
+    public static function encode(mixed $data): string
+    {
+        $stream = fopen('php://temp', 'r+');
+        self::encodeToStream($data, $stream);
+        rewind($stream);
+
+        $encoded = stream_get_contents($stream);
+
+        fclose($stream);
+
+        return $encoded;
+    }
+
+    /**
+     * Dump data to bencoded stream
+     *
+     * @param mixed $data
+     * @param resource|null $writeStream Write capable stream. If null, a new php://temp will be created
+     * @return resource Original or created stream
+     */
+    public static function encodeToStream(mixed $data, $writeStream = null)
+    {
+        if ($writeStream === null) {
+            $writeStream = fopen('php://temp', 'r+');
+        }
+
+        return (new Encoder($data, $writeStream))->encode();
+    }
+
+    /**
+     * Dump data to bencoded file
+     *
+     * @param string $filename
+     * @param mixed $data
+     * @return bool success of file_put_contents
+     */
+    public static function dump(string $filename, mixed $data): bool
+    {
+        $stream = fopen($filename, 'w');
+
+        if ($stream === false) {
+            return false;
+        }
+
+        self::encodeToStream($data, $stream);
+
+        $stat = fstat($stream);
+        fclose($stream);
+
+        return $stat['size'] > 0;
     }
 }
