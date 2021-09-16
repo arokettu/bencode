@@ -5,6 +5,8 @@
 ### 2.next
 
 * Decoder and Encoder are backported from 3.x
+* `DictType` backported from 3.x
+* `useJsonSerializable` backported from 3.x
 * `useGMP` is marked as deprecated
 * Fixed `'useGMP'` in options array causing crash
 

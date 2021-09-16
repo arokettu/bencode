@@ -349,8 +349,8 @@ class EncodeTest extends TestCase
         };
 
         self::assertEquals('4:Test', Bencode::encode($dataScalar, ['useJsonSerializable' => true]));
-        self::assertEquals('4:Test', Bencode::encode($dataRecursion, ['useJsonSerializable' => true]));
-        self::assertEquals('li1ei2ei3ee', Bencode::encode($dataArray, ['useJsonSerializable' => true]));
+        self::assertEquals('4:Test', Bencode::encode($dataRecursion, useJsonSerializable: true));
+        self::assertEquals('li1ei2ei3ee', Bencode::encode($dataArray, useJsonSerializable: true));
     }
 
     public function testNoRepeatedKeys()
