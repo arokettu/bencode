@@ -9,6 +9,7 @@ namespace SandFox\Bencode\Tests;
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
+use SandFox\Bencode\Types\DictType;
 use SandFoxMe\Bencode\Bencode;
 use SandFoxMe\Bencode\Types\BencodeSerializable;
 use SandFoxMe\Bencode\Types\ListType;
@@ -134,6 +135,9 @@ class EncodeTest extends TestCase
 
         self::assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode(
             new ArrayObject(['key' => 'value', 'test' => 'whatever'])
+        ));
+        self::assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode(
+            new DictType(new ArrayObject(['key' => 'value', 'test' => 'whatever']))
         ));
 
         // even sequential
