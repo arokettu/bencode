@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode;
 
-use SandFox\Bencode\Engine\Decoder;
-use SandFox\Bencode\Engine\Encoder;
-
 /**
  * Class Bencode
  * @package SandFox\Bencode
@@ -24,15 +21,7 @@ final class Bencode
      */
     public static function decode(string $bencoded, array $options = [])
     {
-        $stream = fopen('php://temp', 'r+');
-        fwrite($stream, $bencoded);
-        rewind($stream);
-
-        $decoded = self::decodeStream($stream, $options);
-
-        fclose($stream);
-
-        return $decoded;
+        return (new Decoder($options))->decode($bencoded);
     }
 
     /**
@@ -42,15 +31,7 @@ final class Bencode
      */
     public static function decodeStream($readStream, array $options = [])
     {
-        if (isset($options['dictionaryType'])) {
-            $options['dictType'] = $options['dictType'] ?? $options['dictionaryType'];
-        }
-
-        if (isset($options['useGMP']) && $options['useGMP']) {
-            $options['bigInt'] = $options['bigInt'] ?? Bencode\BigInt::GMP;
-        }
-
-        return (new Decoder($readStream, $options))->decode();
+        return (new Decoder($options))->decodeStream($readStream);
     }
 
     /**
@@ -62,17 +43,7 @@ final class Bencode
      */
     public static function load(string $filename, array $options = [])
     {
-        $stream = fopen($filename, 'r');
-
-        if ($stream === false) {
-            return false;
-        }
-
-        $decoded = self::decodeStream($stream, $options);
-
-        fclose($stream);
-
-        return $decoded;
+        return (new Decoder($options))->load($filename);
     }
 
     /**
@@ -84,15 +55,7 @@ final class Bencode
      */
     public static function encode($data, array $options = []): string
     {
-        $stream = fopen('php://temp', 'r+');
-        self::encodeToStream($data, $stream);
-        rewind($stream);
-
-        $encoded = stream_get_contents($stream);
-
-        fclose($stream);
-
-        return $encoded;
+        return (new Encoder())->encode($data);
     }
 
     /**
@@ -104,11 +67,7 @@ final class Bencode
      */
     public static function encodeToStream($data, $writeStream = null)
     {
-        if ($writeStream === null) {
-            $writeStream = fopen('php://temp', 'r+');
-        }
-
-        return (new Encoder($data, $writeStream))->encode();
+        return (new Encoder())->encodeToStream($data, $writeStream);
     }
 
     /**
@@ -121,17 +80,6 @@ final class Bencode
      */
     public static function dump(string $filename, $data, array $options = []): bool
     {
-        $stream = fopen($filename, 'w');
-
-        if ($stream === false) {
-            return false;
-        }
-
-        self::encodeToStream($data, $stream);
-
-        $stat = fstat($stream);
-        fclose($stream);
-
-        return $stat['size'] > 0;
+        return (new Encoder())->dump($data, $filename);
     }
 }
