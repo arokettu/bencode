@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SandFox\Bencode;
 
 use SandFox\Bencode\Engine\Decoder;
-use SandFox\Bencode\Engine\Encoder;
 
 /**
  * Class Bencode
@@ -134,15 +133,7 @@ final class Bencode
      */
     public static function encode(mixed $data): string
     {
-        $stream = fopen('php://temp', 'r+');
-        self::encodeToStream($data, $stream);
-        rewind($stream);
-
-        $encoded = stream_get_contents($stream);
-
-        fclose($stream);
-
-        return $encoded;
+        return (new Encoder())->encode($data);
     }
 
     /**
@@ -154,11 +145,7 @@ final class Bencode
      */
     public static function encodeToStream(mixed $data, $writeStream = null)
     {
-        if ($writeStream === null) {
-            $writeStream = fopen('php://temp', 'r+');
-        }
-
-        return (new Encoder($data, $writeStream))->encode();
+        return (new Encoder())->encodeToStream($data, $writeStream);
     }
 
     /**
@@ -170,17 +157,6 @@ final class Bencode
      */
     public static function dump(string $filename, mixed $data): bool
     {
-        $stream = fopen($filename, 'w');
-
-        if ($stream === false) {
-            return false;
-        }
-
-        self::encodeToStream($data, $stream);
-
-        $stat = fstat($stream);
-        fclose($stream);
-
-        return $stat['size'] > 0;
+        return (new Encoder())->dump($data, $filename);
     }
 }
