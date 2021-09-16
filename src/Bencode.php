@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode;
 
-use SandFox\Bencode\Engine\Decoder;
-
 /**
  * Class Bencode
  * @package SandFox\Bencode
@@ -35,15 +33,8 @@ final class Bencode
         bool $useGMP = false,
         string|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
-        $stream = fopen('php://temp', 'r+');
-        fwrite($stream, $bencoded);
-        rewind($stream);
-
-        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $dictionaryType, $useGMP, $bigInt);
-
-        fclose($stream);
-
-        return $decoded;
+        return (new Decoder($options, $listType, $dictType, $dictionaryType, $useGMP, $bigInt))
+            ->decode($bencoded);
     }
 
     /**
@@ -65,30 +56,8 @@ final class Bencode
         bool $useGMP = false,
         string|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
-        // resolve dictType / dictionaryType alias
-        if (isset($dictionaryType)) {
-            trigger_deprecation(
-                'sandfoxme/bencode',
-                '2.3.0',
-                'dictionaryType option is deprecated, use dictType instead',
-            );
-            $dictType = $dictionaryType;
-        }
-
-        if (\count($options) > 0) {
-            if (isset($options['dictionaryType'])) {
-                $options['dictType'] ??= $options['dictionaryType'];
-                unset($options['dictionaryType']);
-            }
-        }
-
-        if ($useGMP) {
-            $bigInt = Bencode\BigInt::GMP;
-        }
-
-        $options = array_merge(compact('listType', 'dictType', 'bigInt'), $options);
-
-        return (new Decoder($readStream, ...$options))->decode();
+        return (new Decoder($options, $listType, $dictType, $dictionaryType, $useGMP, $bigInt))
+            ->decodeStream($readStream);
     }
 
     /**
@@ -112,17 +81,8 @@ final class Bencode
         bool $useGMP = false,
         string|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
-        $stream = fopen($filename, 'r');
-
-        if ($stream === false) {
-            return false;
-        }
-
-        $decoded = self::decodeStream($stream, $options, $listType, $dictType, $dictionaryType, $useGMP, $bigInt);
-
-        fclose($stream);
-
-        return $decoded;
+        return (new Decoder($options, $listType, $dictType, $dictionaryType, $useGMP, $bigInt))
+            ->load($filename);
     }
 
     /**
