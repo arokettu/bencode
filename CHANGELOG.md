@@ -23,6 +23,12 @@
 
 ## 2.x
 
+### 2.next
+
+* Decoder and Encoder are backported from 3.x
+* `useGMP` is marked as deprecated
+* Fixed `'useGMP'` in options array causing crash
+
 ### 2.6.1
 
 *Sep 10, 2021*
@@ -85,6 +91,10 @@
 * Encode now throws an error if it encounters a value that cannot be serialized
 
 ## 1.x
+
+### 1.next
+
+* Decoder and Encoder are backported from 3.x
 
 ### 1.6.2
 
