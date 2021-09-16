@@ -14,7 +14,7 @@ class EncodeOptionsTest extends TestCase
     {
         // object with __toString
         self::assertEquals('6:string', Bencode::encode(new class {
-            public function __toString()
+            public function __toString(): string
             {
                 return 'string';
             }
@@ -22,7 +22,7 @@ class EncodeOptionsTest extends TestCase
 
         // options array
         self::assertEquals('6:string', Bencode::encode(new class {
-            public function __toString()
+            public function __toString(): string
             {
                 return 'string';
             }
@@ -36,7 +36,7 @@ class EncodeOptionsTest extends TestCase
 
         // object with __toString
         Bencode::encode(new class {
-            public function __toString()
+            public function __toString(): string
             {
                 return 'string';
             }

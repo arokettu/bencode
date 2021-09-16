@@ -22,12 +22,9 @@ class EncodeSerializableTest extends TestCase
 
         // test returning object which is also serializable
         $dataRecursion = new class ($dataScalar) implements BencodeSerializable {
-            private $data;
-
-            public function __construct($data)
-            {
-                $this->data = $data;
-            }
+            public function __construct(
+                private BencodeSerializable $data,
+            ) {}
 
             public function bencodeSerialize(): mixed
             {
@@ -64,12 +61,9 @@ class EncodeSerializableTest extends TestCase
 
         // test returning object which is also serializable
         $dataRecursion = new class ($dataScalar) implements \JsonSerializable {
-            private $data;
-
-            public function __construct($data)
-            {
-                $this->data = $data;
-            }
+            public function __construct(
+                private \JsonSerializable $data,
+            ) {}
 
             public function jsonSerialize(): mixed
             {
