@@ -20,5 +20,6 @@ interface BencodeSerializable
      *
      * @return mixed
      */
+    // @phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
     public function bencodeSerialize();
 }

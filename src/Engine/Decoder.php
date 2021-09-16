@@ -38,6 +38,12 @@ final class Decoder
     private const STATE_LIST = 2;
     private const STATE_DICT = 3;
 
+    /**
+     * @param resource $stream
+     * @param string|callable $listType
+     * @param string|callable $dictType
+     * @param string|callable $bigInt
+     */
     public function __construct(
         private $stream,
         string|callable $listType = Collection::ARRAY,

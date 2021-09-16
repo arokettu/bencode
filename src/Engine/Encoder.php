@@ -23,6 +23,10 @@ use SandFox\Bencode\Types\ListType;
  */
 final class Encoder
 {
+    /**
+     * @param mixed $data
+     * @param resource $stream
+     */
     public function __construct(private mixed $data, private $stream)
     {
         if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
