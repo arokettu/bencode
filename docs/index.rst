@@ -15,7 +15,10 @@ Installation
 
 .. code-block:: bash
 
+   # default version:
    composer require 'sandfoxme/bencode'
+   # future compatible with 3.x:
+   composer require 'sandfoxme/bencode:^2.7 || ^3.0'
 
 Documentation
 =============

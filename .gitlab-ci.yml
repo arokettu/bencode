@@ -9,6 +9,8 @@ cache:
 
 .test:
   before_script:
+    # display PHP version
+    - php -v
     # install system packages
     - apt-get update && apt-get install -y git unzip libgmp-dev
     # install extensions
