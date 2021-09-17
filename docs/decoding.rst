@@ -37,6 +37,8 @@ Please note that floats and booleans will stay converted because Bencode has no 
 Lists and Dictionaries
 ======================
 
+.. versionchanged:: 3.0 ``Collection`` is now a real enum
+
 Dictionaries and lists will be arrays by default.
 You can change this behavior with options.
 Use ``Collection`` enum for built in behaviors:
@@ -90,6 +92,7 @@ External Libraries
 
 .. versionadded:: 1.5/2.5 GMP support
 .. versionadded:: 1.6/2.6 Pear's Math_BigInteger, brick/math
+.. versionchanged:: 3.0 ``BigInt`` is now a real enum
 
 .. important::
     These math libraries are not explicit dependencies of this library.

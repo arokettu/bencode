@@ -42,6 +42,8 @@ Objects
 ArrayObject and stdClass
 ------------------------
 
+.. versionchanged:: 3.0 ``Traversable`` objects no longer become dictionaries automatically
+
 ArrayObject and stdClass become dictionaries:
 
 .. code-block:: php
@@ -89,7 +91,9 @@ will become integers:
 Stringable
 ----------
 
-Optionally you can convert ``Stringable`` objects to strings:
+.. versionchanged:: 3.0 ``Stringable`` objects no longer become strings automatically
+
+You can convert ``Stringable`` objects to strings using ``useStringable`` option:
 
 .. code-block:: php
 
@@ -208,6 +212,8 @@ Optionally you can use JsonSerializable_ itself too:
 
 Working with files
 ==================
+
+.. versionchanged:: 3.0 ``($filename, $data)`` → ``($data, $filename)``
 
 Save data to file:
 
