@@ -2,7 +2,9 @@
 
 ## 3.x
 
-### 3.next
+### 3.0.0
+
+*Sep 17, 2021*
 
 3.0.0 was branched from 2.6.1
 
