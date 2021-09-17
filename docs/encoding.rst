@@ -249,7 +249,7 @@ This parameter is kept for compatibility with 1.x calls.
 Encoder object
 ==============
 
-3.0 added Encoder and Decoder objects that can be configured on creation and used multiple times.
+Encoder object can be configured on creation and used multiple times.
 
 .. code-block:: php
 
