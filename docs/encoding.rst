@@ -208,7 +208,7 @@ Save data to file:
 
     use SandFox\Bencode\Bencode;
 
-    Bencode::dump('testfile.torrent', $data);
+    Bencode::dump($data, 'testfile.torrent');
 
 Working with streams
 ====================
