@@ -37,7 +37,6 @@ The library is available as open source under the terms of the `MIT License`_.
 
 .. _Bencode:            https://en.wikipedia.org/wiki/Bencode
 .. _BitTorrent:         https://en.wikipedia.org/wiki/BitTorrent
-.. _JsonSerializable:   http://php.net/manual/en/class.jsonserializable.php
 .. _MIT License:        https://opensource.org/licenses/MIT
 
 .. |Packagist|  image:: https://img.shields.io/packagist/v/sandfoxme/bencode.svg?style=flat-square

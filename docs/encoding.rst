@@ -263,7 +263,7 @@ Encoder object can be configured on creation and used multiple times.
     use SandFox\Bencode\Bencode;
     use SandFox\Bencode\Encoder;
 
-    $encoder = new Encoder(useStringable: true);
+    $encoder = new Encoder(useJsonSerializable: true);
     // all calls available:
     $encoder->encode($data);
     $encoder->encodeToStream($data, $stream);
