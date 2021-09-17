@@ -1,6 +1,7 @@
 Encoding
 ########
 
+.. versionchanged:: 2.0 options array is replaced with named parameters
 .. note:: Parameter order is not guaranteed for options, use named parameters
 
 Scalars and arrays
