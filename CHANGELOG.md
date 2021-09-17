@@ -23,7 +23,9 @@
 
 ## 2.x
 
-### 2.next
+### 2.7.0
+
+*Sep 17, 2021*
 
 * Decoder and Encoder are backported from 3.x
 * `DictType` backported from 3.x
@@ -94,7 +96,9 @@
 
 ## 1.x
 
-### 1.next
+### 1.7.0
+
+*Sep 17, 2021*
 
 * Decoder and Encoder are backported from 3.x
 * `DictType` backported from 3.x

@@ -1,6 +1,7 @@
 Decoding
 ########
 
+.. versionchanged:: 2.0 options array is replaced with named parameters
 .. note:: Parameter order is not guaranteed for options, use named parameters
 
 Scalars
@@ -87,6 +88,9 @@ you can enable big integer support.
 External Libraries
 ------------------
 
+.. versionadded:: 1.5/2.5 GMP support
+.. versionadded:: 1.6/2.6 Pear's Math_BigInteger, brick/math
+
 .. important::
     These math libraries are not explicit dependencies of this library.
     Install them separately before enabling.
@@ -137,6 +141,8 @@ Supported libraries:
 Internal Type
 -------------
 
+.. versionadded:: 1.6/2.6
+
 The library also has built in ``BigIntType``.
 It does not require any external dependencies but also does not allow any manipulation.
 
@@ -171,6 +177,8 @@ BigIntType is a value object with several getters:
 
 Custom Handling
 ---------------
+
+.. versionadded:: 1.6/2.6
 
 Like listType and dictType you can use a callable or a class name:
 
@@ -207,6 +215,8 @@ Load data from a file:
 
 Working with streams
 ====================
+
+.. versionadded:: 1.5/2.5
 
 Load data from a seekable readable stream:
 
@@ -246,7 +256,9 @@ This parameter is kept for compatibility with 1.x calls.
 Decoder object
 ==============
 
-Decoder object can be configured on creation and used multiple times.
+.. versionadded:: 1.7/2.7/3.0
+
+Decoder object can be configured on creation and used multiple times:
 
 .. code-block:: php
 
