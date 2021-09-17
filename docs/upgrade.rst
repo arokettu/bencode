@@ -14,7 +14,7 @@ Main breaking changes:
   * ``Bencode\BigInt`` and ``Bencode\Collection`` are now enums,
     therefore ``dictType``, ``listType``, ``bigInt`` params no longer accept bare string values
     (like ``'array'`` or ``'object'`` or ``'gmp'``).
-    If you already use constants, nothing will change for you.
+    If you use constants, nothing will change for you.
 
 * Encoding:
 
@@ -22,20 +22,14 @@ Main breaking changes:
     You need to wrap them with ``DictType``.
   * Stringables no longer become strings by default.
     Use ``useStringable: true`` to return old behavior.
-  * ``dump($filename, $data)`` became ``dump($data, $filename)`` for consistency with streams.
+  * ``Bencode::dump($filename, $data)`` became ``Bencode::dump($data, $filename)`` for consistency with streams.
 
     .. code-block:: php
 
         <?php
 
-        // code that works in all versions:
-        if (class_exists(\SandFox\Bencode\Encoder::class)) {
-            // bencode v3
-            $success = (new \SandFox\Bencode\Encoder([...$optionsHere]))->dump($data, $filename);
-        } else {
-            // bencode v1/v2
-            $success = \SandFox\Bencode\Bencode::dump($filename, $data, [...$optionsHere]);
-        }
+        // Use Encoder object in 1.7+/2.7+/3.0+:
+        $success = (new \SandFox\Bencode\Encoder([...$optionsHere]))->dump($data, $filename);
 
         // Or use named parameters in PHP 8.0+:
         $success = \SandFox\Bencode\Bencode::dump(
