@@ -36,6 +36,8 @@ Please note that floats and booleans will stay converted because Bencode has no 
 Lists and Dictionaries
 ======================
 
+.. deprecated:: 1.4/2.3 ``dictionaryType`` replaced with ``dictType``
+
 Dictionaries and lists will be arrays by default.
 You can change this behavior with options.
 Use ``Collection`` constants for built in behaviors:
@@ -86,6 +88,10 @@ you can enable big integer support.
 
 External Libraries
 ------------------
+
+.. versionadded:: 1.5/2.5 GMP support
+.. versionadded:: 1.6/2.6 Pear's Math_BigInteger, brick/math
+.. deprecated:: 1.7/2.7 Use ``'bigInt' => Bencode\BigInt::GMP`` instead of ``useGMP: true``
 
 .. important::
     These math libraries are not explicit dependencies of this library.
@@ -143,6 +149,8 @@ Supported libraries:
 Internal Type
 -------------
 
+.. versionadded:: 1.6/2.6
+
 The library also has built in ``BigIntType``.
 It does not require any external dependencies but also does not allow any manipulation.
 
@@ -177,6 +185,8 @@ BigIntType is a value object with several getters:
 
 Custom Handling
 ---------------
+
+.. versionadded:: 1.6/2.6
 
 Like listType and dictType you can use a callable or a class name:
 
@@ -213,6 +223,8 @@ Load data from a file:
 
 Working with streams
 ====================
+
+.. versionadded:: 1.5/2.5
 
 Load data from a seekable readable stream:
 
@@ -251,6 +263,8 @@ This parameter is kept for compatibility with 1.x calls.
 
 Decoder object
 ==============
+
+.. versionadded:: 1.7/2.7/3.0
 
 Decoder object can be configured on creation and used multiple times:
 

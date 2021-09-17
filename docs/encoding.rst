@@ -68,6 +68,9 @@ Traversable and stdClass become dictionaries:
 Big integer support
 -------------------
 
+.. versionadded:: 1.5/2.5 GMP support
+.. versionadded:: 1.6/2.6 Pear's Math_BigInteger, brick/math, BigIntType support
+
 .. note:: More in the :ref:`decoding section <bencode_decoding_bigint>`
 
 GMP object, Pear's Math_BigInteger, brick/math BigInteger, and internal type BigIntType (simple numeric string wrapper)
@@ -114,6 +117,8 @@ Stringable objects are cast to strings:
 Object Wrappers
 ---------------
 
+.. versionadded:: 1.7/2.7/3.0 ``DictType``
+
 You can use any traversable as a list by wrapping it with ``ListType``.
 Keys will be discarded in that case.
 
@@ -149,6 +154,9 @@ Keys will be cast to string and must be unique.
 
 BencodeSerializable
 -------------------
+
+.. versionadded:: 1.2
+.. versionadded:: 1.7/2.7/3.0 ``JsonSerializable`` handling
 
 You can also force object representation by implementing BencodeSerializable interface.
 This will work exactly like JsonSerializable_ interface.
@@ -220,6 +228,8 @@ Save data to file:
 Working with streams
 ====================
 
+.. versionadded:: 1.5/2.5
+
 Save data to a writable stream or to a new php://temp if no stream is specified
 
 .. code-block:: php
@@ -253,6 +263,8 @@ This parameter is kept for compatibility with 1.x calls.
 
 Encoder object
 ==============
+
+.. versionadded:: 1.7/2.7/3.0
 
 Encoder object can be configured on creation and used multiple times.
 
