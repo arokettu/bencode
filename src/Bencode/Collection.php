@@ -6,8 +6,10 @@ namespace SandFox\Bencode\Bencode;
 
 enum Collection
 {
-    case ARRAY;
+    // todo: https://github.com/nikic/PHP-Parser/issues/807
+    case ___I_AM_A_COVERAGE_BUG_HACK_IGNORE_ME___ARRAY;
     case OBJECT;
+    public const ARRAY = self::___I_AM_A_COVERAGE_BUG_HACK_IGNORE_ME___ARRAY;
     public const STDCLASS = self::OBJECT;
 
     public function getHandler(): \Closure
