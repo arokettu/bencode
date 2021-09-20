@@ -3,7 +3,7 @@ stages:
   - report
 
 cache:
-  key: composer-cache
+  key: composer-cache.3.x
   paths:
     - .composer-cache/
 
