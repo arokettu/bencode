@@ -125,4 +125,14 @@ class DecodeDictTest extends TestCase
             })())
         );
     }
+
+    public function testIncorrectType(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            '$dictType must be Bencode\Collection enum value, class name, or callback'
+        );
+
+        Bencode::decode('de', dictType: "\0NonExistentClass");
+    }
 }

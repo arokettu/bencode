@@ -65,7 +65,7 @@ class LargeIntegerTest extends TestCase
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('BigInt must be Bencode\BigInt enum value, class name, or callback');
+        $this->expectExceptionMessage('$bigInt must be Bencode\BigInt enum value, class name, or callback');
 
         Bencode::decode($encoded, bigInt: 'invalid');
     }

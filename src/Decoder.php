@@ -31,7 +31,7 @@ final class Decoder
                 => fn ($value) => new $listType($value),
             default
                 => throw new InvalidArgumentException(
-                    "ListType must be Bencode\Collection enum value, class name, or callback"
+                    '$listType must be Bencode\Collection enum value, class name, or callback'
                 ),
         };
 
@@ -44,7 +44,7 @@ final class Decoder
                 => fn ($value) => new $dictType($value),
             default
                 => throw new InvalidArgumentException(
-                    "DictType must be Bencode\Collection enum value, class name, or callback"
+                    '$dictType must be Bencode\Collection enum value, class name, or callback'
                 ),
         };
 
@@ -57,7 +57,7 @@ final class Decoder
                 => fn ($value) => new $bigInt($value),
             default
                 => throw new InvalidArgumentException(
-                    "BigInt must be Bencode\BigInt enum value, class name, or callback"
+                    '$bigInt must be Bencode\BigInt enum value, class name, or callback'
                 ),
         };
     }

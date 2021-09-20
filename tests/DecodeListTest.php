@@ -68,7 +68,7 @@ class DecodeListTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            "ListType must be Bencode\Collection enum value, class name, or callback"
+            '$listType must be Bencode\Collection enum value, class name, or callback'
         );
 
         Bencode::decode('le', listType: "\0NonExistentClass");
