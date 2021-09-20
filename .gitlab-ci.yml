@@ -36,9 +36,8 @@ coverage:
   extends: .test
   stage: report
   only:
-    - 1.x
-    - 2.x
-  image: php:8.0
+    - 3.x
+  image: php:8.1
   script:
     - composer update
     - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.xml
