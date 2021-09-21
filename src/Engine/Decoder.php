@@ -30,7 +30,7 @@ final class Decoder
     private $state;
     /** @var \SplStack */
     private $stateStack;
-    /** @var mixed|\SplQueue */
+    /** @var \SplQueue */
     private $value;
     /** @var \SplStack */
     private $valueStack;
@@ -298,7 +298,7 @@ final class Decoder
     private function finalizeScalar($value)
     {
         if ($this->state !== self::STATE_ROOT) {
-            $this->value[] = $value;
+            $this->value->enqueue($value);
         } else {
             // we have final result
             $this->decoded = $value;
