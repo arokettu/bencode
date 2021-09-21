@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @noinspection PhpVoidFunctionResultUsedInspection
- */
-
 declare(strict_types=1);
 
 namespace SandFox\Bencode\Engine;
@@ -30,9 +26,9 @@ final class Decoder
     private array $options;
 
     private int $state;
-    private array $stateStack;
-    private mixed $value;
-    private array $valueStack;
+    private \SplStack $stateStack;
+    private \SplQueue|null $value;
+    private \SplStack $valueStack;
 
     private const STATE_ROOT = 1;
     private const STATE_LIST = 2;
@@ -60,10 +56,10 @@ final class Decoder
     public function decode(): mixed
     {
         $this->state        = self::STATE_ROOT;
-        $this->stateStack   = [];
+        $this->stateStack   = new \SplStack();
         $this->decoded      = null;
         $this->value        = null;
-        $this->valueStack   = [];
+        $this->valueStack   = new \SplStack();
 
         while (!feof($this->stream)) {
             $this->processChar();
@@ -214,36 +210,36 @@ final class Decoder
 
     private function finalizeList(): void
     {
-        $value = $this->convertArrayToType($this->value, 'listType');
+        $value = $this->convertArrayToType(iterator_to_array($this->value), 'listType');
 
         $this->pop($value);
     }
 
     private function finalizeDict(): void
     {
-        $dict = [];
+        $dictBuilder = function (): \Generator {
+            $prevKey = null;
 
-        $prevKey = null;
+            // we have a queue [key1, value1, key2, value2, key3, value3, ...]
+            while (\count($this->value)) {
+                $dictKey = $this->value->dequeue();
+                if (\is_string($dictKey) === false) {
+                    throw new ParseErrorException('Non string key found in the dictionary');
+                }
+                if (\count($this->value) === 0) {
+                    throw new ParseErrorException("Dictionary key without corresponding value: '{$dictKey}'");
+                }
+                if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
+                    throw new ParseErrorException("Invalid order of dictionary keys: '{$dictKey}' after '{$prevKey}'");
+                }
+                $dictValue = $this->value->dequeue();
 
-        // we have an array [key1, value1, key2, value2, key3, value3, ...]
-        while (\count($this->value)) {
-            $dictKey = array_shift($this->value);
-            if (\is_string($dictKey) === false) {
-                throw new ParseErrorException('Non string key found in the dictionary');
+                yield $dictKey => $dictValue;
+                $prevKey = $dictKey;
             }
-            if (\count($this->value) === 0) {
-                throw new ParseErrorException("Dictionary key without corresponding value: '{$dictKey}'");
-            }
-            if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
-                throw new ParseErrorException("Invalid order of dictionary keys: '{$dictKey}' after '{$prevKey}'");
-            }
-            $dictValue = array_shift($this->value);
+        };
 
-            $dict[$dictKey] = $dictValue;
-            $prevKey = $dictKey;
-        }
-
-        $value = $this->convertArrayToType($dict, 'dictType');
+        $value = $this->convertArrayToType(iterator_to_array($dictBuilder()), 'dictType');
 
         $this->pop($value);
     }
@@ -255,7 +251,7 @@ final class Decoder
     private function finalizeScalar(mixed $value): void
     {
         if ($this->state !== self::STATE_ROOT) {
-            $this->value[] = $value;
+            $this->value->enqueue($value);
         } else {
             // we have final result
             $this->decoded = $value;
@@ -268,11 +264,11 @@ final class Decoder
      */
     private function push(int $newState): void
     {
-        array_push($this->stateStack, $this->state);
+        $this->stateStack->push($this->state);
         $this->state = $newState;
 
-        array_push($this->valueStack, $this->value);
-        $this->value = [];
+        $this->valueStack->push($this->value);
+        $this->value = new \SplQueue();
     }
 
     /**
@@ -281,11 +277,11 @@ final class Decoder
      */
     private function pop(mixed $valueToPrevLevel): void
     {
-        $this->state = array_pop($this->stateStack);
+        $this->state = $this->stateStack->pop();
 
         if ($this->state !== self::STATE_ROOT) {
-            $this->value = array_pop($this->valueStack);
-            $this->value[] = $valueToPrevLevel;
+            $this->value = $this->valueStack->pop();
+            $this->value->enqueue($valueToPrevLevel);
         } else {
             // we have final result
             $this->decoded = $valueToPrevLevel;
