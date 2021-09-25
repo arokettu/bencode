@@ -33,7 +33,8 @@
         }
     },
     "require": {
-        "php": "^7.0 | ^8.0"
+        "php": "^7.0 | ^8.0",
+        "arokettu/is-resource": "^1.0"
     },
     "require-dev": {
         "ext-gmp": "*",

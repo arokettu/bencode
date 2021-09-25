@@ -13,6 +13,8 @@ use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Util\IntUtil;
 use SandFox\Bencode\Util\Util;
 
+use function Arokettu\IsResource\try_get_resource_type;
+
 /**
  * Class Decoder
  * @package SandFox\Bencode\Engine
@@ -52,7 +54,7 @@ final class Decoder
         $this->stream = $stream;
         $this->options = array_merge(self::DEFAULT_OPTIONS, $options);
 
-        if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+        if (try_get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Input is not a valid stream');
         }
     }
