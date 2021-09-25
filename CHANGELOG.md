@@ -2,6 +2,12 @@
 
 ## 2.x
 
+### 2.7.1
+
+*Sep 25, 2021*
+
+* Future compatible stream check
+
 ### 2.7.0
 
 *Sep 17, 2021*
