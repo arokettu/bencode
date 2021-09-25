@@ -12,6 +12,8 @@ use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Util\IntUtil;
 
+use function Arokettu\IsResource\try_get_resource_type;
+
 /**
  * Class Decoder
  * @package SandFox\Bencode\Engine
@@ -46,7 +48,7 @@ final class Decoder
         string|callable $dictType = Collection::ARRAY,
         string|callable $bigInt = BigInt::NONE,
     ) {
-        if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+        if (try_get_resource_type($stream) !== 'stream') {
             throw new InvalidArgumentException('Input is not a valid stream');
         }
 

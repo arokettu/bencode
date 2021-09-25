@@ -10,6 +10,8 @@ use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Types\ListType;
 
+use function Arokettu\IsResource\try_get_resource_type;
+
 /**
  * Class Encoder
  * @package SandFox\Bencode\Engine
@@ -29,7 +31,7 @@ final class Encoder
         private $stream,
         private bool $useJsonSerializable,
     ) {
-        if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+        if (try_get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Output is not a valid stream');
         }
     }
