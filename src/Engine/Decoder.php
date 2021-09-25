@@ -8,6 +8,8 @@ use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Util\IntUtil;
 
+use function Arokettu\IsResource\try_get_resource_type;
+
 /**
  * @internal
  */
@@ -36,7 +38,7 @@ final class Decoder
         private \Closure $dictHandler,
         private \Closure $bigIntHandler,
     ) {
-        if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+        if (try_get_resource_type($stream) !== 'stream') {
             throw new InvalidArgumentException('Input is not a valid stream');
         }
     }

@@ -11,6 +11,8 @@ use SandFox\Bencode\Types\BigIntType;
 use SandFox\Bencode\Types\DictType;
 use SandFox\Bencode\Types\ListType;
 
+use function Arokettu\IsResource\try_get_resource_type;
+
 /**
  * @internal
  */
@@ -28,7 +30,7 @@ final class Encoder
         private bool $useJsonSerializable,
         private bool $useStringable,
     ) {
-        if (!\is_resource($this->stream) || get_resource_type($this->stream) !== 'stream') {
+        if (try_get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Output is not a valid stream');
         }
     }

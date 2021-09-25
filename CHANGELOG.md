@@ -25,6 +25,12 @@
 
 ## 2.x
 
+### 2.7.1
+
+*Sep 25, 2021*
+
+* Future compatible stream check
+
 ### 2.7.0
 
 *Sep 17, 2021*
@@ -97,6 +103,12 @@
 * Encode now throws an error if it encounters a value that cannot be serialized
 
 ## 1.x
+
+### 1.7.1
+
+*Sep 25, 2021*
+
+* Future compatible stream check
 
 ### 1.7.0
 
