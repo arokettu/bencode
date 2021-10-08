@@ -43,7 +43,7 @@
         "pear/math_biginteger": "^1.0",
         "phpunit/phpunit": "^9.4",
         "psy/psysh": "*",
-        "sandfox.dev/code-standard": "8.1.x@dev",
+        "sandfox.dev/code-standard": "@dev",
         "squizlabs/php_codesniffer": "*"
     },
     "suggest": {
