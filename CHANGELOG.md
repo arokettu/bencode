@@ -31,6 +31,12 @@
 
 ## 2.x
 
+### 2.7.2
+
+*Oct 23, 2021*
+
+* Objects serialized to empty values are now allowed on non-root levels
+
 ### 2.7.1
 
 *Sep 25, 2021*
@@ -109,6 +115,12 @@
 * Encode now throws an error if it encounters a value that cannot be serialized
 
 ## 1.x
+
+### 1.7.2
+
+*Oct 23, 2021*
+
+* Objects serialized to empty values are now allowed on non-root levels 
 
 ### 1.7.1
 

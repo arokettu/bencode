@@ -74,4 +74,28 @@ class EncodeEmptyTest extends TestCase
             ])
         );
     }
+
+    public function testSkipSerializableFalseInList(): void
+    {
+        $emptyValue = new class implements BencodeSerializable {
+            public function bencodeSerialize(): bool
+            {
+                return false;
+            }
+        };
+
+        self::assertEquals('le', Bencode::encode([$emptyValue]));
+    }
+
+    public function testSkipSerializableFalseInDict(): void
+    {
+        $emptyValue = new class implements BencodeSerializable {
+            public function bencodeSerialize(): bool
+            {
+                return false;
+            }
+        };
+
+        self::assertEquals('de', Bencode::encode(['empty' => $emptyValue]));
+    }
 }
