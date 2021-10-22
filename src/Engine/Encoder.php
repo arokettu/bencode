@@ -51,7 +51,7 @@ final class Encoder
      */
     public function encode()
     {
-        $this->encodeValue($this->data);
+        $this->encodeValue($this->resolveSerializable($this->data));
 
         return $this->stream;
     }
@@ -100,17 +100,6 @@ final class Encoder
     private function encodeObject($value)
     {
         switch (true) {
-            // serializable
-            case $value instanceof BencodeSerializable:
-                // Start again with method result
-                $this->encodeValue($value->bencodeSerialize());
-                break;
-
-            case $this->options['useJsonSerializable'] && $value instanceof \JsonSerializable:
-                // Start again with method result
-                $this->encodeValue($value->jsonSerialize());
-                break;
-
             // traversables
             case $value instanceof ListType:
                 // ListType forces traversable object to be list
@@ -151,6 +140,8 @@ final class Encoder
         fwrite($this->stream, 'l');
 
         foreach ($array as $value) {
+            $value = $this->resolveSerializable($value);
+
             if ($value === false || $value === null) {
                 continue;
             }
@@ -166,6 +157,8 @@ final class Encoder
         $dictData = [];
 
         foreach ($array as $key => $value) {
+            $value = $this->resolveSerializable($value);
+
             if ($value === false || $value === null) {
                 continue;
             }
@@ -206,5 +199,22 @@ final class Encoder
         }
 
         return true;
+    }
+
+    private function resolveSerializable($value)
+    {
+        if (!\is_object($value)) {
+            return $value;
+        }
+
+        if ($value instanceof BencodeSerializable) {
+            return $this->resolveSerializable($value->bencodeSerialize());
+        }
+
+        if ($this->options['useJsonSerializable'] && $value instanceof \JsonSerializable) {
+            return $this->resolveSerializable($value->jsonSerialize());
+        }
+
+        return $value;
     }
 }
