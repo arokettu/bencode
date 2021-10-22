@@ -41,7 +41,7 @@ final class Encoder
      */
     public function encode()
     {
-        $this->encodeValue($this->data);
+        $this->encodeValue($this->resolveSerializable($this->data));
 
         return $this->stream;
     }
@@ -91,12 +91,6 @@ final class Encoder
     private function encodeObject(object $value): void
     {
         match (true) {
-            // serializable
-            // Start again with method result
-            $value instanceof BencodeSerializable =>
-                $this->encodeValue($value->bencodeSerialize()),
-            $this->useJsonSerializable && $value instanceof \JsonSerializable =>
-                $this->encodeValue($value->jsonSerialize()),
             // traversables
             // ListType forces traversable object to be list
             $value instanceof ListType =>
@@ -135,6 +129,8 @@ final class Encoder
         fwrite($this->stream, 'l');
 
         foreach ($array as $value) {
+            $value = $this->resolveSerializable($value);
+
             if ($value === false || $value === null) {
                 continue;
             }
@@ -150,6 +146,8 @@ final class Encoder
         $dictData = [];
 
         foreach ($array as $key => $value) {
+            $value = $this->resolveSerializable($value);
+
             if ($value === false || $value === null) {
                 continue;
             }
@@ -171,5 +169,22 @@ final class Encoder
         }
 
         fwrite($this->stream, 'e');
+    }
+
+    private function resolveSerializable(mixed $value): mixed
+    {
+        if (!\is_object($value)) {
+            return $value;
+        }
+
+        if ($value instanceof BencodeSerializable) {
+            return $this->resolveSerializable($value->bencodeSerialize());
+        }
+
+        if ($this->useJsonSerializable && $value instanceof \JsonSerializable) {
+            return $this->resolveSerializable($value->jsonSerialize());
+        }
+
+        return $value;
     }
 }
