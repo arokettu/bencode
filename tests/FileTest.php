@@ -6,10 +6,10 @@ namespace SandFox\Bencode\Tests;
 
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use SandFox\Bencode\Bencode;
 use SandFox\Bencode\Exceptions\FileNotReadableException;
 use SandFox\Bencode\Exceptions\FileNotWritableException;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 
 class FileTest extends TestCase
 {

@@ -8,8 +8,8 @@ namespace SandFox\Bencode\Tests;
 
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
+use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use stdClass;
 
 class DecodeListTest extends TestCase

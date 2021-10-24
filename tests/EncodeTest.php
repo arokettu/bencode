@@ -8,11 +8,11 @@ namespace SandFox\Bencode\Tests;
 
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
+use SandFox\Bencode\Bencode;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
+use SandFox\Bencode\Types\BencodeSerializable;
 use SandFox\Bencode\Types\DictType;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Types\BencodeSerializable;
-use SandFoxMe\Bencode\Types\ListType;
+use SandFox\Bencode\Types\ListType;
 use stdClass;
 
 class EncodeTest extends TestCase

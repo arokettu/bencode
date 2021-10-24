@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SandFox\Bencode\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Exceptions\ParseErrorException;
+use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\ParseErrorException;
 
 class DecodeStringTest extends TestCase
 {

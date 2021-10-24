@@ -6,7 +6,7 @@ namespace SandFox\Bencode\Tests;
 
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
-use SandFoxMe\Bencode\Bencode;
+use SandFox\Bencode\Bencode;
 use stdClass;
 
 class DecodeIntegrationTest extends TestCase

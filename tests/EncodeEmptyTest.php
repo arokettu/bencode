@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SandFox\Bencode\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
-use SandFoxMe\Bencode\Types\BencodeSerializable;
+use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\InvalidArgumentException;
+use SandFox\Bencode\Types\BencodeSerializable;
 
 class EncodeEmptyTest extends TestCase
 {

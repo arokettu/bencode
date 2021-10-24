@@ -6,9 +6,9 @@ namespace SandFox\Bencode\Tests;
 
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
+use SandFox\Bencode\Bencode;
+use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Types\BigIntType;
-use SandFoxMe\Bencode\Bencode;
-use SandFoxMe\Bencode\Exceptions\ParseErrorException;
 
 class LargeIntegerTest extends TestCase
 {
