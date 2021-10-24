@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode;
 
+use SandFox\Bencode\Exceptions\FileNotReadableException;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 
 final class Decoder
@@ -104,10 +105,14 @@ final class Decoder
      */
     public function load(string $filename): mixed
     {
+        if (!is_file($filename) || !is_readable($filename)) {
+            throw new FileNotReadableException('File does not exist or is not readable: ' . $filename);
+        }
+
         $stream = fopen($filename, 'r');
 
         if ($stream === false) {
-            return false;
+            throw new FileNotReadableException('Error reading file: ' . $filename); // @codeCoverageIgnore
         }
 
         $decoded = self::decodeStream($stream);
