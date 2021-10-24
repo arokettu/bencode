@@ -2,6 +2,13 @@
 
 ## 2.x
 
+### 2.7.3
+
+*Oct 24, 2021*
+
+* dump() now throws exception if the file is not writable
+* load() now throws exception if the file is not readable
+
 ### 2.7.2
 
 *Oct 23, 2021*
