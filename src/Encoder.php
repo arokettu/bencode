@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SandFox\Bencode;
 
+use SandFox\Bencode\Exceptions\FileNotWritableException;
+
 final class Encoder
 {
     private bool $useJsonSerializable;
@@ -53,14 +55,22 @@ final class Encoder
      *
      * @param mixed $data
      * @param string $filename
-     * @return bool success of file_put_contents
+     * @return bool always true
      */
     public function dump(mixed $data, string $filename): bool
     {
+        $writable = is_file($filename) ?
+            is_writable($filename) :
+            is_dir($dirname = dirname($filename)) && is_writable($dirname);
+
+        if (!$writable) {
+            throw new FileNotWritableException('The file is not writable: ' . $filename);
+        }
+
         $stream = fopen($filename, 'w');
 
         if ($stream === false) {
-            return false;
+            throw new FileNotWritableException('Error writing to file: ' . $filename); // @codeCoverageIgnore
         }
 
         $this->encodeToStream($data, $stream);
