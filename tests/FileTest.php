@@ -6,6 +6,8 @@ namespace SandFox\Bencode\Tests;
 
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use SandFox\Bencode\Exceptions\FileNotReadableException;
+use SandFox\Bencode\Exceptions\FileNotWritableException;
 use SandFoxMe\Bencode\Bencode;
 use SandFoxMe\Bencode\Exceptions\InvalidArgumentException;
 
@@ -61,13 +63,22 @@ class FileTest extends TestCase
         self::assertEquals($loaded, $value);
     }
 
-    public function testInvalidFile()
+    public function testInvalidFileRead()
     {
+        $this->expectException(FileNotReadableException::class);
         vfsStream::setup();
         $stream = vfsStream::newFile('test', 0000);
 
-        @self::assertEquals(false, Bencode::dump($stream->url(), []));
-        @self::assertEquals(false, Bencode::load($stream->url()));
+        self::assertEquals(false, Bencode::load($stream->url()));
+    }
+
+    public function testInvalidFileWrite()
+    {
+        $this->expectException(FileNotWritableException::class);
+        vfsStream::setup();
+        $stream = vfsStream::newFile('test', 0000);
+
+        self::assertEquals(false, Bencode::dump($stream->url(), []));
     }
 
     public function testEncodeToInvalidResource()
