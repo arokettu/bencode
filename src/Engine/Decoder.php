@@ -303,7 +303,7 @@ final class Decoder
         }
 
         if (is_callable($type)) {
-            return \call_user_func($type, $array);
+            return $type($array);
         }
 
         if (class_exists($type)) {
