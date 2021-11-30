@@ -44,6 +44,12 @@
 
 ## 2.x
 
+### 2.7.4
+
+*Nov 30, 2021*
+
+* symfony/contracts v3 is now allowed
+
 ### 2.7.3
 
 *Oct 24, 2021*
