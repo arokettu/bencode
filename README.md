@@ -23,9 +23,9 @@ composer require 'sandfoxme/bencode'
 
 Supported versions:
 
-* Version 1.x supports PHP 7.0 and later
-* Version 2.x supports PHP 8.0 and later and has slightly better error handling
-* Version 3.x supports PHP 8.1 and later and is a bit stricter about data type handling
+* 1.x (bugfixes only, PHP 7.0+)
+* 2.x (bugfixes only, PHP 8.0+)
+* 3.x (current, PHP 8.1+)
 
 ## Simple use
 
