@@ -40,7 +40,7 @@ Documentation for all supported versions can be found on Read the Docs:
 
 * 1.x: <https://bencode.readthedocs.io/en/1.x/>
 * 2.x: <https://bencode.readthedocs.io/en/2.x/>
-* 3.x: <https://bencode.readthedocs.io/en/3.x/>
+* 3.x: <https://bencode.readthedocs.io/>
 
 ## Support
 
