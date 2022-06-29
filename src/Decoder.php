@@ -29,7 +29,7 @@ final class Decoder
             is_callable($listType)
                 => $listType(...),
             class_exists($listType)
-                => fn ($value) => new $listType($value),
+                => $this->createClassClosure($listType),
             default
                 => throw new InvalidArgumentException(
                     '$listType must be Bencode\Collection enum value, class name, or callback'
@@ -42,7 +42,7 @@ final class Decoder
             is_callable($dictType)
                 => $dictType(...),
             class_exists($dictType)
-                => fn ($value) => new $dictType($value),
+                => $this->createClassClosure($dictType),
             default
                 => throw new InvalidArgumentException(
                     '$dictType must be Bencode\Collection enum value, class name, or callback'
@@ -55,12 +55,23 @@ final class Decoder
             is_callable($bigInt)
                 => $bigInt(...),
             class_exists($bigInt)
-                => fn ($value) => new $bigInt($value),
+                => $this->createClassClosure($bigInt),
             default
                 => throw new InvalidArgumentException(
                     '$bigInt must be Bencode\BigInt enum value, class name, or callback'
                 ),
         };
+    }
+
+    private function createClassClosure(string $class): \Closure
+    {
+        trigger_deprecation(
+            'sandfoxme/bencode',
+            '3.1.0',
+            'Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
+        );
+
+        return fn ($value) => new $class($value);
     }
 
     /**
