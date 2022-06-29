@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-// phpcs:ignoreFile Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
+// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
+// phpcs:disable Generic.Files.LineLength.TooLong
 
 namespace SandFox\Bencode\Tests;
 
@@ -86,14 +87,14 @@ class DecodeDictTest extends TestCase
         // array
         $decodedArray = Bencode::decode($encoded, dictType: Bencode\Collection::ARRAY);
 
-        $this->assertTrue(is_array($decodedArray));
+        $this->assertTrue(\is_array($decodedArray));
         $this->assertEquals($dict, $decodedArray);
 
         // stdClass
         $object = (object)$dict;
         $decodedObject = Bencode::decode($encoded, dictType: Bencode\Collection::OBJECT);
 
-        $this->assertEquals(stdClass::class, get_class($decodedObject));
+        $this->assertEquals(stdClass::class, $decodedObject::class);
         $this->assertEquals($object, $decodedObject);
 
         // callback
@@ -105,7 +106,7 @@ class DecodeDictTest extends TestCase
             return new ArrayObject($dict, ArrayObject::ARRAY_AS_PROPS);
         });
 
-        $this->assertEquals(ArrayObject::class, get_class($decodedCallback));
+        $this->assertEquals(ArrayObject::class, $decodedCallback::class);
         $this->assertEquals($arrayObject, $decodedCallback);
     }
 
@@ -144,7 +145,7 @@ class DecodeDictTest extends TestCase
         $arrayObject = new ArrayObject($dict);
         $decodedAO = Bencode::decode($encoded, dictType: ArrayObject::class);
 
-        $this->assertEquals(ArrayObject::class, get_class($decodedAO));
+        $this->assertEquals(ArrayObject::class, $decodedAO::class);
         $this->assertEquals($arrayObject, $decodedAO);
     }
 

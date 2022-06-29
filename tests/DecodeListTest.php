@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-// phpcs:ignoreFile Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
+// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
+// phpcs:disable Generic.Files.LineLength.TooLong
 
 namespace SandFox\Bencode\Tests;
 
@@ -44,7 +45,7 @@ class DecodeListTest extends TestCase
         $object = (object)$list;
         $decodedObject = Bencode::decode($encoded, listType: Bencode\Collection::OBJECT);
 
-        self::assertEquals(stdClass::class, \get_class($decodedObject));
+        self::assertEquals(stdClass::class, $decodedObject::class);
         self::assertEquals($object, $decodedObject);
 
         // callback
@@ -57,7 +58,7 @@ class DecodeListTest extends TestCase
             return new ArrayObject($list, ArrayObject::ARRAY_AS_PROPS);
         });
 
-        self::assertEquals(ArrayObject::class, \get_class($decodedCallback));
+        self::assertEquals(ArrayObject::class, $decodedCallback::class);
         self::assertEquals($arrayObject, $decodedCallback);
     }
 
@@ -77,7 +78,7 @@ class DecodeListTest extends TestCase
         $arrayObject = new ArrayObject($list);
         $decodedAO = Bencode::decode($encoded, listType: ArrayObject::class);
 
-        self::assertEquals(ArrayObject::class, get_class($decodedAO));
+        self::assertEquals(ArrayObject::class, $decodedAO::class);
         self::assertEquals($arrayObject, $decodedAO);
     }
 

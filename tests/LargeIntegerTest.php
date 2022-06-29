@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 namespace SandFox\Bencode\Tests;
 
 use Brick\Math\BigInteger;

@@ -23,7 +23,7 @@ class EncodeTest extends TestCase
     {
         // We can't serialize non-stringable objects
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of " . \get_class($this));
+        $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of " . self::class);
 
         Bencode::encode($this);
     }
