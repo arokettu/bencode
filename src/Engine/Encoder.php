@@ -79,10 +79,9 @@ final class Encoder
 
     private function encodeArray(array $value): void
     {
-        match (array_is_list($value)) {
-            true  => $this->encodeList($value),
-            false => $this->encodeDictionary($value),
-        };
+        array_is_list($value) ?
+            $this->encodeList($value) :
+            $this->encodeDictionary($value);
     }
 
     private function encodeObject(object $value): void
@@ -98,9 +97,6 @@ final class Encoder
             $value instanceof \ArrayObject,
             $value instanceof \stdClass,
                 => $this->encodeDictionary($value),
-            // try to convert other objects to string
-            $this->useStringable && $value instanceof \Stringable,
-                => $this->encodeString(\strval($value)),
             // other classes
             default =>
                 throw new InvalidArgumentException(
@@ -182,6 +178,10 @@ final class Encoder
 
         if ($this->useJsonSerializable && $value instanceof \JsonSerializable) {
             return $this->resolveSerializable($value->jsonSerialize());
+        }
+
+        if ($this->useStringable && $value instanceof \Stringable) {
+            return $value->__toString();
         }
 
         return $value;
