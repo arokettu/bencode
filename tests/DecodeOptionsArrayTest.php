@@ -9,14 +9,14 @@ use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
 use stdClass;
 
-class DecodeLegacyOptionsTest extends TestCase
+class DecodeOptionsArrayTest extends TestCase
 {
-    public function testLegacyOptionsArray(): void
+    public function testOptionsArray(): void
     {
         $encoded = 'd4:dictd2:k1i2e2:k22:s12:k3i3e2:k42:s22:k5i5ee4:listli2e2:s1i3e2:s2i5eee';
 
         $decoded = Bencode::decode($encoded, [
-            'listType' => ArrayObject::class,
+            'listType' => fn (array $list) => new ArrayObject($list),
             'dictType' => Bencode\Collection::OBJECT,
         ]);
 

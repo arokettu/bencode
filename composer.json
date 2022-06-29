@@ -48,7 +48,8 @@
         "phpunit/phpunit": "^9.4",
         "psy/psysh": "*",
         "sandfox.dev/code-standard": "^10@dev",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "*",
+        "symfony/phpunit-bridge": "^6.1"
     },
     "suggest": {
         "php-64bit": "Running 64 bit is recommended to prevent integer overflow",

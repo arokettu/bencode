@@ -49,7 +49,7 @@ class DecodeIntegrationTest extends TestCase
 
         $decoded = Bencode::decode(
             $bencode,
-            listType: ArrayObject::class,
+            listType: fn (array $list) => new ArrayObject($list),
             dictType: Bencode\Collection::OBJECT,
         );
 

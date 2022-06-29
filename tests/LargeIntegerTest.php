@@ -10,9 +10,12 @@ use SandFox\Bencode\Bencode;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Types\BigIntType;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class LargeIntegerTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     private const POW_2_1024 =
         '1797693134862315907729305190789024733617976978942306572734300811577326758055009631' .
         '3270847732240753602112011387987139335765878976881441662249284743063947412437776789' .
@@ -50,8 +53,15 @@ class LargeIntegerTest extends TestCase
         self::assertEquals(self::POW_2_1024, $decoded);
     }
 
+    /**
+     * @group legacy
+     */
     public function testDecodeLargeIntegerClassName(): void
     {
+        $this->expectDeprecation(
+            'Since sandfoxme/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
+        );
+
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
         $decoded = Bencode::decode($encoded, bigInt: BigIntType::class);

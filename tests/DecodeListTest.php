@@ -11,9 +11,12 @@ use PHPUnit\Framework\TestCase;
 use SandFox\Bencode\Bencode;
 use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use stdClass;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class DecodeListTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     public function testListSimple(): void
     {
         // of integers
@@ -34,15 +37,41 @@ class DecodeListTest extends TestCase
         // array
         $decodedArray = Bencode::decode($encoded, listType: Bencode\Collection::ARRAY);
 
-        self::assertTrue(is_array($decodedArray));
+        self::assertTrue(\is_array($decodedArray));
         self::assertEquals($list, $decodedArray);
 
         // stdClass
         $object = (object)$list;
         $decodedObject = Bencode::decode($encoded, listType: Bencode\Collection::OBJECT);
 
-        self::assertEquals(stdClass::class, get_class($decodedObject));
+        self::assertEquals(stdClass::class, \get_class($decodedObject));
         self::assertEquals($object, $decodedObject);
+
+        // callback
+        $arrayObject = new ArrayObject($list);
+
+        $decodedCallback = Bencode::decode($encoded, listType: function ($array) use ($list) {
+            self::assertEquals($list, $array); // check that array is passed here
+
+            // you can pass extra parameter to the constructor for example
+            return new ArrayObject($list, ArrayObject::ARRAY_AS_PROPS);
+        });
+
+        self::assertEquals(ArrayObject::class, \get_class($decodedCallback));
+        self::assertEquals($arrayObject, $decodedCallback);
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testDeprecatedListTypes(): void
+    {
+        $this->expectDeprecation(
+            'Since sandfoxme/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
+        );
+
+        $list       = [2, 's1', 3, 's2', 5];
+        $encoded    = 'li2e2:s1i3e2:s2i5ee';
 
         // custom class
         $arrayObject = new ArrayObject($list);
@@ -50,18 +79,6 @@ class DecodeListTest extends TestCase
 
         self::assertEquals(ArrayObject::class, get_class($decodedAO));
         self::assertEquals($arrayObject, $decodedAO);
-
-        // callback
-        // use same array object as above
-        $decodedCallback = Bencode::decode($encoded, listType: function ($array) use ($list) {
-            self::assertEquals($list, $array); // check thar array is passed here
-
-            // you can pass extra parameter to the constructor for example
-            return new ArrayObject($list, ArrayObject::ARRAY_AS_PROPS);
-        });
-
-        self::assertEquals(ArrayObject::class, get_class($decodedCallback));
-        self::assertEquals($arrayObject, $decodedCallback);
     }
 
     public function testIncorrectType(): void

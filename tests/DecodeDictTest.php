@@ -13,9 +13,12 @@ use SandFox\Bencode\Exceptions\InvalidArgumentException;
 use SandFox\Bencode\Exceptions\ParseErrorException;
 use SandFox\Bencode\Types\DictType;
 use stdClass;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class DecodeDictTest extends TestCase
 {
+    use ExpectDeprecationTrait;
+
     public function testValid(): void
     {
         // simple
@@ -69,7 +72,7 @@ class DecodeDictTest extends TestCase
         Bencode::decode('d1:a1:b1:a1:de');
     }
 
-    public function testListTypes(): void
+    public function testDictTypes(): void
     {
         $dict = [
             'k1' => 2,
@@ -93,15 +96,8 @@ class DecodeDictTest extends TestCase
         $this->assertEquals(stdClass::class, get_class($decodedObject));
         $this->assertEquals($object, $decodedObject);
 
-        // custom class
-        $arrayObject = new ArrayObject($dict);
-        $decodedAO = Bencode::decode($encoded, dictType: ArrayObject::class);
-
-        $this->assertEquals(ArrayObject::class, get_class($decodedAO));
-        $this->assertEquals($arrayObject, $decodedAO);
-
         // callback
-        // use same array object as above
+        $arrayObject = new ArrayObject($dict);
         $decodedCallback = Bencode::decode($encoded, dictType: function ($array) use ($dict) {
             $this->assertEquals($dict, $array); // check thar array is passed here
 
@@ -124,6 +120,32 @@ class DecodeDictTest extends TestCase
                 yield 'key' => 'value2';
             })())
         );
+    }
+
+    /**
+     * @group legacy
+     */
+    public function testDeprecatedDictTypes(): void
+    {
+        $this->expectDeprecation(
+            'Since sandfoxme/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
+        );
+
+        $dict = [
+            'k1' => 2,
+            'k2' => 's1',
+            'k3' => 3,
+            'k4' => 's2',
+            'k5' => 5,
+        ];
+        $encoded = 'd2:k1i2e2:k22:s12:k3i3e2:k42:s22:k5i5ee';
+
+        // custom class
+        $arrayObject = new ArrayObject($dict);
+        $decodedAO = Bencode::decode($encoded, dictType: ArrayObject::class);
+
+        $this->assertEquals(ArrayObject::class, get_class($decodedAO));
+        $this->assertEquals($arrayObject, $decodedAO);
     }
 
     public function testIncorrectType(): void
