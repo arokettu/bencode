@@ -31,6 +31,14 @@ class DecodeIntegerTest extends TestCase
         Bencode::decode('ie');
     }
 
+    public function testUnfinished(): void
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Unexpected end of file while processing integer');
+
+        Bencode::decode('i');
+    }
+
     public function testLeadingZero(): void
     {
         $this->expectException(ParseErrorException::class);

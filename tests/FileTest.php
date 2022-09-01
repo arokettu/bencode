@@ -27,6 +27,8 @@ class FileTest extends TestCase
         $loaded = Bencode::load($file);
         self::assertEquals($loaded, $value);
 
+        Bencode::dump($value, $file); // dump again to the existing file to check permissions
+
         unlink($file);
     }
 
