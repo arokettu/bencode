@@ -55,10 +55,12 @@ final class Decoder
             $this->processChar();
         }
 
+        /** @psalm-suppress TypeDoesNotContainType too smart! */
         if ($this->state !== self::STATE_ROOT || $this->decoded === null) {
             throw new ParseErrorException('Unexpected end of file');
         }
 
+        /** @psalm-suppress NoValue too smart! */
         return $this->decoded;
     }
 

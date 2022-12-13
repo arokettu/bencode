@@ -39,6 +39,7 @@ final class BigIntType implements \Stringable
 
     public function toPear(): \Math_BigInteger
     {
+        /** @psalm-suppress InvalidArgument bad annotation in Math_BigInteger */
         return new \Math_BigInteger($this->value);
     }
 

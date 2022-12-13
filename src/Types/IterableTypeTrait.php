@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Arokettu\Bencode\Types;
 
+use Traversable;
+
 /**
  * @internal
+ * @template TKey
  */
 trait IterableTypeTrait
 {
-    private \Traversable $traversable;
+    private Traversable $traversable;
 
     /**
      * @param iterable $iterable Iterable to be wrapped
@@ -20,15 +23,14 @@ trait IterableTypeTrait
             $iterable = new \ArrayIterator($iterable);
         }
 
-        $this->setIterator($iterable);
+        $this->traversable = $iterable;
     }
 
-    private function setIterator(\Traversable $traversable): void
-    {
-        $this->traversable = $traversable;
-    }
-
-    public function getIterator(): \Traversable
+    /**
+     * @psalm-suppress ImplementedReturnTypeMismatch weird templated trait error
+     * @return Traversable<TKey, mixed>
+     */
+    public function getIterator(): Traversable
     {
         return $this->traversable;
     }

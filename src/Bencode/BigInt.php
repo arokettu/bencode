@@ -18,14 +18,20 @@ enum BigInt
 
     public function getHandler(): \Closure
     {
+        /** @psalm-suppress InvalidArgument bad annotation in Math_BigInteger */
         return match ($this) {
-            self::NONE       => fn (string $value) => throw new ParseErrorException(
-                "Integer overflow: '{$value}'"
-            ),
-            self::INTERNAL   => fn (string $value) => new BigIntType($value),
-            self::GMP        => fn (string $value) => \gmp_init($value),
-            self::BRICK_MATH => fn (string $value) => BigInteger::of($value),
-            self::PEAR       => fn (string $value) => new \Math_BigInteger($value),
+            self::NONE
+                => fn (string $value) => throw new ParseErrorException(
+                    "Integer overflow: '{$value}'"
+                ),
+            self::INTERNAL
+                => fn (string $value) => new BigIntType($value),
+            self::GMP
+                => fn (string $value) => \gmp_init($value),
+            self::BRICK_MATH
+                => fn (string $value) => BigInteger::of($value),
+            self::PEAR
+                => fn (string $value) => new \Math_BigInteger($value),
         };
     }
 }
