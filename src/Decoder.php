@@ -8,15 +8,28 @@ use SandFox\Bencode\Exceptions\FileNotReadableException;
 
 final class Decoder
 {
+    /**
+     * @internal
+     */
+    public const DEFAULT_LIST_TYPE = Bencode\Collection::ARRAY;
+    /**
+     * @internal
+     */
+    public const DEFAULT_DICT_TYPE = Bencode\Collection::ARRAY_OBJECT;
+    /**
+     * @internal
+     */
+    public const DEFAULT_BIG_INT = Bencode\BigInt::NONE;
+
     private readonly \Closure $listHandler;
     private readonly \Closure $dictHandler;
     private readonly \Closure $bigIntHandler;
 
     public function __construct(
         array $options = [],
-        Bencode\Collection|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|callable $listType = self::DEFAULT_LIST_TYPE,
+        Bencode\Collection|callable $dictType = self::DEFAULT_DICT_TYPE,
+        Bencode\BigInt|callable $bigInt = self::DEFAULT_BIG_INT,
     ) {
         if ($options !== []) {
             throw new \InvalidArgumentException('$options array must not be used');

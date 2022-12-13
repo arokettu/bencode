@@ -19,9 +19,9 @@ final class Bencode
     public static function decode(
         string $bencoded,
         array $options = [],
-        Bencode\Collection|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|callable $listType = Decoder::DEFAULT_LIST_TYPE,
+        Bencode\Collection|callable $dictType = Decoder::DEFAULT_DICT_TYPE,
+        Bencode\BigInt|callable $bigInt = Decoder::DEFAULT_BIG_INT,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->decode($bencoded);
     }
@@ -39,9 +39,9 @@ final class Bencode
     public static function decodeStream(
         $readStream,
         array $options = [],
-        Bencode\Collection|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|callable $listType = Decoder::DEFAULT_LIST_TYPE,
+        Bencode\Collection|callable $dictType = Decoder::DEFAULT_DICT_TYPE,
+        Bencode\BigInt|callable $bigInt = Decoder::DEFAULT_BIG_INT,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->decodeStream($readStream);
     }
@@ -59,9 +59,9 @@ final class Bencode
     public static function load(
         string $filename,
         array $options = [],
-        Bencode\Collection|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|callable $listType = Decoder::DEFAULT_LIST_TYPE,
+        Bencode\Collection|callable $dictType = Decoder::DEFAULT_DICT_TYPE,
+        Bencode\BigInt|callable $bigInt = Decoder::DEFAULT_BIG_INT,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->load($filename);
     }
