@@ -11,7 +11,7 @@ Scalars and arrays
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     // non sequential array will become a dictionary
     $encoded = Bencode::encode([
@@ -50,7 +50,7 @@ ArrayObject and stdClass become dictionaries:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     $encoded = Bencode::encode(
         new ArrayObject([1,2,3])
@@ -77,9 +77,9 @@ will become integers:
 
     <?php
 
+    use Arokettu\Bencode\Bencode;
+    use Arokettu\Bencode\Types\BigIntType;
     use Brick\Math\BigInteger;
-    use SandFox\Bencode\Bencode;
-    use SandFox\Bencode\Types\BigIntType;
 
     $encoded = Bencode::encode([
         'gmp' => gmp_pow(2, 96),
@@ -99,7 +99,7 @@ You can convert ``Stringable`` objects to strings using ``useStringable`` option
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     class ToString
     {
@@ -126,8 +126,8 @@ Keys will be discarded in that case.
 
     <?php
 
-    use SandFox\Bencode\Bencode;
-    use SandFox\Bencode\Types\ListType;
+    use Arokettu\Bencode\Bencode;
+    use Arokettu\Bencode\Types\ListType;
 
     $encoded = Bencode::encode(
         new ListType(new ArrayObject([1,2,3]))
@@ -140,8 +140,8 @@ Keys will be cast to string and must be unique.
 
     <?php
 
-    use SandFox\Bencode\Bencode;
-    use SandFox\Bencode\Types\DictType;
+    use Arokettu\Bencode\Bencode;
+    use Arokettu\Bencode\Types\DictType;
 
     $encoded = Bencode::encode(new DictType(
         (function () {
@@ -163,8 +163,8 @@ This will work exactly like JsonSerializable_ interface.
 
     <?php
 
-    use SandFox\Bencode\Bencode;
-    use SandFox\Bencode\Types\BencodeSerializable;
+    use Arokettu\Bencode\Bencode;
+    use Arokettu\Bencode\Types\BencodeSerializable;
 
     class MyFile implements BencodeSerializable
     {
@@ -189,7 +189,7 @@ Optionally you can use JsonSerializable_ itself too:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     class MyFile implements JsonSerializable
     {
@@ -221,7 +221,7 @@ Save data to file:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     Bencode::dump($data, 'testfile.torrent');
 
@@ -236,34 +236,9 @@ Save data to a writable stream or to a new php://temp if no stream is specified
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     Bencode::encodeToStream($data, fopen('...', 'w'));
-
-Options Array
-=============
-
-.. deprecated:: 3.1
-
-You can still use 1.x style options array instead of named params.
-This parameter is kept for compatibility with 1.x calls.
-
-.. code-block:: php
-
-    <?php
-
-    use SandFox\Bencode\Bencode;
-
-    $data = Bencode::encode(
-        "...",
-        useStringable: true,
-        useJsonSerializable: true,
-    );
-    // is equivalent to
-    $data = Bencode::encode("...", [
-        'useStringable' => true,
-        'useJsonSerializable' => true,
-    ]);
 
 Encoder object
 ==============
@@ -276,8 +251,8 @@ Encoder object can be configured on creation and used multiple times.
 
     <?php
 
-    use SandFox\Bencode\Bencode;
-    use SandFox\Bencode\Encoder;
+    use Arokettu\Bencode\Bencode;
+    use Arokettu\Bencode\Encoder;
 
     $encoder = new Encoder(useStringable: true);
     // all calls available:

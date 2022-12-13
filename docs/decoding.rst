@@ -13,7 +13,7 @@ Scalars will be converted to their respective types.
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     $data = Bencode::decode(
         "d" .
@@ -38,7 +38,7 @@ Lists and Dictionaries
 ======================
 
 .. versionchanged:: 3.0 ``Collection`` is now a real enum
-.. deprecated:: 3.1 Passing class names as handlers will be removed in 4.0
+.. versionchanged:: 4.0 Passing class names as handlers was removed
 
 Dictionaries and lists will be arrays by default.
 You can change this behavior with options.
@@ -48,15 +48,17 @@ Use ``Collection`` enum for built in behaviors:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     $data = Bencode::decode(
         "...",
-        // this is a default for both listType and dictType
+        // convert to a basic PHP array
+        // this is a default for listType
         listType: Bencode\Collection::ARRAY,
         // convert to ArrayObject
+        // this is a default for dictType
         dictType: Bencode\Collection::ARRAY_OBJECT,
-        // or to stdClass
+        // convert to stdClass
         // dictType: Bencode\Collection::STDCLASS,
     );
 
@@ -66,14 +68,14 @@ Or use advanced control with callbacks:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     $data = Bencode::decode(
         "...",
         // use callback for greater flexibility
-        listType: function (array $array) {
+        listType: function (iterable $list) {
             return new ArrayObject(
-                $array,
+                [...$list],
                 ArrayObject::ARRAY_AS_PROPS
             );
         },
@@ -109,7 +111,7 @@ Supported libraries:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     // GMP
     $data = Bencode::decode(
@@ -154,7 +156,7 @@ It does not require any external dependencies but also does not allow any manipu
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
@@ -170,7 +172,7 @@ BigIntType is a value object with several getters:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     // simple string representation:
     $str = $data->value; // readonly property
@@ -183,7 +185,7 @@ Custom Handling
 ---------------
 
 .. versionadded:: 1.6/2.6
-.. deprecated:: 3.1 Passing class names as handlers will be removed in 4.0
+.. versionchanged:: 4.0 Passing class names as handlers was removed
 
 Like listType and dictType you can use a callable:
 
@@ -191,7 +193,7 @@ Like listType and dictType you can use a callable:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     $data = Bencode::decode(
         "d3:inti79228162514264337593543950336ee",
@@ -207,7 +209,7 @@ Load data from a file:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     $data = Bencode::load('testfile.torrent');
 
@@ -222,36 +224,9 @@ Load data from a seekable readable stream:
 
     <?php
 
-    use SandFox\Bencode\Bencode;
+    use Arokettu\Bencode\Bencode;
 
     $data = Bencode::decodeStream(fopen('...', 'r'));
-
-Options Array
-=============
-
-.. deprecated:: 3.1
-
-You can still use 1.x style options array instead of named params.
-This parameter is kept for compatibility with 1.x calls.
-
-.. code-block:: php
-
-    <?php
-
-    use SandFox\Bencode\Bencode;
-
-    $data = Bencode::decode(
-        "...",
-        listType: Bencode\Collection::ARRAY,
-        dictType: Bencode\Collection::OBJECT,
-        bigInt:   Bencode\BigInt::INTERNAL,
-    );
-    // is equivalent to
-    $data = Bencode::decode("...", [
-        'listType' => Bencode\Collection::ARRAY,
-        'dictType' => Bencode\Collection::OBJECT,
-        'bigInt' =>   Bencode\BigInt::INTERNAL,
-    ]);
 
 Decoder object
 ==============
@@ -264,7 +239,7 @@ Decoder object can be configured on creation and used multiple times:
 
     <?php
 
-    use SandFox\Bencode\Decoder;
+    use Arokettu\Bencode\Decoder;
 
     $decoder = new Decoder(bigInt: Bencode\BigInt::INTERNAL);
     // all calls available:
