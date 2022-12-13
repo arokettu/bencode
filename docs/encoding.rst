@@ -243,6 +243,8 @@ Save data to a writable stream or to a new php://temp if no stream is specified
 Options Array
 =============
 
+.. deprecated:: 3.1
+
 You can still use 1.x style options array instead of named params.
 This parameter is kept for compatibility with 1.x calls.
 

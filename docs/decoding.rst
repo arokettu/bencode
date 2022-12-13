@@ -38,6 +38,7 @@ Lists and Dictionaries
 ======================
 
 .. versionchanged:: 3.0 ``Collection`` is now a real enum
+.. deprecated:: 3.1 Passing class names as handlers will be removed in 4.0
 
 Dictionaries and lists will be arrays by default.
 You can change this behavior with options.
@@ -53,11 +54,13 @@ Use ``Collection`` enum for built in behaviors:
         "...",
         // this is a default for both listType and dictType
         listType: Bencode\Collection::ARRAY,
-        // convert to stdClass
-        dictType: Bencode\Collection::OBJECT,
+        // convert to ArrayObject
+        dictType: Bencode\Collection::ARRAY_OBJECT,
+        // or to stdClass
+        // dictType: Bencode\Collection::STDCLASS,
     );
 
-Or use advanced control with class names or callbacks:
+Or use advanced control with callbacks:
 
 .. code-block:: php
 
@@ -67,10 +70,8 @@ Or use advanced control with class names or callbacks:
 
     $data = Bencode::decode(
         "...",
-        // pass class name, new $type($array) will be created
-        dictType: ArrayObject::class,
-        // or callback for greater flexibility
-        listType: function ($array) {
+        // use callback for greater flexibility
+        listType: function (array $array) {
             return new ArrayObject(
                 $array,
                 ArrayObject::ARRAY_AS_PROPS
@@ -182,8 +183,9 @@ Custom Handling
 ---------------
 
 .. versionadded:: 1.6/2.6
+.. deprecated:: 3.1 Passing class names as handlers will be removed in 4.0
 
-Like listType and dictType you can use a callable or a class name:
+Like listType and dictType you can use a callable:
 
 .. code-block:: php
 
@@ -195,13 +197,6 @@ Like listType and dictType you can use a callable or a class name:
         "d3:inti79228162514264337593543950336ee",
         bigInt: fn (string $value) => $value,
     ); // ['int' => '79228162514264337593543950336']
-    $data = Bencode::decode(
-        "d3:inti79228162514264337593543950336ee",
-        bigInt: MyBigIntHandler::class,
-    );
-    //  ['int' => new MyBigIntHandler(
-    //      '79228162514264337593543950336'
-    //  )]
 
 Working with files
 ==================
@@ -233,6 +228,8 @@ Load data from a seekable readable stream:
 
 Options Array
 =============
+
+.. deprecated:: 3.1
 
 You can still use 1.x style options array instead of named params.
 This parameter is kept for compatibility with 1.x calls.
