@@ -15,29 +15,19 @@ final class Decoder
 
     public function __construct(
         array $options = [],
-        Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|callable $listType = Bencode\Collection::ARRAY,
+        Bencode\Collection|callable $dictType = Bencode\Collection::ARRAY,
+        Bencode\BigInt|callable $bigInt = Bencode\BigInt::NONE,
     ) {
         if ($options !== []) {
-            trigger_deprecation(
-                'arokettu/bencode',
-                '3.1.0',
-                '$options is deprecated, use named parameters',
-            );
+            throw new \InvalidArgumentException('$options array must not be used');
         }
-
-        $listType = $options['listType'] ?? $listType;
-        $dictType = $options['dictType'] ?? $dictType;
-        $bigInt   = $options['bigInt']   ?? $bigInt;
 
         $this->listHandler = match (true) {
             $listType instanceof Bencode\Collection,
                 => $listType->getHandler(),
             is_callable($listType)
                 => $listType(...),
-            class_exists($listType)
-                => $this->createClassClosure($listType),
             default
                 => throw new InvalidArgumentException(
                     '$listType must be Bencode\Collection enum value, class name, or callback'
@@ -49,8 +39,6 @@ final class Decoder
                 => $dictType->getHandler(),
             is_callable($dictType)
                 => $dictType(...),
-            class_exists($dictType)
-                => $this->createClassClosure($dictType),
             default
                 => throw new InvalidArgumentException(
                     '$dictType must be Bencode\Collection enum value, class name, or callback'
@@ -62,24 +50,11 @@ final class Decoder
                 => $bigInt->getHandler(),
             is_callable($bigInt)
                 => $bigInt(...),
-            class_exists($bigInt)
-                => $this->createClassClosure($bigInt),
             default
                 => throw new InvalidArgumentException(
                     '$bigInt must be Bencode\BigInt enum value, class name, or callback'
                 ),
         };
-    }
-
-    private function createClassClosure(string $class): \Closure
-    {
-        trigger_deprecation(
-            'arokettu/bencode',
-            '3.1.0',
-            'Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
-        );
-
-        return fn ($value) => new $class($value);
     }
 
     /**
