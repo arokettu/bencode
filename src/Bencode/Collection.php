@@ -14,9 +14,15 @@ enum Collection
     public function getHandler(): \Closure
     {
         return match ($this) {
-            self::ARRAY         => fn (iterable $value) => [...$value],
-            self::ARRAY_OBJECT  => fn (iterable $value) => new \ArrayObject([...$value], \ArrayObject::ARRAY_AS_PROPS),
-            self::STDCLASS      => fn (iterable $value) => (object)[...$value],
+            self::ARRAY
+                => fn (\Traversable $value) => iterator_to_array($value),
+            self::ARRAY_OBJECT
+                => fn (\Traversable $value) => new \ArrayObject(
+                    iterator_to_array($value),
+                    \ArrayObject::ARRAY_AS_PROPS
+                ),
+            self::STDCLASS
+                => fn (\Traversable $value) => (object)iterator_to_array($value),
         };
     }
 }
