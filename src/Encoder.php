@@ -8,24 +8,14 @@ use SandFox\Bencode\Exceptions\FileNotWritableException;
 
 final class Encoder
 {
-    private bool $useJsonSerializable;
-    private bool $useStringable;
-
     public function __construct(
         array $options = [],
-        bool $useJsonSerializable = false,
-        bool $useStringable = false,
+        private readonly bool $useJsonSerializable = false,
+        private readonly bool $useStringable = false,
     ) {
         if ($options !== []) {
-            trigger_deprecation(
-                'arokettu/bencode',
-                '3.1.0',
-                '$options is deprecated, use named parameters',
-            );
+            throw new \InvalidArgumentException('$options array must not be used');
         }
-
-        $this->useJsonSerializable = $options['useJsonSerializable'] ?? $useJsonSerializable;
-        $this->useStringable = $options['useStringable'] ?? $useStringable;
     }
 
     /**
