@@ -11,17 +11,17 @@ final class Bencode
      *
      * @param string $bencoded
      * @param array $options
-     * @param Bencode\Collection|string|callable $listType Type declaration for lists
-     * @param Bencode\Collection|string|callable $dictType Type declaration for dictionaries
-     * @param Bencode\BigInt|string|callable $bigInt Big integer mode
+     * @param Bencode\Collection|callable $listType Type declaration for lists
+     * @param Bencode\Collection|callable $dictType Type declaration for dictionaries
+     * @param Bencode\BigInt|callable $bigInt Big integer mode
      * @return mixed
      */
     public static function decode(
         string $bencoded,
         array $options = [],
-        Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|callable $listType = Bencode\Collection::ARRAY,
+        Bencode\Collection|callable $dictType = Bencode\Collection::ARRAY,
+        Bencode\BigInt|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->decode($bencoded);
     }
@@ -31,17 +31,17 @@ final class Bencode
      *
      * @param resource $readStream Read capable stream
      * @param array $options
-     * @param Bencode\Collection|string|callable $listType Type declaration for lists
-     * @param Bencode\Collection|string|callable $dictType Type declaration for dictionaries
-     * @param Bencode\BigInt|string|callable $bigInt Big integer mode
+     * @param Bencode\Collection|callable $listType Type declaration for lists
+     * @param Bencode\Collection|callable $dictType Type declaration for dictionaries
+     * @param Bencode\BigInt|callable $bigInt Big integer mode
      * @return mixed
      */
     public static function decodeStream(
         $readStream,
         array $options = [],
-        Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|callable $listType = Bencode\Collection::ARRAY,
+        Bencode\Collection|callable $dictType = Bencode\Collection::ARRAY,
+        Bencode\BigInt|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->decodeStream($readStream);
     }
@@ -51,17 +51,17 @@ final class Bencode
      *
      * @param string $filename
      * @param array $options
-     * @param Bencode\Collection|string|callable $listType Type declaration for lists
-     * @param Bencode\Collection|string|callable $dictType Type declaration for dictionaries
-     * @param Bencode\BigInt|string|callable $bigInt Big integer mode
+     * @param Bencode\Collection|callable $listType Type declaration for lists
+     * @param Bencode\Collection|callable $dictType Type declaration for dictionaries
+     * @param Bencode\BigInt|callable $bigInt Big integer mode
      * @return mixed
      */
     public static function load(
         string $filename,
         array $options = [],
-        Bencode\Collection|string|callable $listType = Bencode\Collection::ARRAY,
-        Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
-        Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
+        Bencode\Collection|callable $listType = Bencode\Collection::ARRAY,
+        Bencode\Collection|callable $dictType = Bencode\Collection::ARRAY,
+        Bencode\BigInt|callable $bigInt = Bencode\BigInt::NONE,
     ): mixed {
         return (new Decoder($options, $listType, $dictType, $bigInt))->load($filename);
     }
