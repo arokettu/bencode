@@ -1,5 +1,20 @@
 # Changelog
 
+## 4.x
+
+### 4.0.0
+
+*Dec 14, 2022*
+
+* The package is now `arokettu/bencode`
+* The namespace is now `Arokettu\Bencode\ `
+  * New class names can be used with old branches (1.8+, 2.8+, 3.1+)
+* $options arrays now generate an exception if they are not empty
+  * The parameters are kept for param order compatibility
+* Passing class names to `listType`, `dictType`, and `bigInt` generates a TypeError
+* `listType`, `dictType`, and `bigInt` callbacks receive `iterable` instead of `array`
+* Dictionaries are converted to ArrayObject by default
+
 ## 3.x
 
 ### 3.1.0
