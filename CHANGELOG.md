@@ -2,6 +2,12 @@
 
 ## 1.x
 
+### 1.8.0
+
+*Dec 13, 2022*
+
+* Alias all classes in `SandFox\Bencode\*` to `Arokettu\Bencode\*` in preparation for 4.0 
+
 ### 1.7.3
 
 *Oct 24, 2021*
