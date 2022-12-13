@@ -2,6 +2,14 @@
 
 ## 3.x
 
+### 3.1.0
+
+*Dec 13, 2022*
+
+* $options arrays are deprecated
+* Passing class names to `listType`, `dictType`, and `bigInt` is deprecated
+* Aliased all classes in `SandFox\Bencode\*` to `Arokettu\Bencode\*` in preparation for 4.0
+
 ### 3.0.3
 
 *Oct 24, 2021*
