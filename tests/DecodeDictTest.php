@@ -14,21 +14,18 @@ use Arokettu\Bencode\Types\DictType;
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class DecodeDictTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     public function testValid(): void
     {
         // simple
-        self::assertEquals(['a' => 'b', 'c' => 'd'], Bencode::decode('d1:a1:b1:c1:de'));
+        self::assertEquals(new ArrayObject(['a' => 'b', 'c' => 'd']), Bencode::decode('d1:a1:b1:c1:de'));
         // numeric keys
         // php converts numeric array keys to integers
-        self::assertEquals([1 => 2, 3 => 4], Bencode::decode('d1:1i2e1:3i4ee'));
+        self::assertEquals(new ArrayObject([1 => 2, 3 => 4]), Bencode::decode('d1:1i2e1:3i4ee'));
         // empty
-        self::assertEquals([], Bencode::decode('de'));
+        self::assertEquals(new ArrayObject(), Bencode::decode('de'));
     }
 
     public function testKeyNotString(): void
@@ -99,11 +96,13 @@ class DecodeDictTest extends TestCase
 
         // callback
         $arrayObject = new ArrayObject($dict);
-        $decodedCallback = Bencode::decode($encoded, dictType: function ($array) use ($dict) {
-            $this->assertEquals($dict, $array); // check thar array is passed here
+        $decodedCallback = Bencode::decode($encoded, dictType: function ($decoded) use ($dict) {
+            $array = [...$decoded];
+            self::assertIsIterable($decoded); // check that iterable is passed here
+            self::assertEquals($dict, $array); // check content
 
             // you can pass extra parameter to the constructor for example
-            return new ArrayObject($dict, ArrayObject::ARRAY_AS_PROPS);
+            return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
         });
 
         $this->assertEquals(ArrayObject::class, $decodedCallback::class);
@@ -121,41 +120,5 @@ class DecodeDictTest extends TestCase
                 yield 'key' => 'value2';
             })())
         );
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testDeprecatedDictTypes(): void
-    {
-        $this->expectDeprecation(
-            'Since arokettu/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
-        );
-
-        $dict = [
-            'k1' => 2,
-            'k2' => 's1',
-            'k3' => 3,
-            'k4' => 's2',
-            'k5' => 5,
-        ];
-        $encoded = 'd2:k1i2e2:k22:s12:k3i3e2:k42:s22:k5i5ee';
-
-        // custom class
-        $arrayObject = new ArrayObject($dict);
-        $decodedAO = Bencode::decode($encoded, dictType: ArrayObject::class);
-
-        $this->assertEquals(ArrayObject::class, $decodedAO::class);
-        $this->assertEquals($arrayObject, $decodedAO);
-    }
-
-    public function testIncorrectType(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            '$dictType must be Bencode\Collection enum value, class name, or callback'
-        );
-
-        Bencode::decode('de', dictType: "\0NonExistentClass");
     }
 }

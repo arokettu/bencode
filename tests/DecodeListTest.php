@@ -8,16 +8,12 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Bencode;
-use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class DecodeListTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     public function testListSimple(): void
     {
         // of integers
@@ -51,44 +47,16 @@ class DecodeListTest extends TestCase
         // callback
         $arrayObject = new ArrayObject($list);
 
-        $decodedCallback = Bencode::decode($encoded, listType: function ($array) use ($list) {
-            self::assertEquals($list, $array); // check that array is passed here
+        $decodedCallback = Bencode::decode($encoded, listType: function ($decoded) use ($list) {
+            $array = [...$decoded];
+            self::assertIsIterable($decoded); // check that iterable is passed here
+            self::assertEquals($list, $array); // check content
 
             // you can pass extra parameter to the constructor for example
-            return new ArrayObject($list, ArrayObject::ARRAY_AS_PROPS);
+            return new ArrayObject($array, ArrayObject::ARRAY_AS_PROPS);
         });
 
         self::assertEquals(ArrayObject::class, $decodedCallback::class);
         self::assertEquals($arrayObject, $decodedCallback);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testDeprecatedListTypes(): void
-    {
-        $this->expectDeprecation(
-            'Since arokettu/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
-        );
-
-        $list       = [2, 's1', 3, 's2', 5];
-        $encoded    = 'li2e2:s1i3e2:s2i5ee';
-
-        // custom class
-        $arrayObject = new ArrayObject($list);
-        $decodedAO = Bencode::decode($encoded, listType: ArrayObject::class);
-
-        self::assertEquals(ArrayObject::class, $decodedAO::class);
-        self::assertEquals($arrayObject, $decodedAO);
-    }
-
-    public function testIncorrectType(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            '$listType must be Bencode\Collection enum value, class name, or callback'
-        );
-
-        Bencode::decode('le', listType: "\0NonExistentClass");
     }
 }

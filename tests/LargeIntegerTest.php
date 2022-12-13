@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Bencode;
-use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Types\BigIntType;
 use Brick\Math\BigInteger;
@@ -53,33 +52,6 @@ class LargeIntegerTest extends TestCase
         });
 
         self::assertEquals(self::POW_2_1024, $decoded);
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testDecodeLargeIntegerClassName(): void
-    {
-        $this->expectDeprecation(
-            'Since arokettu/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
-        );
-
-        $encoded = 'i' . self::POW_2_1024 . 'e';
-
-        $decoded = Bencode::decode($encoded, bigInt: BigIntType::class);
-
-        self::assertInstanceOf(BigIntType::class, $decoded);
-        self::assertEquals(self::POW_2_1024, $decoded->getValue());
-    }
-
-    public function testInvalidMode(): void
-    {
-        $encoded = 'i' . self::POW_2_1024 . 'e';
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('$bigInt must be Bencode\BigInt enum value, class name, or callback');
-
-        Bencode::decode($encoded, bigInt: 'invalid');
     }
 
     // GMP
