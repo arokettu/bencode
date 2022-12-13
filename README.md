@@ -21,7 +21,8 @@ Supported versions:
 
 * 1.x (bugfixes only, PHP 7.0+)
 * 2.x (bugfixes only, PHP 8.0+)
-* 3.x (current, PHP 8.1+)
+* 3.x (bugfixes only, PHP 8.1+)
+* 4.x (current, PHP 8.1+)
 
 ## Simple use
 
@@ -40,7 +41,8 @@ Documentation for all supported versions can be found on Read the Docs:
 
 * 1.x: <https://bencode.readthedocs.io/en/1.x/>
 * 2.x: <https://bencode.readthedocs.io/en/2.x/>
-* 3.x: <https://bencode.readthedocs.io/>
+* 3.x: <https://bencode.readthedocs.io/en/3.x/>
+* 4.x: <https://bencode.readthedocs.io/>
 
 ## Support
 
