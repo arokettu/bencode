@@ -22,7 +22,7 @@ final class Decoder
         if ($options !== []) {
             trigger_deprecation(
                 'arokettu/bencode',
-                '3.1',
+                '3.1.0',
                 '$options is deprecated, use named parameters',
             );
         }

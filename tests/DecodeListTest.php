@@ -68,7 +68,7 @@ class DecodeListTest extends TestCase
     public function testDeprecatedListTypes(): void
     {
         $this->expectDeprecation(
-            'Since sandfoxme/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
+            'Since arokettu/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
         );
 
         $list       = [2, 's1', 3, 's2', 5];

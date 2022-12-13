@@ -61,7 +61,7 @@ class LargeIntegerTest extends TestCase
     public function testDecodeLargeIntegerClassName(): void
     {
         $this->expectDeprecation(
-            'Since sandfoxme/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
+            'Since arokettu/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
         );
 
         $encoded = 'i' . self::POW_2_1024 . 'e';

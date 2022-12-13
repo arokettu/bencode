@@ -19,14 +19,6 @@ class EncodeOptionsTest extends TestCase
                 return 'string';
             }
         }, useStringable: true));
-
-        // options array
-        self::assertEquals('6:string', Bencode::encode(new class {
-            public function __toString(): string
-            {
-                return 'string';
-            }
-        }, ['useStringable' => true]));
     }
 
     public function testNoStringable(): void
@@ -41,12 +33,5 @@ class EncodeOptionsTest extends TestCase
                 return 'string';
             }
         });
-    }
-
-    public function testInvalidOptionType(): void
-    {
-        $this->expectException(\TypeError::class);
-
-        Bencode::encode('string', ['useStringable' => 'waffles']);
     }
 }

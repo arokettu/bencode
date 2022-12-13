@@ -129,7 +129,7 @@ class DecodeDictTest extends TestCase
     public function testDeprecatedDictTypes(): void
     {
         $this->expectDeprecation(
-            'Since sandfoxme/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
+            'Since arokettu/bencode 3.1.0: Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
         );
 
         $dict = [
