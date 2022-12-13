@@ -1,8 +1,8 @@
 # PHP Bencode Encoder/Decoder
 
-[![Packagist](https://img.shields.io/packagist/v/sandfoxme/bencode.svg?style=flat-square)](https://packagist.org/packages/sandfoxme/bencode)
-[![PHP](https://img.shields.io/packagist/php-v/sandfoxme/bencode.svg?style=flat-square)](https://packagist.org/packages/sandfoxme/bencode)
-[![Packagist](https://img.shields.io/github/license/sandfoxme/bencode.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Packagist](https://img.shields.io/packagist/v/arokettu/bencode.svg?style=flat-square)](https://packagist.org/packages/arokettu/bencode)
+[![PHP](https://img.shields.io/packagist/php-v/arokettu/bencode.svg?style=flat-square)](https://packagist.org/packages/arokettu/bencode)
+[![Packagist](https://img.shields.io/github/license/arokettu/bencode.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/sandfox/bencode/master.svg?style=flat-square)](https://gitlab.com/sandfox/bencode/-/pipelines)
 [![Codecov](https://img.shields.io/codecov/c/gl/sandfox/bencode?style=flat-square)](https://codecov.io/gl/sandfox/bencode/)
 
