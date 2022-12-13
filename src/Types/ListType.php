@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Types;
+namespace Arokettu\Bencode\Types;
 
 final class ListType implements \IteratorAggregate
 {

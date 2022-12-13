@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Tests;
+namespace Arokettu\Bencode\Tests;
 
+use Arokettu\Bencode\Bencode;
+use Arokettu\Bencode\Exceptions\FileNotReadableException;
+use Arokettu\Bencode\Exceptions\FileNotWritableException;
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
-use SandFox\Bencode\Bencode;
-use SandFox\Bencode\Exceptions\FileNotReadableException;
-use SandFox\Bencode\Exceptions\FileNotWritableException;
-use SandFox\Bencode\Exceptions\InvalidArgumentException;
 
 class FileTest extends TestCase
 {

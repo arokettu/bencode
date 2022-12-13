@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode;
+namespace Arokettu\Bencode;
 
 final class Bencode
 {

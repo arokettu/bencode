@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode;
+namespace Arokettu\Bencode;
 
-use SandFox\Bencode\Exceptions\FileNotReadableException;
+use Arokettu\Bencode\Exceptions\FileNotReadableException;
 
 final class Decoder
 {

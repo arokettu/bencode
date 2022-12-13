@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Tests;
+namespace Arokettu\Bencode\Tests;
 
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Types\BigIntType;
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
-use SandFox\Bencode\Exceptions\InvalidArgumentException;
-use SandFox\Bencode\Types\BigIntType;
 
 class BigIntTypeTest extends TestCase
 {

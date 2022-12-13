@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Tests;
+namespace Arokettu\Bencode\Tests;
 
+use Arokettu\Bencode\Bencode;
+use Arokettu\Bencode\Types\BencodeSerializable;
 use PHPUnit\Framework\TestCase;
-use SandFox\Bencode\Bencode;
-use SandFox\Bencode\Types\BencodeSerializable;
 
 class EncodeSerializableTest extends TestCase
 {

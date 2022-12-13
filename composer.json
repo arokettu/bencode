@@ -26,15 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "SandFox\\Bencode\\": "src"
-        },
-        "files": [
-            "autoload.php"
-        ]
+            "Arokettu\\Bencode\\": "src"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "SandFox\\Bencode\\Tests\\": "tests"
+            "Arokettu\\Bencode\\Tests\\": "tests"
         }
     },
     "require": {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Types;
+namespace Arokettu\Bencode\Types;
 
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Util\IntUtil;
 use Brick\Math\BigInteger;
-use SandFox\Bencode\Exceptions\InvalidArgumentException;
-use SandFox\Bencode\Util\IntUtil;
 
 final class BigIntType implements \Stringable
 {

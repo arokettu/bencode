@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Tests;
+namespace Arokettu\Bencode\Tests;
 
+use Arokettu\Bencode\Bencode;
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Types\BencodeSerializable;
 use PHPUnit\Framework\TestCase;
-use SandFox\Bencode\Bencode;
-use SandFox\Bencode\Exceptions\InvalidArgumentException;
-use SandFox\Bencode\Types\BencodeSerializable;
 
 class EncodeEmptyTest extends TestCase
 {

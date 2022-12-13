@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Exceptions;
+namespace Arokettu\Bencode\Exceptions;
 
 class RuntimeException extends \RuntimeException implements BencodeException
 {

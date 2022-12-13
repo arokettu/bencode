@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Util;
+namespace Arokettu\Bencode\Util;
 
 /**
  * @internal

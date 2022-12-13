@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Bencode;
+namespace Arokettu\Bencode\Bencode;
 
+use Arokettu\Bencode\Exceptions\ParseErrorException;
+use Arokettu\Bencode\Types\BigIntType;
 use Brick\Math\BigInteger;
-use SandFox\Bencode\Exceptions\ParseErrorException;
-use SandFox\Bencode\Types\BigIntType;
 
 enum BigInt
 {

@@ -28,8 +28,8 @@ Supported versions:
 ```php
 <?php
 
-\SandFox\Bencode\Bencode::encode(['info' => ['length' => 12345, 'name' => 'Bencoded demo']]);
-\SandFox\Bencode\Bencode::decode('d4:infod6:lengthi12345e4:name13:Bencoded demoee');
+\Arokettu\Bencode\Bencode::encode(['info' => ['length' => 12345, 'name' => 'Bencoded demo']]);
+\Arokettu\Bencode\Bencode::decode('d4:infod6:lengthi12345e4:name13:Bencoded demoee');
 ```
 
 ## Documentation

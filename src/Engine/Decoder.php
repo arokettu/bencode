@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Engine;
+namespace Arokettu\Bencode\Engine;
 
-use SandFox\Bencode\Exceptions\InvalidArgumentException;
-use SandFox\Bencode\Exceptions\ParseErrorException;
-use SandFox\Bencode\Util\IntUtil;
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Exceptions\ParseErrorException;
+use Arokettu\Bencode\Util\IntUtil;
 
 use function Arokettu\IsResource\try_get_resource_type;
 

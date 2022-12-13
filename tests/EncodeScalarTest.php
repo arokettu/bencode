@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Tests;
+namespace Arokettu\Bencode\Tests;
 
+use Arokettu\Bencode\Bencode;
 use PHPUnit\Framework\TestCase;
-use SandFox\Bencode\Bencode;
 
 class EncodeScalarTest extends TestCase
 {

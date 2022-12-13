@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SandFox\Bencode\Engine;
+namespace Arokettu\Bencode\Engine;
 
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Types\BencodeSerializable;
+use Arokettu\Bencode\Types\BigIntType;
+use Arokettu\Bencode\Types\DictType;
+use Arokettu\Bencode\Types\ListType;
 use Brick\Math\BigInteger;
-use SandFox\Bencode\Exceptions\InvalidArgumentException;
-use SandFox\Bencode\Types\BencodeSerializable;
-use SandFox\Bencode\Types\BigIntType;
-use SandFox\Bencode\Types\DictType;
-use SandFox\Bencode\Types\ListType;
 
 use function Arokettu\IsResource\try_get_resource_type;
 

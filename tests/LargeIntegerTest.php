@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 // phpcs:disable Generic.Files.LineLength.TooLong
 
-namespace SandFox\Bencode\Tests;
+namespace Arokettu\Bencode\Tests;
 
+use Arokettu\Bencode\Bencode;
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Exceptions\ParseErrorException;
+use Arokettu\Bencode\Types\BigIntType;
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
-use SandFox\Bencode\Bencode;
-use SandFox\Bencode\Exceptions\InvalidArgumentException;
-use SandFox\Bencode\Exceptions\ParseErrorException;
-use SandFox\Bencode\Types\BigIntType;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class LargeIntegerTest extends TestCase

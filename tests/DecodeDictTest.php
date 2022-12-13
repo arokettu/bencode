@@ -5,14 +5,14 @@ declare(strict_types=1);
 // phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
 // phpcs:disable Generic.Files.LineLength.TooLong
 
-namespace SandFox\Bencode\Tests;
+namespace Arokettu\Bencode\Tests;
 
+use Arokettu\Bencode\Bencode;
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Exceptions\ParseErrorException;
+use Arokettu\Bencode\Types\DictType;
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
-use SandFox\Bencode\Bencode;
-use SandFox\Bencode\Exceptions\InvalidArgumentException;
-use SandFox\Bencode\Exceptions\ParseErrorException;
-use SandFox\Bencode\Types\DictType;
 use stdClass;
 use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
