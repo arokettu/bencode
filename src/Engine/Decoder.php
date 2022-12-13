@@ -34,9 +34,9 @@ final class Decoder
      */
     public function __construct(
         private $stream,
-        private \Closure $listHandler,
-        private \Closure $dictHandler,
-        private \Closure $bigIntHandler,
+        private readonly \Closure $listHandler,
+        private readonly \Closure $dictHandler,
+        private readonly \Closure $bigIntHandler,
     ) {
         if (try_get_resource_type($stream) !== 'stream') {
             throw new InvalidArgumentException('Input is not a valid stream');

@@ -25,10 +25,10 @@ final class Encoder
      * @param bool $useStringable
      */
     public function __construct(
-        private mixed $data,
+        private readonly mixed $data,
         private $stream,
-        private bool $useJsonSerializable,
-        private bool $useStringable,
+        private readonly bool $useJsonSerializable,
+        private readonly bool $useStringable,
     ) {
         if (try_get_resource_type($this->stream) !== 'stream') {
             throw new InvalidArgumentException('Output is not a valid stream');
