@@ -16,6 +16,14 @@ final class Encoder
         bool $useJsonSerializable = false,
         bool $useStringable = false,
     ) {
+        if ($options !== []) {
+            trigger_deprecation(
+                'arokettu/bencode',
+                '3.1',
+                '$options is deprecated, use named parameters',
+            );
+        }
+
         $this->useJsonSerializable = $options['useJsonSerializable'] ?? $useJsonSerializable;
         $this->useStringable = $options['useStringable'] ?? $useStringable;
     }

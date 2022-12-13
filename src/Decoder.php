@@ -19,6 +19,14 @@ final class Decoder
         Bencode\Collection|string|callable $dictType = Bencode\Collection::ARRAY,
         Bencode\BigInt|string|callable $bigInt = Bencode\BigInt::NONE,
     ) {
+        if ($options !== []) {
+            trigger_deprecation(
+                'arokettu/bencode',
+                '3.1',
+                '$options is deprecated, use named parameters',
+            );
+        }
+
         $listType = $options['listType'] ?? $listType;
         $dictType = $options['dictType'] ?? $dictType;
         $bigInt   = $options['bigInt']   ?? $bigInt;
@@ -66,7 +74,7 @@ final class Decoder
     private function createClassClosure(string $class): \Closure
     {
         trigger_deprecation(
-            'sandfoxme/bencode',
+            'arokettu/bencode',
             '3.1.0',
             'Passing class names to listType, dictType, and bigInt is deprecated, use closures instead'
         );
