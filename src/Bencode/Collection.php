@@ -14,9 +14,9 @@ enum Collection
     public function getHandler(): \Closure
     {
         return match ($this) {
-            self::ARRAY         => fn (array $value) => $value,
-            self::ARRAY_OBJECT  => fn (array $value) => new \ArrayObject($value, \ArrayObject::ARRAY_AS_PROPS),
-            self::STDCLASS      => fn (array $value) => (object)$value,
+            self::ARRAY         => fn (iterable $value) => [...$value],
+            self::ARRAY_OBJECT  => fn (iterable $value) => new \ArrayObject([...$value], \ArrayObject::ARRAY_AS_PROPS),
+            self::STDCLASS      => fn (iterable $value) => (object)[...$value],
         };
     }
 }

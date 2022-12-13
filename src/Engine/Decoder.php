@@ -162,7 +162,7 @@ final class Decoder
 
     private function finalizeList(): void
     {
-        $this->pop(($this->listHandler)(iterator_to_array($this->value)));
+        $this->pop(($this->listHandler)($this->value));
     }
 
     private function finalizeDict(): void
@@ -189,7 +189,7 @@ final class Decoder
             }
         };
 
-        $this->pop(($this->dictHandler)(iterator_to_array($dictBuilder())));
+        $this->pop(($this->dictHandler)($dictBuilder()));
     }
 
     /**
