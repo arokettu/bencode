@@ -14,7 +14,7 @@ This is a pure PHP library that allows you to encode and decode Bencode data.
 ## Installation
 
 ```bash
-composer require 'sandfoxme/bencode'
+composer require 'arokettu/bencode'
 ```
 
 Supported versions:
