@@ -162,7 +162,7 @@ It does not require any external dependencies but also does not allow any manipu
         "d3:inti79228162514264337593543950336ee",
         bigInt: Bencode\BigInt::INTERNAL,
     );
-    //  ['int' => new \SandFox\Bencode\Types\BigIntType(
+    //  ['int' => new \Arokettu\Bencode\Types\BigIntType(
     //      '79228162514264337593543950336'
     //  )]
 

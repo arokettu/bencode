@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Types;
 
 /**
- * Interface BencodeSerializable
- * @package SandFox\Bencode\Types
- *
  * Objects implementing BencodeSerializable can customize their Bencode representation
  * when encoded with Bencode::encode()
  *
