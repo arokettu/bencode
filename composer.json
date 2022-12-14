@@ -54,6 +54,9 @@
         "sandfox.dev/code-standard": "^10@dev",
         "squizlabs/php_codesniffer": "*"
     },
+    "provide": {
+        "sandfoxme/bencode": "self.version"
+    },
     "suggest": {
         "php-64bit": "Running 64 bit is recommended to prevent integer overflow",
         "ext-gmp": "In case you need integers larger than your architecture supports",
