@@ -2,6 +2,12 @@
 
 ## 3.x
 
+### 3.1.1
+
+*Dec 14, 2022*
+
+* `sandfoxme/bencode` is now provided by the package
+
 ### 3.1.0
 
 *Dec 13, 2022*
