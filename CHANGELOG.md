@@ -52,6 +52,12 @@
 
 ## 2.x
 
+### 2.8.1
+
+*Dec 14, 2022*
+
+* `sandfoxme/bencode` is now provided by the package
+
 ### 2.8.0
 
 *Dec 13, 2022*
@@ -155,6 +161,12 @@
 * Encode now throws an error if it encounters a value that cannot be serialized
 
 ## 1.x
+
+### 1.8.1
+
+*Dec 14, 2022*
+
+* `sandfoxme/bencode` is now provided by the package
 
 ### 1.8.0
 
