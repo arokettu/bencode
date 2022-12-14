@@ -52,6 +52,9 @@
         "symfony/phpunit-bridge": "^6.1",
         "vimeo/psalm": "^5.2"
     },
+    "provide": {
+        "sandfoxme/bencode": "self.version"
+    },
     "suggest": {
         "php-64bit": "Running 64 bit is recommended to prevent integer overflow",
         "ext-gmp": "In case you need integers larger than your architecture supports",
