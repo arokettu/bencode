@@ -52,7 +52,7 @@
         "sandfox.dev/code-standard": "^10@dev",
         "squizlabs/php_codesniffer": "*"
     },
-    "provide": {
+    "replace": {
         "sandfoxme/bencode": "self.version"
     },
     "suggest": {
