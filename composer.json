@@ -54,7 +54,7 @@
         "squizlabs/php_codesniffer": "*",
         "symfony/phpunit-bridge": "^6.1"
     },
-    "provide": {
+    "replace": {
         "sandfoxme/bencode": "self.version"
     },
     "suggest": {
