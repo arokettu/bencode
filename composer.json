@@ -46,7 +46,7 @@
         "pear/math_biginteger": "^1.0",
         "phpunit/phpunit": "^9.4",
         "psy/psysh": "*",
-        "sandfox.dev/code-standard": "^10@dev",
+        "sandfox.dev/code-standard": "^1",
         "squizlabs/php_codesniffer": "*",
         "symfony/phpunit-bridge": "^6.1",
         "vimeo/psalm": "^5.2"
