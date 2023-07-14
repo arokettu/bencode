@@ -64,7 +64,7 @@ final class Encoder
     {
         $writable = is_file($filename) ?
             is_writable($filename) :
-            is_dir($dirname = dirname($filename)) && is_writable($dirname);
+            is_dir($dirname = \dirname($filename)) && is_writable($dirname);
 
         if (!$writable) {
             throw new FileNotWritableException('The file is not writable: ' . $filename);
