@@ -15,6 +15,7 @@ trait IterableTypeTrait
     private Traversable $traversable;
 
     /**
+     * @psalm-api
      * @param iterable $iterable Iterable to be wrapped
      */
     public function __construct(iterable $iterable)

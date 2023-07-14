@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Arokettu\Bencode;
 
+/**
+ * @psalm-api
+ */
 final class Bencode
 {
     /**

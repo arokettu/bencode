@@ -22,6 +22,9 @@ final class BigIntType implements \Stringable
         }
     }
 
+    /**
+     * @psalm-api
+     */
     public function getValue(): string
     {
         return $this->value;
@@ -32,17 +35,26 @@ final class BigIntType implements \Stringable
         return $this->value;
     }
 
+    /**
+     * @psalm-api
+     */
     public function toGMP(): \GMP
     {
         return \gmp_init($this->value);
     }
 
+    /**
+     * @psalm-api
+     */
     public function toPear(): \Math_BigInteger
     {
         /** @psalm-suppress InvalidArgument bad annotation in Math_BigInteger */
         return new \Math_BigInteger($this->value);
     }
 
+    /**
+     * @psalm-api
+     */
     public function toBrickMath(): BigInteger
     {
         return BigInteger::of($this->value);
