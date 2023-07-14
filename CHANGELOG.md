@@ -2,6 +2,13 @@
 
 ## 4.x
 
+### 4.1.0
+
+*Jul 14, 2023*
+
+* Removed implicit conversion of floats to strings.
+  Since it was unreliable, it's not considered a BC break.
+
 ### 4.0.0
 
 *Dec 14, 2022*

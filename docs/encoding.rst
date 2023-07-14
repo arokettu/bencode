@@ -7,6 +7,8 @@ Encoding
 Scalars and arrays
 ==================
 
+.. versionchanged:: 4.1 floats now throw an exception instead of becoming strings
+
 .. code-block:: php
 
     <?php
@@ -19,8 +21,6 @@ Scalars and arrays
         'arr' => [1,2,3,4],
         // integer is stored as is
         'int' => 123,
-        // float will become a string
-        'float' => 3.1415,
         // true will be an integer 1
         'true' => true,
         // false and null values will be skipped
@@ -30,7 +30,6 @@ Scalars and arrays
     ]);
     // "d" .
     // "3:arr" . "l" . "i1e" . "i2e" . "i3e" . "i4e" . "e" .
-    // "5:float" . "6:3.1415" .
     // "3:int" . "i123e" .
     // "6:string" . "9:test\0test" .
     // "4:true" . "i1e" .

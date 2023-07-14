@@ -19,7 +19,6 @@ Scalars will be converted to their respective types.
         "d" .
         "3:arrli1ei2ei3ei4ee" .
         "4:booli1e" .
-        "5:float6:3.1415" .
         "3:inti123e" .
         "6:string9:test\0test" .
         "e"
@@ -27,12 +26,11 @@ Scalars will be converted to their respective types.
     // [
     //   "arr" => [1,2,3,4],
     //   "bool" => 1,
-    //   "float" => "3.1415",
     //   "int" => 123,
     //   "string" => "test\0test",
     // ]
 
-Please note that floats and booleans will stay converted because Bencode has no native support for these types.
+Please note that booleans will stay converted because Bencode has no native support for these types.
 
 Lists and Dictionaries
 ======================
