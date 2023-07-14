@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Types;
 
 /**
+ * @template T
+ *
  * Objects implementing BencodeSerializable can customize their Bencode representation
  * when encoded with Bencode::encode()
  *
@@ -14,6 +16,8 @@ interface BencodeSerializable
 {
     /**
      * Specify data which should be serialized to Bencode
+     *
+     * @return T
      */
     public function bencodeSerialize(): mixed;
 }
