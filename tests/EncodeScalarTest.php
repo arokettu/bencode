@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Bencode;
+use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class EncodeScalarTest extends TestCase
@@ -37,8 +38,13 @@ class EncodeScalarTest extends TestCase
 
         // unicode. prefix number reflects the number if bytes
         self::assertEquals('9:日本語', Bencode::encode('日本語'));
+    }
 
-        // scalars converted to string
-        self::assertEquals('6:3.1416', Bencode::encode(3.1416));
+    public function testFloat(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of float");
+        // float cannot be reliably encoded
+        Bencode::encode(3.1416);
     }
 }

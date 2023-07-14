@@ -58,9 +58,7 @@ final class Encoder
             $value instanceof \Math_BigInteger,
                 => $this->encodeInteger($value),
             // process strings
-            // floats become strings
             \is_string($value) => $this->encodeString($value),
-            \is_float($value)  => $this->encodeString(\strval($value)),
             // process arrays
             \is_array($value)  => $this->encodeArray($value),
             // process objects
