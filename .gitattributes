@@ -4,5 +4,6 @@
 /tests              export-ignore
 /.git*              export-ignore
 /*.yml              export-ignore
+/*.yaml             export-ignore
 /*.xml              export-ignore
 /*.xml.dist         export-ignore
