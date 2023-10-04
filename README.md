@@ -48,6 +48,8 @@ Documentation for all supported versions can be found on Read the Docs:
 
 Please file issues on our main repo at GitLab: <https://gitlab.com/sandfox/bencode/-/issues>
 
+Feel free to ask any questions in our room on Gitter: <https://gitter.im/arokettu/community>
+
 ## License
 
 The library is available as open source under the terms of the [MIT License].

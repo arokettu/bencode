@@ -16,7 +16,8 @@
     "support": {
         "issues": "https://gitlab.com/sandfox/bencode/-/issues",
         "source": "https://gitlab.com/sandfox/bencode",
-        "docs": "https://bencode.readthedocs.io/"
+        "docs": "https://bencode.readthedocs.io/",
+        "chat": "https://gitter.im/arokettu/community"
     },
     "config": {
         "allow-plugins": {
