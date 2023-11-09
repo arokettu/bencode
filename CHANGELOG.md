@@ -13,6 +13,8 @@
 
 *Dec 14, 2022*
 
+4.0.0 was branched from 3.1.0
+
 * The package is now `arokettu/bencode`
 * The namespace is now `Arokettu\Bencode\ `
   * New class names can be used with old branches (1.8+, 2.8+, 3.1+)
