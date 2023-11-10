@@ -1,3 +1,4 @@
+# template
 /docs/*.py          export-ignore
 /docs/*.txt         export-ignore
 /docs/_*            export-ignore
@@ -7,3 +8,5 @@
 /*.yaml             export-ignore
 /*.xml              export-ignore
 /*.xml.dist         export-ignore
+
+# project
