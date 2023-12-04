@@ -19,10 +19,7 @@ use function Arokettu\IsResource\try_get_resource_type;
 final class Encoder
 {
     /**
-     * @param mixed $data
      * @param resource $stream
-     * @param bool $useJsonSerializable
-     * @param bool $useStringable
      */
     public function __construct(
         private readonly mixed $data,

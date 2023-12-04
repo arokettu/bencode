@@ -7,6 +7,8 @@ namespace Arokettu\Bencode\Engine;
 use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Util\IntUtil;
+use Ds\Queue;
+use Ds\Stack;
 
 use function Arokettu\IsResource\try_get_resource_type;
 
@@ -18,9 +20,9 @@ final class Decoder
     private mixed $decoded;
 
     private int $state;
-    private \SplStack $stateStack;
-    private \SplQueue|null $value;
-    private \SplStack $valueStack;
+    private Stack $stateStack;
+    private Queue|null $value;
+    private Stack $valueStack;
 
     private const STATE_ROOT = 1;
     private const STATE_LIST = 2;
@@ -28,9 +30,6 @@ final class Decoder
 
     /**
      * @param resource $stream
-     * @param \Closure $listHandler
-     * @param \Closure $dictHandler
-     * @param \Closure $bigIntHandler
      */
     public function __construct(
         private $stream,
@@ -46,10 +45,10 @@ final class Decoder
     public function decode(): mixed
     {
         $this->state        = self::STATE_ROOT;
-        $this->stateStack   = new \SplStack();
+        $this->stateStack   = new Stack();
         $this->decoded      = null;
         $this->value        = null;
-        $this->valueStack   = new \SplStack();
+        $this->valueStack   = new Stack();
 
         while (!feof($this->stream)) {
             $this->processChar();
@@ -173,18 +172,18 @@ final class Decoder
             $prevKey = null;
 
             // we have a queue [key1, value1, key2, value2, key3, value3, ...]
-            while (\count($this->value)) {
-                $dictKey = $this->value->dequeue();
+            while ($this->value->isEmpty() === false) {
+                $dictKey = $this->value->pop();
                 if (\is_string($dictKey) === false) {
                     throw new ParseErrorException('Non string key found in the dictionary');
                 }
-                if (\count($this->value) === 0) {
+                if ($this->value->isEmpty()) {
                     throw new ParseErrorException("Dictionary key without corresponding value: '{$dictKey}'");
                 }
                 if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
                     throw new ParseErrorException("Invalid order of dictionary keys: '{$dictKey}' after '{$prevKey}'");
                 }
-                $dictValue = $this->value->dequeue();
+                $dictValue = $this->value->pop();
 
                 yield $dictKey => $dictValue;
                 $prevKey = $dictKey;
@@ -201,7 +200,7 @@ final class Decoder
     private function finalizeScalar(mixed $value): void
     {
         if ($this->state !== self::STATE_ROOT) {
-            $this->value->enqueue($value);
+            $this->value->push($value);
         } else {
             // we have final result
             $this->decoded = $value;
@@ -218,7 +217,7 @@ final class Decoder
         $this->state = $newState;
 
         $this->valueStack->push($this->value);
-        $this->value = new \SplQueue();
+        $this->value = new Queue();
     }
 
     /**
@@ -231,7 +230,7 @@ final class Decoder
 
         if ($this->state !== self::STATE_ROOT) {
             $this->value = $this->valueStack->pop();
-            $this->value->enqueue($valueToPrevLevel);
+            $this->value->push($valueToPrevLevel);
         } else {
             // we have final result
             $this->decoded = $valueToPrevLevel;
