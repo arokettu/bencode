@@ -19,9 +19,6 @@ composer require 'arokettu/bencode'
 
 Supported versions:
 
-* 1.x (bugfixes only, PHP 7.0+)
-* 2.x (bugfixes only, PHP 8.0+)
-* 3.x (bugfixes only, PHP 8.1+)
 * 4.x (current, PHP 8.1+)
 
 ## Simple use
