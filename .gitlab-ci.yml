@@ -15,7 +15,7 @@ cache:
     - apt-get update && apt-get install -y git unzip libgmp-dev
     # install extensions
     - docker-php-ext-install gmp
-    - if [ "$INSTALL_XDEBUG" -eq 1 ]; then curl --location https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar --output pickle.phar; php pickle.phar install --defaults xdebug; docker-php-ext-enable xdebug; fi
+    - if [ "$INSTALL_XDEBUG" -eq 1 ]; pecl install xdebug; docker-php-ext-enable xdebug; fi
     # install composer
     - php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer.sig');"
     - php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
