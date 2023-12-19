@@ -31,7 +31,7 @@ final class Encoder
             $writeStream = fopen('php://temp', 'r+');
         }
 
-        return (new Engine\Encoder($data, $writeStream, $this->useJsonSerializable, $this->useStringable))->encode();
+        return (new Engine\Writer($data, $writeStream, $this->useJsonSerializable, $this->useStringable))->write();
     }
 
     /**

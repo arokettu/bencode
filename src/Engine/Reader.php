@@ -16,7 +16,7 @@ use function Arokettu\IsResource\try_get_resource_type;
 /**
  * @internal
  */
-final class Decoder
+final class Reader
 {
     private mixed $decoded;
 
@@ -43,7 +43,7 @@ final class Decoder
         }
     }
 
-    public function decode(): mixed
+    public function read(): mixed
     {
         $this->state        = self::STATE_ROOT;
         $this->stateStack   = new SplStack();

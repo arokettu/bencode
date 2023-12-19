@@ -47,12 +47,12 @@ final class Decoder
      */
     public function decodeStream($readStream): mixed
     {
-        return (new Engine\Decoder(
+        return (new Engine\Reader(
             $readStream,
             $this->listHandler,
             $this->dictHandler,
             $this->bigIntHandler,
-        ))->decode();
+        ))->read();
     }
 
     /**

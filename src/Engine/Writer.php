@@ -16,7 +16,7 @@ use function Arokettu\IsResource\try_get_resource_type;
 /**
  * @internal
  */
-final class Encoder
+final class Writer
 {
     /**
      * @param resource $stream
@@ -35,7 +35,7 @@ final class Encoder
     /**
      * @return resource
      */
-    public function encode()
+    public function write()
     {
         $this->encodeValue($this->resolveSerializable($this->data));
 
