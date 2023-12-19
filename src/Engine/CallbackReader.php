@@ -8,7 +8,6 @@ use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Util\IntUtil;
 use Closure;
-use Ds\Queue;
 use Ds\Stack;
 
 use function Arokettu\IsResource\try_get_resource_type;
@@ -18,12 +17,11 @@ use function Arokettu\IsResource\try_get_resource_type;
  */
 final class CallbackReader
 {
-    private mixed $decoded;
+    private bool $decoded;
 
     private int $state;
     private Stack $stateStack;
-    private Queue|null $value;
-    private Stack $valueStack;
+    private Stack $keyStack;
 
     private const STATE_ROOT = 1;
     private const STATE_LIST = 2;
@@ -34,8 +32,7 @@ final class CallbackReader
      */
     public function __construct(
         private $stream,
-        private readonly Closure $listHandler,
-        private readonly Closure $dictHandler,
+        private readonly Closure $callback,
         private readonly Closure $bigIntHandler,
     ) {
         if (try_get_resource_type($stream) !== 'stream') {
@@ -43,25 +40,21 @@ final class CallbackReader
         }
     }
 
-    public function read(): mixed
+    public function read(): void
     {
         $this->state        = self::STATE_ROOT;
         $this->stateStack   = new Stack();
-        $this->decoded      = null;
-        $this->value        = null;
-        $this->valueStack   = new Stack();
+        $this->decoded      = false;
+        $this->keyStack     = new Stack();
 
         while (!feof($this->stream)) {
             $this->processChar();
         }
 
         /** @psalm-suppress TypeDoesNotContainType too smart! */
-        if ($this->state !== self::STATE_ROOT || $this->decoded === null) {
+        if ($this->state !== self::STATE_ROOT || !$this->decoded) {
             throw new ParseErrorException('Unexpected end of file');
         }
-
-        /** @psalm-suppress NoValue too smart! */
-        return $this->decoded;
     }
 
     private function processChar(): void
@@ -72,7 +65,7 @@ final class CallbackReader
             return;
         }
 
-        if ($this->decoded !== null && $this->state === self::STATE_ROOT) {
+        if ($this->decoded && $this->state === self::STATE_ROOT) {
             throw new ParseErrorException('Probably some junk after the end of the file');
         }
 
@@ -152,19 +145,7 @@ final class CallbackReader
 
     private function finalizeContainer(): void
     {
-        match ($this->state) {
-            self::STATE_LIST => $this->finalizeList(),
-            self::STATE_DICT => $this->finalizeDict(),
-            // @codeCoverageIgnoreStart
-            // This exception means that we have a bug in our own code
-            default => throw new ParseErrorException('Parser entered invalid state while finalizing container'),
-            // @codeCoverageIgnoreEnd
-        };
-    }
-
-    private function finalizeList(): void
-    {
-        $this->pop(($this->listHandler)($this->value));
+        $this->pop();
     }
 
     private function finalizeDict(): void
@@ -200,12 +181,19 @@ final class CallbackReader
      */
     private function finalizeScalar(mixed $value): void
     {
-        if ($this->state !== self::STATE_ROOT) {
-            $this->value->push($value);
-        } else {
-            // we have final result
-            $this->decoded = $value;
+        switch ($this->state) {
+            case self::STATE_ROOT:
+                break;
+            case self::STATE_LIST:
+                $index = $this->keyStack->pop();
+                $index += 1;
+                $this->keyStack->push($index);
+                break;
+            default:
+                throw new \LogicException();
         }
+
+        ($this->callback)(array_reverse($this->keyStack->toArray()), $value);
     }
 
     /**
@@ -217,24 +205,21 @@ final class CallbackReader
         $this->stateStack->push($this->state);
         $this->state = $newState;
 
-        $this->valueStack->push($this->value);
-        $this->value = new Queue();
+        $this->keyStack->push(match ($newState) {
+            self::STATE_LIST => -1,
+        });
     }
 
     /**
      * Pop previous layer from the stack and give it a parsed value
-     * @param mixed $valueToPrevLevel
      */
-    private function pop(mixed $valueToPrevLevel): void
+    private function pop(): void
     {
         $this->state = $this->stateStack->pop();
+        $this->keyStack->pop();
 
-        if ($this->state !== self::STATE_ROOT) {
-            $this->value = $this->valueStack->pop();
-            $this->value->push($valueToPrevLevel);
-        } else {
-            // we have final result
-            $this->decoded = $valueToPrevLevel;
+        if ($this->state === self::STATE_ROOT) {
+            $this->decoded = true;
         }
     }
 }
