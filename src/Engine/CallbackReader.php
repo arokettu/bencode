@@ -8,7 +8,7 @@ use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Util\IntUtil;
 use Closure;
-use Ds\Stack;
+use SplStack;
 
 use function Arokettu\IsResource\try_get_resource_type;
 
@@ -20,8 +20,8 @@ final class CallbackReader
     private bool $decoded;
 
     private int $state;
-    private Stack $stateStack;
-    private Stack $keyStack;
+    private SplStack $stateStack;
+    private SplStack $keyStack;
 
     private const STATE_ROOT = 1;
     private const STATE_LIST = 2;
@@ -44,9 +44,9 @@ final class CallbackReader
     public function read(): void
     {
         $this->state        = self::STATE_ROOT;
-        $this->stateStack   = new Stack();
+        $this->stateStack   = new SplStack();
         $this->decoded      = false;
-        $this->keyStack     = new Stack();
+        $this->keyStack     = new SplStack();
 
         while (!feof($this->stream)) {
             $this->processChar();
@@ -188,7 +188,7 @@ final class CallbackReader
                 throw new \LogicException();
         }
 
-        ($this->callback)(array_reverse($this->keyStack->toArray()), $value);
+        ($this->callback)(array_reverse(iterator_to_array($this->keyStack)), $value);
     }
 
     /**
