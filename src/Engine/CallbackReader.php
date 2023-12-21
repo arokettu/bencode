@@ -26,6 +26,7 @@ final class CallbackReader
     private const STATE_ROOT = 1;
     private const STATE_LIST = 2;
     private const STATE_DICT = 3;
+    private const STATE_DICT_KEY = 4;
 
     /**
      * @param resource $stream
@@ -69,10 +70,19 @@ final class CallbackReader
             throw new ParseErrorException('Probably some junk after the end of the file');
         }
 
+        if ($this->state === self::STATE_DICT_KEY) {
+            // next value can only be finalizer or null
+            match ($c) {
+                'e' => $this->finalizeContainer(),
+                default => $this->processString(),
+            };
+            return;
+        }
+
         match ($c) {
             'i' => $this->processInteger(),
             'l' => $this->push(self::STATE_LIST),
-            'd' => $this->push(self::STATE_DICT),
+            'd' => $this->push(self::STATE_DICT_KEY),
             'e' => $this->finalizeContainer(),
             default => $this->processString(),
         };
@@ -140,39 +150,21 @@ final class CallbackReader
             throw new ParseErrorException('Unexpected end of file while processing string');
         }
 
-        $this->finalizeScalar($str);
+        if ($this->state === self::STATE_DICT_KEY) {
+            $prevKey = $this->keyStack->pop();
+            if ($prevKey && strcmp($prevKey, $str) >= 0) {
+                throw new ParseErrorException("Invalid order of dictionary keys: '{$str}' after '{$prevKey}'");
+            }
+            $this->keyStack->push($str);
+            $this->state = self::STATE_DICT;
+        } else {
+            $this->finalizeScalar($str);
+        }
     }
 
     private function finalizeContainer(): void
     {
         $this->pop();
-    }
-
-    private function finalizeDict(): void
-    {
-        $dictBuilder = function (): \Generator {
-            $prevKey = null;
-
-            // we have a queue [key1, value1, key2, value2, key3, value3, ...]
-            while ($this->value->isEmpty() === false) {
-                $dictKey = $this->value->pop();
-                if (\is_string($dictKey) === false) {
-                    throw new ParseErrorException('Non string key found in the dictionary');
-                }
-                if ($this->value->isEmpty()) {
-                    throw new ParseErrorException("Dictionary key without corresponding value: '{$dictKey}'");
-                }
-                if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
-                    throw new ParseErrorException("Invalid order of dictionary keys: '{$dictKey}' after '{$prevKey}'");
-                }
-                $dictValue = $this->value->pop();
-
-                yield $dictKey => $dictValue;
-                $prevKey = $dictKey;
-            }
-        };
-
-        $this->pop(($this->dictHandler)($dictBuilder()));
     }
 
     /**
@@ -188,6 +180,9 @@ final class CallbackReader
                 $index = $this->keyStack->pop();
                 $index += 1;
                 $this->keyStack->push($index);
+                break;
+            case self::STATE_DICT:
+                $this->state = self::STATE_DICT_KEY;
                 break;
             default:
                 throw new \LogicException();
@@ -207,6 +202,7 @@ final class CallbackReader
 
         $this->keyStack->push(match ($newState) {
             self::STATE_LIST => -1,
+            self::STATE_DICT_KEY => null,
         });
     }
 
@@ -220,6 +216,9 @@ final class CallbackReader
 
         if ($this->state === self::STATE_ROOT) {
             $this->decoded = true;
+        }
+        if ($this->state === self::STATE_DICT) {
+            $this->state = self::STATE_DICT_KEY;
         }
     }
 }
