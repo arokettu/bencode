@@ -37,8 +37,7 @@
     },
     "require": {
         "php": "^8.1",
-        "arokettu/is-resource": "^1.0",
-        "php-ds/php-ds": "^1.4"
+        "arokettu/is-resource": "^1.0"
     },
     "require-dev": {
         "ext-gmp": "*",
@@ -55,7 +54,6 @@
     },
     "suggest": {
         "php-64bit": "Running 64 bit is recommended to prevent integer overflow",
-        "ext-ds": "More efficient data structures",
         "ext-gmp": "In case you need integers larger than your architecture supports",
         "brick/math": "In case you need integers larger than your architecture supports",
         "pear/math_biginteger": "In case you need integers larger than your architecture supports"
