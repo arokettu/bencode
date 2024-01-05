@@ -7,7 +7,7 @@ namespace Arokettu\Bencode;
 use Arokettu\Bencode\Exceptions\FileNotReadableException;
 use Closure;
 
-final class Decoder
+final class CallbackDecoder
 {
     /**
      * @internal
