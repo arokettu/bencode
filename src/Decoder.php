@@ -26,6 +26,12 @@ final class Decoder
     private readonly Closure $dictHandler;
     private readonly Closure $bigIntHandler;
 
+    /**
+     * @param array $options No longer used
+     * @param Bencode\Collection|callable $listType Type declaration for lists
+     * @param Bencode\Collection|callable $dictType Type declaration for dictionaries
+     * @param Bencode\BigInt|callable $bigInt Big integer mode
+     */
     public function __construct(
         array $options = [],
         Bencode\Collection|callable $listType = self::DEFAULT_LIST_TYPE,
@@ -58,9 +64,6 @@ final class Decoder
 
     /**
      * Decode bencoded data from string
-     *
-     * @param string $bencoded
-     * @return mixed
      */
     public function decode(string $bencoded): mixed
     {
@@ -77,9 +80,6 @@ final class Decoder
 
     /**
      * Load data from bencoded file
-     *
-     * @param string $filename
-     * @return mixed
      */
     public function load(string $filename): mixed
     {

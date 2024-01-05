@@ -12,12 +12,10 @@ final class Bencode
     /**
      * Decode bencoded data from string
      *
-     * @param string $bencoded
-     * @param array $options
+     * @param array $options No longer used
      * @param Bencode\Collection|callable $listType Type declaration for lists
      * @param Bencode\Collection|callable $dictType Type declaration for dictionaries
      * @param Bencode\BigInt|callable $bigInt Big integer mode
-     * @return mixed
      */
     public static function decode(
         string $bencoded,
@@ -33,11 +31,10 @@ final class Bencode
      * Decode bencoded data from stream
      *
      * @param resource $readStream Read capable stream
-     * @param array $options
+     * @param array $options No longer used
      * @param Bencode\Collection|callable $listType Type declaration for lists
      * @param Bencode\Collection|callable $dictType Type declaration for dictionaries
      * @param Bencode\BigInt|callable $bigInt Big integer mode
-     * @return mixed
      */
     public static function decodeStream(
         $readStream,
@@ -52,12 +49,10 @@ final class Bencode
     /**
      * Load data from bencoded file
      *
-     * @param string $filename
-     * @param array $options
+     * @param array $options No longer used
      * @param Bencode\Collection|callable $listType Type declaration for lists
      * @param Bencode\Collection|callable $dictType Type declaration for dictionaries
      * @param Bencode\BigInt|callable $bigInt Big integer mode
-     * @return mixed
      */
     public static function load(
         string $filename,
@@ -72,11 +67,7 @@ final class Bencode
     /**
      * Encode arbitrary data to bencoded string
      *
-     * @param mixed $data
-     * @param array $options
-     * @param bool $useJsonSerializable
-     * @param bool $useStringable
-     * @return string
+     * @param array $options No longer used
      */
     public static function encode(
         mixed $data,
@@ -90,11 +81,8 @@ final class Bencode
     /**
      * Dump data to bencoded stream
      *
-     * @param mixed $data
      * @param resource|null $writeStream Write capable stream. If null, a new php://temp will be created
-     * @param array $options
-     * @param bool $useJsonSerializable
-     * @param bool $useStringable
+     * @param array $options No longer used
      * @return resource Original or created stream
      */
     public static function encodeToStream(
@@ -110,11 +98,7 @@ final class Bencode
     /**
      * Dump data to bencoded file
      *
-     * @param mixed $data
-     * @param string $filename
-     * @param array $options
-     * @param bool $useJsonSerializable
-     * @param bool $useStringable
+     * @param array $options No longer used
      * @return bool success of file_put_contents
      */
     public static function dump(

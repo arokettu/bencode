@@ -8,6 +8,9 @@ use Arokettu\Bencode\Exceptions\FileNotWritableException;
 
 final class Encoder
 {
+    /**
+     * @param array $options No longer used
+     */
     public function __construct(
         array $options = [],
         private readonly bool $useJsonSerializable = false,
@@ -21,7 +24,6 @@ final class Encoder
     /**
      * Dump data to bencoded stream
      *
-     * @param mixed $data
      * @param resource|null $writeStream Write capable stream. If null, a new php://temp will be created
      * @return resource Original or created stream
      */
@@ -36,9 +38,6 @@ final class Encoder
 
     /**
      * Encode arbitrary data to bencoded string
-     *
-     * @param mixed $data
-     * @return string
      */
     public function encode(mixed $data): string
     {
@@ -56,8 +55,6 @@ final class Encoder
     /**
      * Dump data to bencoded file
      *
-     * @param mixed $data
-     * @param string $filename
      * @return bool always true
      */
     public function dump(mixed $data, string $filename): bool
