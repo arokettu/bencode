@@ -12,32 +12,13 @@ final class CallbackDecoder
     /**
      * @internal
      */
-    public const DEFAULT_LIST_TYPE = Bencode\Collection::ARRAY;
-    /**
-     * @internal
-     */
-    public const DEFAULT_DICT_TYPE = Bencode\Collection::ARRAY_OBJECT;
-    /**
-     * @internal
-     */
     public const DEFAULT_BIG_INT = Bencode\BigInt::NONE;
 
-    private readonly Closure $listHandler;
-    private readonly Closure $dictHandler;
     private readonly Closure $bigIntHandler;
 
     public function __construct(
-        array $options = [],
-        Bencode\Collection|callable $listType = self::DEFAULT_LIST_TYPE,
-        Bencode\Collection|callable $dictType = self::DEFAULT_DICT_TYPE,
         Bencode\BigInt|callable $bigInt = self::DEFAULT_BIG_INT,
     ) {
-        if ($options !== []) {
-            throw new \InvalidArgumentException('$options array must not be used');
-        }
-
-        $this->listHandler = $listType instanceof Bencode\Collection ? $listType->getHandler() : $listType(...);
-        $this->dictHandler = $dictType instanceof Bencode\Collection ? $dictType->getHandler() : $dictType(...);
         $this->bigIntHandler = $bigInt instanceof Bencode\BigInt ? $bigInt->getHandler() : $bigInt(...);
     }
 
@@ -46,12 +27,11 @@ final class CallbackDecoder
      *
      * @param resource $readStream Read capable stream
      */
-    public function decodeStream($readStream): mixed
+    public function decodeStream($readStream, Types\CallbackHandler|callable $callback): void
     {
-        return (new Engine\Reader(
+        (new Engine\CallbackReader(
             $readStream,
-            $this->listHandler,
-            $this->dictHandler,
+            $callback(...),
             $this->bigIntHandler,
         ))->read();
     }
@@ -60,28 +40,22 @@ final class CallbackDecoder
      * Decode bencoded data from string
      *
      * @param string $bencoded
-     * @return mixed
      */
-    public function decode(string $bencoded): mixed
+    public function decode(string $bencoded, Types\CallbackHandler|callable $callback): void
     {
         $stream = fopen('php://temp', 'r+');
         fwrite($stream, $bencoded);
         rewind($stream);
 
-        $decoded = self::decodeStream($stream);
+        self::decodeStream($stream, $callback);
 
         fclose($stream);
-
-        return $decoded;
     }
 
     /**
      * Load data from bencoded file
-     *
-     * @param string $filename
-     * @return mixed
      */
-    public function load(string $filename): mixed
+    public function load(string $filename, Types\CallbackHandler|callable $callback): void
     {
         if (!is_file($filename) || !is_readable($filename)) {
             throw new FileNotReadableException('File does not exist or is not readable: ' . $filename);
@@ -93,10 +67,8 @@ final class CallbackDecoder
             throw new FileNotReadableException('Error reading file: ' . $filename); // @codeCoverageIgnore
         }
 
-        $decoded = self::decodeStream($stream);
+        self::decodeStream($stream, $callback);
 
         fclose($stream);
-
-        return $decoded;
     }
 }
