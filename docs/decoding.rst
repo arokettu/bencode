@@ -1,15 +1,14 @@
 Decoding
 ########
 
+.. highlight:: php
 .. versionchanged:: 2.0 options array is replaced with named parameters
 .. note:: Parameter order is not guaranteed for options, use named parameters
 
 Scalars
 =======
 
-Scalars will be converted to their respective types.
-
-.. code-block:: php
+Scalars will be converted to their respective types::
 
     <?php
 
@@ -40,9 +39,7 @@ Lists and Dictionaries
 
 Dictionaries and lists will be arrays by default.
 You can change this behavior with options.
-Use ``Collection`` enum for built in behaviors:
-
-.. code-block:: php
+Use ``Collection`` enum for built in behaviors::
 
     <?php
 
@@ -60,9 +57,7 @@ Use ``Collection`` enum for built in behaviors:
         // dictType: Bencode\Collection::STDCLASS,
     );
 
-Or use advanced control with callbacks:
-
-.. code-block:: php
+Or use advanced control with callbacks::
 
     <?php
 
@@ -105,7 +100,7 @@ Supported libraries:
 * `brick/math`_
 * PEAR's `Math_BigInteger`_
 
-.. code-block:: php
+::
 
     <?php
 
@@ -148,9 +143,7 @@ Internal Type
 .. versionadded:: 1.6/2.6
 
 The library also has built in ``BigIntType``.
-It does not require any external dependencies but also does not allow any manipulation.
-
-.. code-block:: php
+It does not require any external dependencies but also does not allow any manipulation::
 
     <?php
 
@@ -164,9 +157,7 @@ It does not require any external dependencies but also does not allow any manipu
     //      '79228162514264337593543950336'
     //  )]
 
-BigIntType is a value object with several getters:
-
-.. code-block:: php
+BigIntType is a value object with several getters::
 
     <?php
 
@@ -185,9 +176,7 @@ Custom Handling
 .. versionadded:: 1.6/2.6
 .. versionchanged:: 4.0 Passing class names as handlers was removed
 
-Like listType and dictType you can use a callable:
-
-.. code-block:: php
+Like listType and dictType you can use a callable::
 
     <?php
 
@@ -201,9 +190,7 @@ Like listType and dictType you can use a callable:
 Working with files
 ==================
 
-Load data from a file:
-
-.. code-block:: php
+Load data from a file::
 
     <?php
 
@@ -216,9 +203,7 @@ Working with streams
 
 .. versionadded:: 1.5/2.5
 
-Load data from a seekable readable stream:
-
-.. code-block:: php
+Load data from a seekable readable stream::
 
     <?php
 
@@ -231,9 +216,7 @@ Decoder object
 
 .. versionadded:: 1.7/2.7/3.0
 
-Decoder object can be configured on creation and used multiple times:
-
-.. code-block:: php
+Decoder object can be configured on creation and used multiple times::
 
     <?php
 

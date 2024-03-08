@@ -1,6 +1,8 @@
 Upgrade Notes
 #############
 
+.. highlight:: php
+
 Upgrade from 3.x to 4.x
 =======================
 
@@ -13,7 +15,7 @@ Upgrade from 3.x to 4.x
 * Closures passed to ``listType``, ``dictType``, and ``bigInt`` must handle iterables instead of arrays now
 * Class names can no longer be passed to ``listType``, ``dictType``, and ``bigInt``
 
-  .. code-block:: php
+  ::
 
         <?php
 
@@ -53,7 +55,7 @@ Main breaking changes:
     Use ``useStringable: true`` to return old behavior.
   * ``Bencode::dump($filename, $data)`` became ``Bencode::dump($data, $filename)`` for consistency with streams.
 
-    .. code-block:: php
+    ::
 
         <?php
 

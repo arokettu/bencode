@@ -1,6 +1,7 @@
 Encoding
 ########
 
+.. highlight:: php
 .. versionchanged:: 2.0 options array is replaced with named parameters
 .. note:: Parameter order is not guaranteed for options, use named parameters
 
@@ -9,7 +10,7 @@ Scalars and arrays
 
 .. versionchanged:: 4.1 floats now throw an exception instead of becoming strings
 
-.. code-block:: php
+::
 
     <?php
 
@@ -43,9 +44,7 @@ ArrayObject and stdClass
 
 .. versionchanged:: 3.0 ``Traversable`` objects no longer become dictionaries automatically
 
-ArrayObject and stdClass become dictionaries:
-
-.. code-block:: php
+ArrayObject and stdClass become dictionaries::
 
     <?php
 
@@ -70,9 +69,7 @@ Big integer support
 .. note:: More in the :ref:`decoding section <bencode_decoding_bigint>`
 
 GMP object, Pear's Math_BigInteger, brick/math BigInteger, and internal type BigIntType (simple numeric string wrapper)
-will become integers:
-
-.. code-block:: php
+will become integers::
 
     <?php
 
@@ -92,9 +89,7 @@ Stringable
 
 .. versionchanged:: 3.0 ``Stringable`` objects no longer become strings automatically
 
-You can convert ``Stringable`` objects to strings using ``useStringable`` option:
-
-.. code-block:: php
+You can convert ``Stringable`` objects to strings using ``useStringable`` option::
 
     <?php
 
@@ -119,9 +114,7 @@ Object Wrappers
 .. versionadded:: 1.7/2.7/3.0 ``DictType``
 
 You can use any traversable as a list by wrapping it with ``ListType``.
-Keys will be discarded in that case.
-
-.. code-block:: php
+Keys will be discarded in that case::
 
     <?php
 
@@ -133,9 +126,7 @@ Keys will be discarded in that case.
     ); // "li1ei2ei3ee"
 
 You can use any traversable as a dictionary by wrapping it with ``DictType``.
-Keys will be cast to string and must be unique.
-
-.. code-block:: php
+Keys will be cast to string and must be unique::
 
     <?php
 
@@ -156,9 +147,7 @@ BencodeSerializable
 .. versionadded:: 1.7/2.7/3.0 ``JsonSerializable`` handling
 
 You can also force object representation by implementing BencodeSerializable interface.
-This will work exactly like JsonSerializable_ interface.
-
-.. code-block:: php
+This will work exactly like JsonSerializable_ interface::
 
     <?php
 
@@ -182,9 +171,7 @@ This will work exactly like JsonSerializable_ interface.
     $encoded = Bencode::encode($file);
     // "d5:class6:MyFile4:name14:myfile.torrent4:sizei5242880ee"
 
-Optionally you can use JsonSerializable_ itself too:
-
-.. code-block:: php
+Optionally you can use JsonSerializable_ itself too::
 
     <?php
 
@@ -214,9 +201,7 @@ Working with files
 
 .. versionchanged:: 3.0 ``($filename, $data)`` → ``($data, $filename)``
 
-Save data to file:
-
-.. code-block:: php
+Save data to file::
 
     <?php
 
@@ -229,9 +214,7 @@ Working with streams
 
 .. versionadded:: 1.5/2.5
 
-Save data to a writable stream or to a new php://temp if no stream is specified
-
-.. code-block:: php
+Save data to a writable stream or to a new php://temp if no stream is specified::
 
     <?php
 
@@ -244,9 +227,7 @@ Encoder object
 
 .. versionadded:: 1.7/2.7/3.0
 
-Encoder object can be configured on creation and used multiple times.
-
-.. code-block:: php
+Encoder object can be configured on creation and used multiple times::
 
     <?php
 
