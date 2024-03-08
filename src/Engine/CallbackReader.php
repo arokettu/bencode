@@ -191,7 +191,7 @@ final class CallbackReader
                 $this->state = self::STATE_DICT_KEY;
                 break;
             default:
-                throw new LogicException('Should not happen');
+                throw new LogicException('Should not happen'); // @codeCoverageIgnore
         }
 
         ($this->callback)(array_reverse(iterator_to_array($this->keyStack)), $value);

@@ -118,4 +118,12 @@ class FileTest extends TestCase
 
         Bencode::decodeStream(false);
     }
+
+    public function testDecodeFromInvalidResourceCallback(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Input is not a valid stream');
+
+        (new CallbackDecoder())->decodeStream(false, fn () => null);
+    }
 }
