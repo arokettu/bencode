@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Arokettu\Bencode\Tests;
 
-use Arokettu\Bencode\Bencode;
 use Arokettu\Bencode\CallbackDecoder;
 use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;

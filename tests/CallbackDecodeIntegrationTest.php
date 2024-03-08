@@ -47,10 +47,7 @@ class CallbackDecodeIntegrationTest extends TestCase
             'i456e' .
         'e';
 
-        $decoded = CallbackCombiner::parse(
-            new CallbackDecoder(),
-            $bencode,
-        );
+        $decoded = CallbackCombiner::parse(new CallbackDecoder(), $bencode);
 
         self::assertEquals($value, $decoded);
     }
