@@ -6,7 +6,9 @@
 
 *Mar 9, 2024*
 
-* Callback Decoder
+* Callback Decoder (proposed in [gitlab#2])
+
+[gitlab#2]: https://gitlab.com/sandfox/bencode/-/issues/2
 
 ### 4.1.0
 
