@@ -17,7 +17,7 @@ use function Arokettu\IsResource\try_get_resource_type;
  */
 final class CallbackReader
 {
-    private bool $decoded;
+    private bool $decodeStarted;
 
     private int $state;
     private SplStack $stateStack;
@@ -43,17 +43,17 @@ final class CallbackReader
 
     public function read(): void
     {
-        $this->state        = self::STATE_ROOT;
-        $this->stateStack   = new SplStack();
-        $this->decoded      = false;
-        $this->keyStack     = new SplStack();
+        $this->state            = self::STATE_ROOT;
+        $this->stateStack       = new SplStack();
+        $this->decodeStarted    = false;
+        $this->keyStack         = new SplStack();
 
         while (!feof($this->stream)) {
             $this->processChar();
         }
 
         /** @psalm-suppress TypeDoesNotContainType too smart! */
-        if ($this->state !== self::STATE_ROOT || !$this->decoded) {
+        if ($this->state !== self::STATE_ROOT || !$this->decodeStarted) {
             throw new ParseErrorException('Unexpected end of file');
         }
     }
@@ -66,9 +66,11 @@ final class CallbackReader
             return;
         }
 
-        if ($this->decoded && $this->state === self::STATE_ROOT) {
+        if ($this->decodeStarted && $this->state === self::STATE_ROOT) {
             throw new ParseErrorException('Probably some junk after the end of the file');
         }
+
+        $this->decodeStarted = true;
 
         if ($this->state === self::STATE_DICT_KEY) {
             // next value can only be finalizer or null
@@ -214,9 +216,6 @@ final class CallbackReader
         $this->state = $this->stateStack->pop();
         $this->keyStack->pop();
 
-        if ($this->state === self::STATE_ROOT) {
-            $this->decoded = true;
-        }
         if ($this->state === self::STATE_DICT) {
             $this->state = self::STATE_DICT_KEY;
         }
