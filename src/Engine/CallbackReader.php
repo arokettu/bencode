@@ -78,14 +78,6 @@ final class CallbackReader
             $index += 1;
             $this->keyStack->push($index);
         }
-        if ($this->state === self::STATE_DICT_KEY) {
-            // next value can only be finalizer or null
-            match ($c) {
-                'e' => $this->finalizeContainer(),
-                default => $this->processString(),
-            };
-            return;
-        }
 
         match ($c) {
             'i' => $this->processInteger(),
@@ -114,6 +106,10 @@ final class CallbackReader
 
     private function processInteger(): void
     {
+        if ($this->state === self::STATE_DICT_KEY) {
+            throw new ParseErrorException('Non string key found in the dictionary');
+        }
+
         $intStr = $this->readInteger('e');
 
         if ($intStr === false) {
@@ -207,6 +203,10 @@ final class CallbackReader
      */
     private function push(int $newState): void
     {
+        if ($this->state === self::STATE_DICT_KEY) {
+            throw new ParseErrorException('Non string key found in the dictionary');
+        }
+
         $this->stateStack->push($this->state);
         $this->state = $newState;
 
