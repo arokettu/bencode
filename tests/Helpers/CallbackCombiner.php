@@ -9,7 +9,7 @@ use Arokettu\Bencode\Types\CallbackHandler;
 
 class CallbackCombiner implements CallbackHandler
 {
-    public array $data = [];
+    public mixed $data = null;
 
     public static function parse(CallbackDecoder $decoder, string $bencoded): mixed
     {

@@ -22,7 +22,7 @@ class CallbackDecodeDictTest extends TestCase
         // php converts numeric array keys to integers
         self::assertEquals([1 => 2, 3 => 4], CallbackCombiner::parse(new CallbackDecoder(), 'd1:1i2e1:3i4ee'));
         // empty
-        self::assertEquals([], CallbackCombiner::parse(new CallbackDecoder(), 'de'));
+        self::assertEquals(null, CallbackCombiner::parse(new CallbackDecoder(), 'de'));
     }
 
     public function testKeyNotString(): void
