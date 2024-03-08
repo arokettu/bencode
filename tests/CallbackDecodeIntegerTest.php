@@ -19,9 +19,9 @@ class CallbackDecodeIntegerTest extends TestCase
     public function testValid(): void
     {
         // valid values
-        self::assertEquals(213, CallbackCombiner::parse(new CallbackDecoder(), 'i213e'));
-        self::assertEquals(-314, CallbackCombiner::parse(new CallbackDecoder(), 'i-314e'));
-        self::assertEquals(0, CallbackCombiner::parse(new CallbackDecoder(), 'i0e'));
+        self::assertEquals(213, CallbackCombiner::decode(new CallbackDecoder(), 'i213e'));
+        self::assertEquals(-314, CallbackCombiner::decode(new CallbackDecoder(), 'i-314e'));
+        self::assertEquals(0, CallbackCombiner::decode(new CallbackDecoder(), 'i0e'));
     }
 
     public function testEmptyValue(): void

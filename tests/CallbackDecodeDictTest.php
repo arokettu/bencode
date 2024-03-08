@@ -17,12 +17,12 @@ class CallbackDecodeDictTest extends TestCase
     public function testValid(): void
     {
         // simple
-        self::assertEquals(['a' => 'b', 'c' => 'd'], CallbackCombiner::parse(new CallbackDecoder(), 'd1:a1:b1:c1:de'));
+        self::assertEquals(['a' => 'b', 'c' => 'd'], CallbackCombiner::decode(new CallbackDecoder(), 'd1:a1:b1:c1:de'));
         // numeric keys
         // php converts numeric array keys to integers
-        self::assertEquals([1 => 2, 3 => 4], CallbackCombiner::parse(new CallbackDecoder(), 'd1:1i2e1:3i4ee'));
+        self::assertEquals([1 => 2, 3 => 4], CallbackCombiner::decode(new CallbackDecoder(), 'd1:1i2e1:3i4ee'));
         // empty
-        self::assertEquals(null, CallbackCombiner::parse(new CallbackDecoder(), 'de'));
+        self::assertEquals(null, CallbackCombiner::decode(new CallbackDecoder(), 'de'));
     }
 
     public function testKeyNotString(): void

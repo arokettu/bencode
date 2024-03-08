@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Bencode;
+use Arokettu\Bencode\CallbackDecoder;
 use Arokettu\Bencode\Exceptions\FileNotReadableException;
 use Arokettu\Bencode\Exceptions\FileNotWritableException;
 use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
@@ -24,10 +26,17 @@ class FileTest extends TestCase
         $onDisk = file_get_contents($file);
         self::assertEquals($encoded, $onDisk);
 
+        // regular load
+
         $loaded = Bencode::load($file);
         self::assertEquals($loaded, $value);
 
         Bencode::dump($value, $file); // dump again to the existing file to check permissions
+
+        // stream laod
+
+        $loaded2 = CallbackCombiner::load(new CallbackDecoder(), $file);
+        self::assertEquals($loaded2, $value);
 
         unlink($file);
     }
@@ -68,10 +77,21 @@ class FileTest extends TestCase
     public function testInvalidFileRead(): void
     {
         $this->expectException(FileNotReadableException::class);
+        $this->expectExceptionMessage('File does not exist or is not readable: vfs://test');
         vfsStream::setup();
         $stream = vfsStream::newFile('test', 0000);
 
-        self::assertEquals(false, Bencode::load($stream->url()));
+        Bencode::load($stream->url());
+    }
+
+    public function testInvalidFileReadStream(): void
+    {
+        $this->expectException(FileNotReadableException::class);
+        $this->expectExceptionMessage('File does not exist or is not readable: vfs://test');
+        vfsStream::setup();
+        $stream = vfsStream::newFile('test', 0000);
+
+        (new CallbackDecoder())->load($stream->url(), fn () => null);
     }
 
     public function testInvalidFileWrite(): void

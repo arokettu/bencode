@@ -11,10 +11,17 @@ class CallbackCombiner implements CallbackHandler
 {
     public mixed $data = null;
 
-    public static function parse(CallbackDecoder $decoder, string $bencoded): mixed
+    public static function decode(CallbackDecoder $decoder, string $bencoded): mixed
     {
         $cc = new self();
-        $decoder->decode($bencoded, $cc(...));
+        $decoder->decode($bencoded, $cc);
+        return $cc->data;
+    }
+
+    public static function load(CallbackDecoder $decoder, string $file): mixed
+    {
+        $cc = new self();
+        $decoder->load($file, $cc);
         return $cc->data;
     }
 

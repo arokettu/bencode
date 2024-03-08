@@ -19,16 +19,16 @@ class CallbackDecodeStringTest extends TestCase
     public function testValid(): void
     {
         // simple string
-        self::assertEquals('String', CallbackCombiner::parse(new CallbackDecoder(), '6:String'));
+        self::assertEquals('String', CallbackCombiner::decode(new CallbackDecoder(), '6:String'));
         // empty string
-        self::assertEquals('', CallbackCombiner::parse(new CallbackDecoder(), '0:'));
+        self::assertEquals('', CallbackCombiner::decode(new CallbackDecoder(), '0:'));
         // special chars
-        self::assertEquals("zero\0newline\nsymblol05\x05ok", CallbackCombiner::parse(
+        self::assertEquals("zero\0newline\nsymblol05\x05ok", CallbackCombiner::decode(
             new CallbackDecoder(),
             "25:zero\0newline\nsymblol05\x05ok"
         ));
         // unicode
-        self::assertEquals('日本語', CallbackCombiner::parse(new CallbackDecoder(), '9:日本語'));
+        self::assertEquals('日本語', CallbackCombiner::decode(new CallbackDecoder(), '9:日本語'));
     }
 
     public function testIncorrectLengthZeroPrefix(): void
