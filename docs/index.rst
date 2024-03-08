@@ -25,6 +25,7 @@ Documentation
 
    encoding
    decoding
+   decoding_callback
    upgrade
 
 License

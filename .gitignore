@@ -9,6 +9,7 @@
 # docs
 /docs/*.html
 /docs/build
+/venv
 
 # tests
 /reports

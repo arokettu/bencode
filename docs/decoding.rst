@@ -242,5 +242,5 @@ Decoder object can be configured on creation and used multiple times:
     $decoder = new Decoder(bigInt: Bencode\BigInt::INTERNAL);
     // all calls available:
     $decoder->decode($encoded);
-    $decoder->decodeStream($encoded, $stream);
+    $decoder->decodeStream($stream);
     $decoder->load($filename);
