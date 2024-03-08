@@ -8,9 +8,7 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Bencode;
-use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use Arokettu\Bencode\Exceptions\ParseErrorException;
-use Arokettu\Bencode\Types\DictType;
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -107,18 +105,5 @@ class DecodeDictTest extends TestCase
 
         $this->assertEquals(ArrayObject::class, $decodedCallback::class);
         $this->assertEquals($arrayObject, $decodedCallback);
-    }
-
-    public function testNoRepeatedKeys(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Dictionary contains repeated keys: 'key'");
-
-        Bencode::encode(
-            new DictType((function () {
-                yield 'key' => 'value1';
-                yield 'key' => 'value2';
-            })())
-        );
     }
 }

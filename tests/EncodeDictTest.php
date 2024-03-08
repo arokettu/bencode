@@ -129,4 +129,17 @@ class EncodeDictTest extends TestCase
 
         self::assertEquals($expectedWithNumericKeys, Bencode::encode($numericKeys));
     }
+
+    public function testNoRepeatedKeys(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Dictionary contains repeated keys: 'key'");
+
+        Bencode::encode(
+            new DictType((function () {
+                yield 'key' => 'value1';
+                yield 'key' => 'value2';
+            })())
+        );
+    }
 }
