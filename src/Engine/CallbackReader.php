@@ -8,6 +8,7 @@ use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Util\IntUtil;
 use Closure;
+use LogicException;
 use SplStack;
 
 use function Arokettu\IsResource\try_get_resource_type;
@@ -72,6 +73,11 @@ final class CallbackReader
 
         $this->decodeStarted = true;
 
+        if ($this->state === self::STATE_LIST) {
+            $index = $this->keyStack->pop();
+            $index += 1;
+            $this->keyStack->push($index);
+        }
         if ($this->state === self::STATE_DICT_KEY) {
             // next value can only be finalizer or null
             match ($c) {
@@ -177,17 +183,13 @@ final class CallbackReader
     {
         switch ($this->state) {
             case self::STATE_ROOT:
-                break;
             case self::STATE_LIST:
-                $index = $this->keyStack->pop();
-                $index += 1;
-                $this->keyStack->push($index);
                 break;
             case self::STATE_DICT:
                 $this->state = self::STATE_DICT_KEY;
                 break;
             default:
-                throw new \LogicException();
+                throw new LogicException('Should not happen');
         }
 
         ($this->callback)(array_reverse(iterator_to_array($this->keyStack)), $value);
