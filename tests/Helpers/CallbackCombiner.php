@@ -26,6 +26,6 @@ class CallbackCombiner implements CallbackHandler
         }
         $d = $value;
 
-        return true;
+        return null;
     }
 }
