@@ -172,6 +172,12 @@ final class CallbackReader
 
     private function finalizeContainer(): void
     {
+        if ($this->state === self::STATE_DICT) {
+            // dict can't end here
+            $dictKey = $this->keyStack->pop();
+            throw new ParseErrorException("Dictionary key without corresponding value: '{$dictKey}'");
+        }
+
         $this->pop();
     }
 
