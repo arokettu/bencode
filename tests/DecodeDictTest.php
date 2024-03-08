@@ -34,6 +34,14 @@ class DecodeDictTest extends TestCase
         Bencode::decode('di123ei321ee');
     }
 
+    public function testKeyNotStringList(): void
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Non string key found in the dictionary');
+
+        Bencode::decode('dlei321ee');
+    }
+
     public function testKeysNotSorted(): void
     {
         $this->expectException(ParseErrorException::class);

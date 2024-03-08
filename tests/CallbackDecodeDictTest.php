@@ -33,6 +33,14 @@ class CallbackDecodeDictTest extends TestCase
         (new CallbackDecoder())->decode('di123ei321ee', fn () => null);
     }
 
+    public function testKeyNotStringList(): void
+    {
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionMessage('Non string key found in the dictionary');
+
+        (new CallbackDecoder())->decode('dlei321ee', fn () => null);
+    }
+
     public function testKeysNotSorted(): void
     {
         $this->expectException(ParseErrorException::class);
