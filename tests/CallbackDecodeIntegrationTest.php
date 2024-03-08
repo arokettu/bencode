@@ -142,4 +142,56 @@ class CallbackDecodeIntegrationTest extends TestCase
         $encoded = Bencode::encode($value);
         self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
     }
+
+    public function testDictWithListGap(): void
+    {
+        $value = [
+            'a' => 'a',
+            'b' => [],
+            'c' => 'c',
+        ];
+
+        $encoded = Bencode::encode($value);
+        unset($value['b']);
+        self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
+    }
+
+    public function testDictWithDictGap(): void
+    {
+        $value = [
+            'a' => 'a',
+            'b' => new ArrayObject(),
+            'c' => 'c',
+        ];
+
+        $encoded = Bencode::encode($value);
+        unset($value['b']);
+        self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
+    }
+
+    public function testListWithListGap(): void
+    {
+        $value = [
+            1,
+            [],
+            3,
+        ];
+
+        $encoded = Bencode::encode($value);
+        unset($value[1]);
+        self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
+    }
+
+    public function testListWithDictGap(): void
+    {
+        $value = [
+            1,
+            new ArrayObject(),
+            3,
+        ];
+
+        $encoded = Bencode::encode($value);
+        unset($value[1]);
+        self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
+    }
 }
