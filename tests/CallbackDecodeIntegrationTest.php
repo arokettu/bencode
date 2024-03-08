@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Arokettu\Bencode\Tests;
 
+use Arokettu\Bencode\Bencode;
 use Arokettu\Bencode\CallbackDecoder;
 use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;
 use ArrayObject;
@@ -50,5 +51,95 @@ class CallbackDecodeIntegrationTest extends TestCase
         $decoded = CallbackCombiner::parse(new CallbackDecoder(), $bencode);
 
         self::assertEquals($value, $decoded);
+    }
+
+    // various nestings
+
+    public function testDictListDict(): void
+    {
+        $value = [
+            'a' => 'x',
+            'b' => 'y',
+            'c' => [
+                1,
+                2,
+                3 => [
+                    'a' => 'x',
+                    'b' => 'y',
+                    'c' => 'z',
+                ],
+                4,
+            ],
+            'd' => 'z',
+        ];
+
+        $encoded = Bencode::encode($value);
+        self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
+    }
+
+    public function testListDictList(): void
+    {
+        $value = [
+            1,
+            2,
+            3 => [
+                'a' => 'x',
+                'b' => 'y',
+                'c' => [
+                    1,
+                    2,
+                    3,
+                ],
+                'd' => 'z',
+            ],
+            4,
+        ];
+
+        $encoded = Bencode::encode($value);
+        self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
+    }
+
+    public function testListListList(): void
+    {
+        $value = [
+            1,
+            2,
+            3 => [
+                1,
+                2,
+                3 => [
+                    1,
+                    2,
+                    3,
+                ],
+                4,
+            ],
+            4,
+        ];
+
+        $encoded = Bencode::encode($value);
+        self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
+    }
+
+    public function testDictDictDict(): void
+    {
+        $value = [
+            'a' => 'x',
+            'b' => 'y',
+            'c' => [
+                'a' => 'x',
+                'b' => 'y',
+                'c' => [
+                    'a' => 'x',
+                    'b' => 'y',
+                    'c' => 'z',
+                ],
+                'd' => 'z',
+            ],
+            'd' => 'z',
+        ];
+
+        $encoded = Bencode::encode($value);
+        self::assertEquals($value, CallbackCombiner::parse(new CallbackDecoder(), $encoded));
     }
 }
