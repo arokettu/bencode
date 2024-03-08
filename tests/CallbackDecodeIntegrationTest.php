@@ -14,12 +14,12 @@ class CallbackDecodeIntegrationTest extends TestCase
 {
     public function testAllFeatures(): void
     {
-        $value = new ArrayObject([
-            123,
-            'String',
-            // new ArrayObject([]), // empty will be ignored
-            // new ArrayObject([new stdClass()]), // empty will be ignored
-            [
+        $value = [
+            0 => 123,
+            1 => 'String',
+            // 2 => new ArrayObject([]), // empty will be ignored
+            // 3 => new ArrayObject([new stdClass()]), // empty will be ignored
+            4 => [
                 'i' => 213,
                 's' => 'string',
                 // 'l' => new ArrayObject([]), // empty will be ignored
@@ -27,8 +27,8 @@ class CallbackDecodeIntegrationTest extends TestCase
                     'test' => 'test',
                 ],
             ],
-            456,
-        ]);
+            5 => 456,
+        ];
 
         $bencode = 'l' .
             'i123e' .
