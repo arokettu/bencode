@@ -78,7 +78,7 @@ class FileTest extends TestCase
     {
         $this->expectException(FileNotReadableException::class);
         $this->expectExceptionMessage('File does not exist or is not readable: vfs://test');
-        vfsStream::setup();
+        @vfsStream::setup(); // external dev deprecation
         $stream = vfsStream::newFile('test', 0000);
 
         Bencode::load($stream->url());
@@ -88,7 +88,7 @@ class FileTest extends TestCase
     {
         $this->expectException(FileNotReadableException::class);
         $this->expectExceptionMessage('File does not exist or is not readable: vfs://test');
-        vfsStream::setup();
+        @vfsStream::setup(); // external dev deprecation
         $stream = vfsStream::newFile('test', 0000);
 
         (new CallbackDecoder())->load($stream->url(), fn () => null);
@@ -97,7 +97,7 @@ class FileTest extends TestCase
     public function testInvalidFileWrite(): void
     {
         $this->expectException(FileNotWritableException::class);
-        vfsStream::setup();
+        @vfsStream::setup(); // external dev deprecation
         $stream = vfsStream::newFile('test', 0000);
 
         self::assertEquals(false, Bencode::dump([], $stream->url()));

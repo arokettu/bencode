@@ -11,12 +11,9 @@ use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Types\BigIntType;
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class LargeIntegerTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     private const POW_2_1024 =
         '1797693134862315907729305190789024733617976978942306572734300811577326758055009631' .
         '3270847732240753602112011387987139335765878976881441662249284743063947412437776789' .
