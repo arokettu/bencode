@@ -27,7 +27,7 @@ cache:
     - composer config -g cache-dir "$(pwd)/.composer-cache"
   script:
     - composer update
-    - vendor/bin/phpunit
+    - vendor/bin/phpunit --fail-on-deprecation --fail-on-notice --fail-on-warning
 
 # coverage
 coverage:

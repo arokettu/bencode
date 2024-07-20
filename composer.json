@@ -45,11 +45,10 @@
         "brick/math": "*",
         "mikey179/vfsstream": "^1.6.11",
         "pear/math_biginteger": "^1.0",
-        "phpunit/phpunit": "^9.4",
+        "phpunit/phpunit": "^10.5.28",
         "psy/psysh": "*",
         "sandfox.dev/code-standard": "^1.2024.07.05",
         "squizlabs/php_codesniffer": "*",
-        "symfony/phpunit-bridge": "^6.1",
         "vimeo/psalm": "^5.2"
     },
     "suggest": {
