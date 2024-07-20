@@ -43,11 +43,11 @@
         "ext-gmp": "*",
         "ext-json": "*",
         "brick/math": "*",
-        "mikey179/vfsstream": "^1.6.10@alpha",
+        "mikey179/vfsstream": "^1.6.11",
         "pear/math_biginteger": "^1.0",
         "phpunit/phpunit": "^9.4",
         "psy/psysh": "*",
-        "sandfox.dev/code-standard": "^1",
+        "sandfox.dev/code-standard": "^1.2024.07.05",
         "squizlabs/php_codesniffer": "*",
         "symfony/phpunit-bridge": "^6.1",
         "vimeo/psalm": "^5.2"

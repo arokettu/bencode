@@ -25,7 +25,7 @@ class CallbackCombiner implements CallbackHandler
         return $cc->data;
     }
 
-    public function __invoke(array $keys, mixed $value): ?bool
+    public function __invoke(array $keys, mixed $value): bool|null
     {
         $d = &$this->data;
         foreach ($keys as $key) {
