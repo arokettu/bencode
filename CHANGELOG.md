@@ -2,6 +2,14 @@
 
 ## 4.x
 
+### 4.2.1
+
+*Jul 28, 2024*
+
+* Exception fixes:
+  * Using $options array now throws `BadFunctionCallException`
+  * `ParseErrorException` reclassified to `UnexpectedValueException` (runtime instead of logic)
+
 ### 4.2.0
 
 *Mar 9, 2024*
