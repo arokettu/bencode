@@ -11,7 +11,7 @@ class OptionsArrayTest extends TestCase
 {
     public function testDecoder(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\BadFunctionCallException::class);
         $this->expectExceptionMessage('$options array must not be used');
 
         Bencode::decode('de', ['any' => 'thing']);
@@ -19,7 +19,7 @@ class OptionsArrayTest extends TestCase
 
     public function testEncoder(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\BadFunctionCallException::class);
         $this->expectExceptionMessage('$options array must not be used');
 
         Bencode::encode([], ['any' => 'thing']);

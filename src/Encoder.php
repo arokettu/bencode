@@ -17,7 +17,7 @@ final class Encoder
         private readonly bool $useStringable = false,
     ) {
         if ($options !== []) {
-            throw new \InvalidArgumentException('$options array must not be used');
+            throw new \BadFunctionCallException('$options array must not be used');
         }
     }
 

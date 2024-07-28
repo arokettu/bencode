@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Arokettu\Bencode\Exceptions;
 
-class ParseErrorException extends InvalidArgumentException
+use UnexpectedValueException;
+
+class ParseErrorException extends UnexpectedValueException implements BencodeException
 {
 }

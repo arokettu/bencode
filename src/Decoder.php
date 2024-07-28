@@ -39,7 +39,7 @@ final class Decoder
         Bencode\BigInt|callable $bigInt = self::DEFAULT_BIG_INT,
     ) {
         if ($options !== []) {
-            throw new \InvalidArgumentException('$options array must not be used');
+            throw new \BadFunctionCallException('$options array must not be used');
         }
 
         $this->listHandler = $listType instanceof Bencode\Collection ? $listType->getHandler() : $listType(...);
