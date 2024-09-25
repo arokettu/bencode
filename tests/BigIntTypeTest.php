@@ -6,6 +6,7 @@ namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use Arokettu\Bencode\Types\BigIntType;
+use BcMath\Number;
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
 
@@ -84,5 +85,16 @@ class BigIntTypeTest extends TestCase
         self::assertEquals(\gmp_init('123'), $int->toGMP());
         self::assertTrue((new \Math_BigInteger('123'))->equals($int->toPear()));
         self::assertTrue(BigInteger::of('123')->isEqualTo($int->toBrickMath()));
+    }
+
+    public function testExportBcMath(): void
+    {
+        if (PHP_VERSION_ID < 80400) {
+            $this->markTestSkipped('8.4+ only');
+        }
+
+        $int = new BigIntType('123');
+
+        self::assertEquals(new Number('123'), $int->toBcMath());
     }
 }
