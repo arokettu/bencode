@@ -74,10 +74,10 @@ final class Writer
             // empty values
             $value === false,
             $value === null,
-                => throw new InvalidArgumentException('Unable to encode an empty value'),
+                => throw new ValueNotSerializableException('Unable to encode an empty value'),
             // other types like resources
             default
-                => throw new InvalidArgumentException(
+                => throw new ValueNotSerializableException(
                     sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
                 ),
         };
@@ -105,7 +105,7 @@ final class Writer
                 => $this->encodeDictionary($value),
             // other classes
             default =>
-                throw new InvalidArgumentException(
+                throw new ValueNotSerializableException(
                     sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
                 ),
         };
@@ -172,7 +172,9 @@ final class Writer
 
         // sort by keys - rfc requirement
         usort($dictData, fn($a, $b): int => (
-            strcmp($a[0], $b[0]) ?: throw new InvalidArgumentException("Dictionary contains repeated keys: '{$a[0]}'")
+            strcmp($a[0], $b[0]) ?: throw new ValueNotSerializableException(
+                "Dictionary contains repeated keys: '{$a[0]}'"
+            )
         ));
 
         fwrite($this->stream, 'd');

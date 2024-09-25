@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Bencode;
-use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Exceptions\ValueNotSerializableException;
 use Arokettu\Bencode\Types\BencodeSerializable;
 use PHPUnit\Framework\TestCase;
 
@@ -13,7 +13,7 @@ class EncodeEmptyTest extends TestCase
 {
     public function testNoRootNull(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValueNotSerializableException::class);
         $this->expectExceptionMessage('Unable to encode an empty value');
 
         Bencode::encode(null);
@@ -21,7 +21,7 @@ class EncodeEmptyTest extends TestCase
 
     public function testNoRootFalse(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValueNotSerializableException::class);
         $this->expectExceptionMessage('Unable to encode an empty value');
 
         Bencode::encode(false);
@@ -29,7 +29,7 @@ class EncodeEmptyTest extends TestCase
 
     public function testNoSerializableNull(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValueNotSerializableException::class);
         $this->expectExceptionMessage('Unable to encode an empty value');
 
         Bencode::encode(new class implements BencodeSerializable {
@@ -42,7 +42,7 @@ class EncodeEmptyTest extends TestCase
 
     public function testNoSerializableFalse(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValueNotSerializableException::class);
         $this->expectExceptionMessage('Unable to encode an empty value');
 
         Bencode::encode(new class implements BencodeSerializable {

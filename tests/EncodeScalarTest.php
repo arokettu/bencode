@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Bencode;
-use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Exceptions\ValueNotSerializableException;
 use PHPUnit\Framework\TestCase;
 
 class EncodeScalarTest extends TestCase
@@ -42,7 +42,7 @@ class EncodeScalarTest extends TestCase
 
     public function testFloat(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValueNotSerializableException::class);
         $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of float");
         // float cannot be reliably encoded
         Bencode::encode(3.1416);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Tests;
 
 use Arokettu\Bencode\Bencode;
-use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Exceptions\ValueNotSerializableException;
 use Arokettu\Bencode\Types\DictType;
 use PHPUnit\Framework\TestCase;
 
@@ -56,7 +56,7 @@ class EncodeDictTest extends TestCase
     {
         // no longer automatically decode traversables
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValueNotSerializableException::class);
         $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of Generator");
 
         Bencode::encode(
@@ -132,7 +132,7 @@ class EncodeDictTest extends TestCase
 
     public function testNoRepeatedKeys(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ValueNotSerializableException::class);
         $this->expectExceptionMessage("Dictionary contains repeated keys: 'key'");
 
         Bencode::encode(
