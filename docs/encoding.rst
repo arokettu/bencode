@@ -78,11 +78,12 @@ and internal type BigIntType (simple numeric string wrapper) will become integer
 
     use Arokettu\Bencode\Bencode;
     use Arokettu\Bencode\Types\BigIntType;
+    use BcMath\Number;
     use Brick\Math\BigInteger;
 
     $encoded = Bencode::encode([
         'gmp' => gmp_pow(2, 96),
-        'bcmath' => new BcMath\Number(2)->pow(96),
+        'bcmath' => new Number(2)->pow(96),
         'brick' => BigInteger::of(2)->power(96),
         'pear' => (new Math_BigInteger(1))->bitwise_leftShift(96),
         'internal' => new BigIntType('7922816251426433759354395033'),
