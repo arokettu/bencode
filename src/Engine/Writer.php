@@ -5,11 +5,19 @@ declare(strict_types=1);
 namespace Arokettu\Bencode\Engine;
 
 use Arokettu\Bencode\Exceptions\InvalidArgumentException;
+use Arokettu\Bencode\Exceptions\ValueNotSerializableException;
 use Arokettu\Bencode\Types\BencodeSerializable;
 use Arokettu\Bencode\Types\BigIntType;
 use Arokettu\Bencode\Types\DictType;
 use Arokettu\Bencode\Types\ListType;
+use ArrayObject;
+use BcMath\Number;
 use Brick\Math\BigInteger;
+use GMP;
+use JsonSerializable;
+use Math_BigInteger;
+use stdClass;
+use Stringable;
 
 use function Arokettu\IsResource\try_get_resource_type;
 
@@ -50,10 +58,13 @@ final class Writer
             \is_int($value),
             $value === true,
             $value instanceof BigIntType,
-            $value instanceof \GMP,
+            $value instanceof GMP,
             $value instanceof BigInteger,
-            $value instanceof \Math_BigInteger,
+            $value instanceof Math_BigInteger,
                 => $this->encodeInteger($value),
+            // BcMath can be both decimal and integer, check scale
+            $value instanceof Number,
+                => $this->encodeBcMath($value),
             // process strings
             \is_string($value) => $this->encodeString($value),
             // process arrays
@@ -89,8 +100,8 @@ final class Writer
             // all other traversables are dictionaries
             // also treat stdClass as a dictionary
             $value instanceof DictType,
-            $value instanceof \ArrayObject,
-            $value instanceof \stdClass,
+            $value instanceof ArrayObject,
+            $value instanceof stdClass,
                 => $this->encodeDictionary($value),
             // other classes
             default =>
@@ -100,8 +111,21 @@ final class Writer
         };
     }
 
-    private function encodeInteger(int|bool|BigIntType|\GMP|BigInteger|\Math_BigInteger $integer): void
+    private function encodeInteger(int|bool|BigIntType|GMP|BigInteger|Math_BigInteger $integer): void
     {
+        fwrite($this->stream, 'i');
+        fwrite($this->stream, \strval($integer));
+        fwrite($this->stream, 'e');
+    }
+
+    private function encodeBcMath(Number $integer): void
+    {
+        if ($integer->scale > 0) {
+            throw new ValueNotSerializableException(
+                sprintf('BcMath\\Number does not represent an integer value: "%s"', $integer)
+            );
+        }
+
         fwrite($this->stream, 'i');
         fwrite($this->stream, \strval($integer));
         fwrite($this->stream, 'e');
@@ -131,7 +155,7 @@ final class Writer
         fwrite($this->stream, 'e');
     }
 
-    private function encodeDictionary(iterable|\stdClass $array): void
+    private function encodeDictionary(iterable|stdClass $array): void
     {
         $dictData = [];
 
@@ -171,11 +195,11 @@ final class Writer
             return $this->resolveSerializable($value->bencodeSerialize());
         }
 
-        if ($this->useJsonSerializable && $value instanceof \JsonSerializable) {
+        if ($this->useJsonSerializable && $value instanceof JsonSerializable) {
             return $this->resolveSerializable($value->jsonSerialize());
         }
 
-        if ($this->useStringable && $value instanceof \Stringable) {
+        if ($this->useStringable && $value instanceof Stringable) {
             return $value->__toString();
         }
 

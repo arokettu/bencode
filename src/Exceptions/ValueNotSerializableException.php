@@ -6,6 +6,6 @@ namespace Arokettu\Bencode\Exceptions;
 
 use UnexpectedValueException;
 
-final class ParseErrorException extends UnexpectedValueException implements BencodeException
+final class ValueNotSerializableException extends UnexpectedValueException implements BencodeException
 {
 }
