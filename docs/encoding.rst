@@ -69,10 +69,10 @@ Big integer support
 
 .. note:: More in the :ref:`decoding section <bencode_decoding_bigint>`
 
-.. note:: BcMath\Number must represent an integer value (scale=0), decimal values will be rejected
+.. note:: ``BcMath\Number`` must represent an integer value (scale=0), decimal values will be rejected
 
-GMP object, Pear's Math_BigInteger, brick/math BigInteger, and internal type BigIntType (simple numeric string wrapper)
-will become integers::
+GMP object, BCMath object, Pear's Math_BigInteger, brick/math BigInteger,
+and internal type BigIntType (simple numeric string wrapper) will become integers::
 
     <?php
 
@@ -218,7 +218,7 @@ Working with streams
 
 .. versionadded:: 1.5/2.5
 
-Save data to a writable stream or to a new php://temp if no stream is specified::
+Save data to a writable stream or to a new ``php://temp`` if no stream is specified::
 
     <?php
 
