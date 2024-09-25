@@ -49,12 +49,15 @@ test-8.1:
   stage: test
   image: php:8.1
 
-# todo:
 # lowest bcmath
-#test-8.4:
-#  extends: .test
-#  stage: test
-#  image: php:8.4
+test-8.4:
+  extends: .test
+  stage: test
+  image: php:8.4-rc
+  script:
+    - composer config platform.php '8.3.99' # fake version for now
+    - composer update
+    - vendor/bin/phpunit --fail-on-deprecation --fail-on-notice --fail-on-warning
 
 # latest PHP 8
 test-8:
