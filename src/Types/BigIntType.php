@@ -6,7 +6,9 @@ namespace Arokettu\Bencode\Types;
 
 use Arokettu\Bencode\Exceptions\InvalidArgumentException;
 use Arokettu\Bencode\Util\IntUtil;
+use BcMath\Number;
 use Brick\Math\BigInteger;
+use Math_BigInteger;
 
 final class BigIntType implements \Stringable
 {
@@ -46,10 +48,10 @@ final class BigIntType implements \Stringable
     /**
      * @psalm-api
      */
-    public function toPear(): \Math_BigInteger
+    public function toPear(): Math_BigInteger
     {
         /** @psalm-suppress InvalidArgument bad annotation in Math_BigInteger */
-        return new \Math_BigInteger($this->value);
+        return new Math_BigInteger($this->value);
     }
 
     /**
@@ -58,5 +60,13 @@ final class BigIntType implements \Stringable
     public function toBrickMath(): BigInteger
     {
         return BigInteger::of($this->value);
+    }
+
+    /**
+     * @psalm-api
+     */
+    public function toBcMath(): Number
+    {
+        return new Number($this->value);
     }
 }
