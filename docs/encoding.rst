@@ -65,8 +65,11 @@ Big integer support
 
 .. versionadded:: 1.5/2.5 GMP support
 .. versionadded:: 1.6/2.6 Pear's Math_BigInteger, brick/math, BigIntType support
+.. versionadded:: 4.3 BCMath support
 
 .. note:: More in the :ref:`decoding section <bencode_decoding_bigint>`
+
+.. note:: BcMath\Number must represent an integer value (scale=0), decimal values will be rejected
 
 GMP object, Pear's Math_BigInteger, brick/math BigInteger, and internal type BigIntType (simple numeric string wrapper)
 will become integers::
@@ -79,10 +82,11 @@ will become integers::
 
     $encoded = Bencode::encode([
         'gmp' => gmp_pow(2, 96),
+        'bcmath' => new BcMath\Number(2)->pow(96),
         'brick' => BigInteger::of(2)->power(96),
         'pear' => (new Math_BigInteger(1))->bitwise_leftShift(96),
         'internal' => new BigIntType('7922816251426433759354395033'),
-    ]); // "d5:bricki79228162514264337593543950336e3:gmpi792..."
+    ]); // "d6:bcmathi79228162514264337593543950336e5:bricki792..."
 
 Stringable
 ----------

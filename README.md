@@ -34,7 +34,7 @@ Supported versions:
 
 Read full documentation here: <https://sandfox.dev/php/bencode.html>
 
-Documentation for all supported versions can be found on Read the Docs:
+Documentation for all past major versions can be found on Read the Docs:
 
 * 1.x: <https://bencode.readthedocs.io/en/1.x/>
 * 2.x: <https://bencode.readthedocs.io/en/2.x/>

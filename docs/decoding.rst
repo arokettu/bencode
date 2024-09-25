@@ -89,6 +89,7 @@ External Libraries
 .. versionadded:: 1.5/2.5 GMP support
 .. versionadded:: 1.6/2.6 Pear's Math_BigInteger, brick/math
 .. versionchanged:: 3.0 ``BigInt`` is now a real enum
+.. versionadded:: 4.3 BCMath support
 
 .. important::
     These math libraries are not explicit dependencies of this library.
@@ -97,6 +98,7 @@ External Libraries
 Supported libraries:
 
 * `GNU Multiple Precision PHP Extension <GMP_>`_
+* BCMath_ (PHP 8.4+)
 * `brick/math`_
 * PEAR's `Math_BigInteger`_
 
@@ -112,6 +114,15 @@ Supported libraries:
         bigInt: Bencode\BigInt::GMP,
     );
     //  ['int' => gmp_init(
+    //      '79228162514264337593543950336'
+    //  )]
+
+    // BCMath
+    $data = Bencode::decode(
+        "d3:inti79228162514264337593543950336ee",
+        bigInt: Bencode\BigInt::BCMATH,
+    );
+    //  ['int' => new \BcMath\Number(
     //      '79228162514264337593543950336'
     //  )]
 
@@ -136,6 +147,7 @@ Supported libraries:
 .. _GMP: https://www.php.net/manual/en/book.gmp.php
 .. _brick/math: https://github.com/brick/math
 .. _Math_BigInteger: https://pear.php.net/package/Math_BigInteger
+.. _BCMath: https://www.php.net/manual/en/book.bc.php
 
 Internal Type
 -------------
@@ -167,6 +179,7 @@ BigIntType is a value object with several getters::
     $str = $data->value; // readonly property
     // converters to the supported libraries:
     $obj = $data->toGMP();
+    $obj = $data->toBcMath();
     $obj = $data->toPear();
     $obj = $data->toBrickMath();
 
