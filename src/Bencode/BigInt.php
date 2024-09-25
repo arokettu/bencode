@@ -6,7 +6,9 @@ namespace Arokettu\Bencode\Bencode;
 
 use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Types\BigIntType;
+use BcMath\Number;
 use Brick\Math\BigInteger;
+use Math_BigInteger;
 
 enum BigInt
 {
@@ -15,6 +17,7 @@ enum BigInt
     case GMP;
     case BRICK_MATH;
     case PEAR;
+    case BCMATH;
 
     public function getHandler(): \Closure
     {
@@ -31,7 +34,9 @@ enum BigInt
             self::BRICK_MATH
                 => fn (string $value) => BigInteger::of($value),
             self::PEAR
-                => fn (string $value) => new \Math_BigInteger($value),
+                => fn (string $value) => new Math_BigInteger($value),
+            self::BCMATH
+                => fn (string $value) => new Number($value),
         };
     }
 }
