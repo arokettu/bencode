@@ -2,7 +2,9 @@
 
 ## 4.x
 
-### next
+### 4.3.0
+
+*Sep 25, 2024*
 
 * BcMath\Number support for encoding and decoding
 * Encoder now throws instances of `ValueNotSerializableException` (subclass of `UnexpectedValueException`)
