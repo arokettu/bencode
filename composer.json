@@ -55,6 +55,7 @@
     "suggest": {
         "php-64bit": "Running 64 bit is recommended to prevent integer overflow",
         "ext-gmp": "In case you need integers larger than your architecture supports",
+        "ext-bcmath": "In case you need integers larger than your architecture supports (PHP 8.4 or later)",
         "brick/math": "In case you need integers larger than your architecture supports",
         "pear/math_biginteger": "In case you need integers larger than your architecture supports"
     }
