@@ -1,6 +1,7 @@
 stages:
   - test
   - report
+  - report-upload
 
 cache:
   key: composer-cache
@@ -38,10 +39,24 @@ coverage:
   only:
     - master
   image: php:8.1 # todo: php:8.4
+  artifacts:
+    paths:
+      - reports
+    expire_in: 1h
   script:
     - composer update
-    - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.xml
-    - bash <(curl -s https://codecov.io/bash)
+    - XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover reports/coverage.xml --log-junit reports/junit.xml
+
+coverage-upload:
+  stage: report-upload
+  image: python:3.12
+  only:
+    - master
+  before_script:
+    - pip install codecov-cli
+  script:
+    - codecovcli do-upload --report-type test_results --file reports/junit.xml --token $CODECOV_TOKEN
+    - codecovcli upload-process --file reports/coverage.xml --token $CODECOV_TOKEN
 
 # lowest version
 test-8.1:
