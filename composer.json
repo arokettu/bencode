@@ -50,7 +50,7 @@
         "psy/psysh": "*",
         "sandfox.dev/code-standard": "^1.2024.07.05",
         "squizlabs/php_codesniffer": "*",
-        "vimeo/psalm": "^5.2"
+        "vimeo/psalm": "^6"
     },
     "suggest": {
         "php-64bit": "Running 64 bit is recommended to prevent integer overflow",
