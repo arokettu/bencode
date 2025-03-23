@@ -78,7 +78,7 @@ final class Writer
             // other types like resources
             default
                 => throw new ValueNotSerializableException(
-                    sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
+                    \sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
                 ),
         };
     }
@@ -106,7 +106,7 @@ final class Writer
             // other classes
             default =>
                 throw new ValueNotSerializableException(
-                    sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
+                    \sprintf("Bencode doesn't know how to serialize an instance of %s", get_debug_type($value))
                 ),
         };
     }
@@ -122,7 +122,7 @@ final class Writer
     {
         if ($integer->scale > 0) {
             throw new ValueNotSerializableException(
-                sprintf('BcMath\\Number does not represent an integer value: "%s"', $integer)
+                \sprintf('BcMath\\Number does not represent an integer value: "%s"', $integer)
             );
         }
 
