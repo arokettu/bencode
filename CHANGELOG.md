@@ -2,6 +2,12 @@
 
 ## 4.x
 
+### 4.3.1
+
+*May 20, 2025*
+
+* Fixed an issue where dictType may resolve to an empty iterable when not iterated immediately
+
 ### 4.3.0
 
 *Sep 25, 2024*
