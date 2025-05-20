@@ -113,7 +113,7 @@ final class CallbackReader
         $intStr = $this->readInteger('e');
 
         if ($intStr === false) {
-            throw new ParseErrorException("Unexpected end of file while processing integer");
+            throw new ParseErrorException('Unexpected end of file while processing integer');
         }
 
         if (!IntUtil::isValid($intStr)) {
