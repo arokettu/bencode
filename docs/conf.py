@@ -37,12 +37,6 @@ html_theme_options = {
             "type": "fontawesome",
         },
         {
-            "name": "BitBucket",
-            "url": "https://bitbucket.org/sandfox/" + repo,
-            "icon": "fa-brands fa-bitbucket",
-            "type": "fontawesome",
-        },
-        {
             "name": "Gitea",
             "url": "https://sandfox.org/sandfox/" + repo,
             "icon": "fa-solid fa-mug-hot",
