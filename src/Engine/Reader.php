@@ -164,27 +164,30 @@ final class Reader
 
     private function finalizeList(): void
     {
-        $this->pop(($this->listHandler)($this->value));
+        $value = $this->value; // capture the current value object
+        $this->pop(($this->listHandler)((static fn () => yield from $value)()));
     }
 
     private function finalizeDict(): void
     {
-        $dictBuilder = function (): \Generator {
+        $value = $this->value; // capture the current value object
+
+        $dictBuilder = static function () use ($value): \Generator {
             $prevKey = null;
 
             // we have a queue [key1, value1, key2, value2, key3, value3, ...]
-            while (\count($this->value)) {
-                $dictKey = $this->value->dequeue();
+            while (\count($value)) {
+                $dictKey = $value->dequeue();
                 if (\is_string($dictKey) === false) {
                     throw new ParseErrorException('Non string key found in the dictionary');
                 }
-                if (\count($this->value) === 0) {
+                if (\count($value) === 0) {
                     throw new ParseErrorException("Dictionary key without corresponding value: '{$dictKey}'");
                 }
                 if ($prevKey && strcmp($prevKey, $dictKey) >= 0) {
                     throw new ParseErrorException("Invalid order of dictionary keys: '{$dictKey}' after '{$prevKey}'");
                 }
-                $dictValue = $this->value->dequeue();
+                $dictValue = $value->dequeue();
 
                 yield $dictKey => $dictValue;
                 $prevKey = $dictKey;
