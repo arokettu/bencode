@@ -1,7 +1,7 @@
 Bencode
 #######
 
-|Packagist| |GitLab| |GitHub| |Gitea|
+|Packagist| |GitLab| |GitHub| |Codeberg| |Gitea|
 
 PHP Bencode Encoder/Decoder
 
@@ -43,5 +43,7 @@ The library is available as open source under the terms of the `MIT License`_.
    :target:     https://github.com/arokettu/bencode
 .. |GitLab|     image:: https://img.shields.io/badge/get%20on-GitLab-informational.svg?style=flat-square&logo=gitlab
    :target:     https://gitlab.com/sandfox/bencode
+.. |Codeberg|   image:: https://img.shields.io/badge/get%20on-Codeberg-informational.svg?style=flat-square&logo=codeberg
+   :target:     https://codeberg.org/sandfox/bencode
 .. |Gitea|      image:: https://img.shields.io/badge/get%20on-Gitea-informational.svg?style=flat-square&logo=gitea
    :target:     https://sandfox.org/sandfox/bencode
