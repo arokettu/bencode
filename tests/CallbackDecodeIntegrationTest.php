@@ -10,7 +10,7 @@ use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
 
-class CallbackDecodeIntegrationTest extends TestCase
+final class CallbackDecodeIntegrationTest extends TestCase
 {
     public function testAllFeatures(): void
     {

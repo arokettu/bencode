@@ -7,7 +7,7 @@ namespace Arokettu\Bencode\Tests;
 use Arokettu\Bencode\Bencode;
 use PHPUnit\Framework\TestCase;
 
-class OptionsArrayTest extends TestCase
+final class OptionsArrayTest extends TestCase
 {
     public function testDecoder(): void
     {

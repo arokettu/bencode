@@ -7,7 +7,7 @@ namespace Arokettu\Bencode\Tests;
 use Arokettu\Bencode\Bencode;
 use PHPUnit\Framework\TestCase;
 
-class EncodeIntegrationTest extends TestCase
+final class EncodeIntegrationTest extends TestCase
 {
     public function testAllTypes(): void
     {

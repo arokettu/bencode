@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * Testing some overall decoding features. Decoding exact types is tested in their own classes
  */
-class DecodeTest extends TestCase
+final class DecodeTest extends TestCase
 {
     public function testJunk(): void
     {

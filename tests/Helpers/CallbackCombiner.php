@@ -7,7 +7,7 @@ namespace Arokettu\Bencode\Tests\Helpers;
 use Arokettu\Bencode\CallbackDecoder;
 use Arokettu\Bencode\Types\CallbackHandler;
 
-class CallbackCombiner implements CallbackHandler
+final class CallbackCombiner implements CallbackHandler
 {
     public mixed $data = null;
 

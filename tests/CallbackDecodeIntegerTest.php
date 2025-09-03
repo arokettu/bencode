@@ -9,7 +9,7 @@ use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;
 use PHPUnit\Framework\TestCase;
 
-class CallbackDecodeIntegerTest extends TestCase
+final class CallbackDecodeIntegerTest extends TestCase
 {
     private function errorMsg(string $value): string
     {
@@ -29,7 +29,7 @@ class CallbackDecodeIntegerTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg(''));
 
-        (new CallbackDecoder())->decode('ie', fn () => null);
+        (new CallbackDecoder())->decode('ie', static fn () => null);
     }
 
     public function testUnfinished(): void
@@ -37,7 +37,7 @@ class CallbackDecodeIntegerTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file while processing integer');
 
-        (new CallbackDecoder())->decode('i', fn () => null);
+        (new CallbackDecoder())->decode('i', static fn () => null);
     }
 
     public function testLeadingZero(): void
@@ -45,7 +45,7 @@ class CallbackDecodeIntegerTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('013'));
 
-        (new CallbackDecoder())->decode('i013e', fn () => null);
+        (new CallbackDecoder())->decode('i013e', static fn () => null);
     }
 
     public function testLeadingZeroNegative(): void
@@ -53,7 +53,7 @@ class CallbackDecodeIntegerTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('-013'));
 
-        (new CallbackDecoder())->decode('i-013e', fn () => null);
+        (new CallbackDecoder())->decode('i-013e', static fn () => null);
     }
 
     public function testMinusZero(): void
@@ -61,7 +61,7 @@ class CallbackDecodeIntegerTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('-0'));
 
-        (new CallbackDecoder())->decode('i-0e', fn () => null);
+        (new CallbackDecoder())->decode('i-0e', static fn () => null);
     }
 
     public function testFloat(): void
@@ -69,7 +69,7 @@ class CallbackDecodeIntegerTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('2.71828'));
 
-        (new CallbackDecoder())->decode('i2.71828e', fn () => null);
+        (new CallbackDecoder())->decode('i2.71828e', static fn () => null);
     }
 
     public function testString(): void
@@ -77,7 +77,7 @@ class CallbackDecodeIntegerTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsg('ffafw'));
 
-        (new CallbackDecoder())->decode('iffafwe', fn () => null);
+        (new CallbackDecoder())->decode('iffafwe', static fn () => null);
     }
 
     public function testOverflow(): void
@@ -89,6 +89,6 @@ class CallbackDecodeIntegerTest extends TestCase
 
         $this->expectExceptionMessage("Integer overflow: '{$value}'");
 
-        (new CallbackDecoder())->decode($encoded, fn () => null);
+        (new CallbackDecoder())->decode($encoded, static fn () => null);
     }
 }

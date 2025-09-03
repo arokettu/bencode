@@ -13,7 +13,7 @@ use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-class FileTest extends TestCase
+final class FileTest extends TestCase
 {
     public function testFile(): void
     {
@@ -91,7 +91,7 @@ class FileTest extends TestCase
         @vfsStream::setup(); // external dev deprecation
         $stream = vfsStream::newFile('test', 0000);
 
-        (new CallbackDecoder())->load($stream->url(), fn () => null);
+        (new CallbackDecoder())->load($stream->url(), static fn () => null);
     }
 
     public function testInvalidFileWrite(): void
@@ -124,6 +124,6 @@ class FileTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Input is not a valid stream');
 
-        (new CallbackDecoder())->decodeStream(false, fn () => null);
+        (new CallbackDecoder())->decodeStream(false, static fn () => null);
     }
 }

@@ -10,7 +10,7 @@ use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class DecodeIntegrationTest extends TestCase
+final class DecodeIntegrationTest extends TestCase
 {
     public function testAllFeatures(): void
     {
@@ -50,7 +50,7 @@ class DecodeIntegrationTest extends TestCase
 
         $decoded = Bencode::decode(
             $bencode,
-            listType: fn ($list) => new ArrayObject(iterator_to_array($list)),
+            listType: static fn ($list) => new ArrayObject(iterator_to_array($list)),
             dictType: Bencode\Collection::OBJECT,
         );
 

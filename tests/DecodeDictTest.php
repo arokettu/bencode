@@ -13,7 +13,7 @@ use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class DecodeDictTest extends TestCase
+final class DecodeDictTest extends TestCase
 {
     public function testValid(): void
     {
@@ -70,7 +70,7 @@ class DecodeDictTest extends TestCase
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage(
-            "Invalid order of dictionary keys: 'a' after 'a'"
+            "Invalid order of dictionary keys: 'a' after 'a'",
         ); // this may be confusing but it catches this bug
 
         Bencode::decode('d1:a1:b1:a1:de');
@@ -102,7 +102,7 @@ class DecodeDictTest extends TestCase
 
         // callback
         $arrayObject = new ArrayObject($dict);
-        $decodedCallback = Bencode::decode($encoded, dictType: function ($decoded) use ($dict) {
+        $decodedCallback = Bencode::decode($encoded, dictType: static function ($decoded) use ($dict) {
             $array = [...$decoded];
             self::assertIsIterable($decoded); // check that iterable is passed here
             self::assertEquals($dict, $array); // check content

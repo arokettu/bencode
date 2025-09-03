@@ -15,14 +15,14 @@ enum Collection
     {
         return match ($this) {
             self::ARRAY
-                => fn (\Traversable $value) => iterator_to_array($value),
+                => static fn (\Traversable $value) => iterator_to_array($value),
             self::ARRAY_OBJECT
-                => fn (\Traversable $value) => new \ArrayObject(
+                => static fn (\Traversable $value) => new \ArrayObject(
                     iterator_to_array($value),
-                    \ArrayObject::ARRAY_AS_PROPS
+                    \ArrayObject::ARRAY_AS_PROPS,
                 ),
             self::STDCLASS
-                => fn (\Traversable $value) => (object)iterator_to_array($value),
+                => static fn (\Traversable $value) => (object)iterator_to_array($value),
         };
     }
 }

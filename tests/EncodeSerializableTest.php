@@ -8,7 +8,7 @@ use Arokettu\Bencode\Bencode;
 use Arokettu\Bencode\Types\BencodeSerializable;
 use PHPUnit\Framework\TestCase;
 
-class EncodeSerializableTest extends TestCase
+final class EncodeSerializableTest extends TestCase
 {
     public function testSerializable(): void
     {

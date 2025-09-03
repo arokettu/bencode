@@ -8,7 +8,7 @@ use Arokettu\Bencode\Bencode;
 use Arokettu\Bencode\Exceptions\ValueNotSerializableException;
 use PHPUnit\Framework\TestCase;
 
-class EncodeTest extends TestCase
+final class EncodeTest extends TestCase
 {
     public function testUnknownType(): void
     {

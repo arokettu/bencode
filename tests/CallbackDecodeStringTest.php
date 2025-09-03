@@ -9,7 +9,7 @@ use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;
 use PHPUnit\Framework\TestCase;
 
-class CallbackDecodeStringTest extends TestCase
+final class CallbackDecodeStringTest extends TestCase
 {
     private function errorMsgLength(string $value): string
     {
@@ -25,7 +25,7 @@ class CallbackDecodeStringTest extends TestCase
         // special chars
         self::assertEquals("zero\0newline\nsymblol05\x05ok", CallbackCombiner::decode(
             new CallbackDecoder(),
-            "25:zero\0newline\nsymblol05\x05ok"
+            "25:zero\0newline\nsymblol05\x05ok",
         ));
         // unicode
         self::assertEquals('日本語', CallbackCombiner::decode(new CallbackDecoder(), '9:日本語'));
@@ -36,7 +36,7 @@ class CallbackDecodeStringTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsgLength('06'));
 
-        (new CallbackDecoder())->decode('06:String', fn () => null);
+        (new CallbackDecoder())->decode('06:String', static fn () => null);
     }
 
     public function testIncorrectLengthNegative(): void
@@ -44,7 +44,7 @@ class CallbackDecodeStringTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsgLength('-6'));
 
-        (new CallbackDecoder())->decode('-6:String', fn () => null);
+        (new CallbackDecoder())->decode('-6:String', static fn () => null);
     }
 
     public function testIncorrectLengthFloat(): void
@@ -52,7 +52,7 @@ class CallbackDecodeStringTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsgLength('6.0'));
 
-        (new CallbackDecoder())->decode('6.0:String', fn () => null);
+        (new CallbackDecoder())->decode('6.0:String', static fn () => null);
     }
 
     public function testIncorrectLengthNotNumeric(): void
@@ -60,7 +60,7 @@ class CallbackDecodeStringTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage($this->errorMsgLength('six'));
 
-        (new CallbackDecoder())->decode('six:String', fn () => null);
+        (new CallbackDecoder())->decode('six:String', static fn () => null);
     }
 
     public function testUnexpectedEof(): void
@@ -68,6 +68,6 @@ class CallbackDecodeStringTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file while processing string');
 
-        (new CallbackDecoder())->decode('10:String', fn () => null);
+        (new CallbackDecoder())->decode('10:String', static fn () => null);
     }
 }

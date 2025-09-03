@@ -13,14 +13,14 @@ use PHPUnit\Framework\TestCase;
  *
  * Testing some overall decoding features. Decoding exact types is tested in their own classes
  */
-class CallbackDecodeTest extends TestCase
+final class CallbackDecodeTest extends TestCase
 {
     public function testJunk(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Probably some junk after the end of the file');
 
-        (new CallbackDecoder())->decode('i0ejunk', fn () => null);
+        (new CallbackDecoder())->decode('i0ejunk', static fn () => null);
     }
 
     public function testValidBencodeJunkIsAlsoJunk(): void
@@ -28,7 +28,7 @@ class CallbackDecodeTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Probably some junk after the end of the file');
 
-        (new CallbackDecoder())->decode('i0ele', fn () => null);
+        (new CallbackDecoder())->decode('i0ele', static fn () => null);
     }
 
     public function testNothing(): void
@@ -36,7 +36,7 @@ class CallbackDecodeTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
 
-        (new CallbackDecoder())->decode('', fn () => null);
+        (new CallbackDecoder())->decode('', static fn () => null);
     }
 
     public function testRootIntegerNotFinalized(): void
@@ -44,7 +44,7 @@ class CallbackDecodeTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
 
-        (new CallbackDecoder())->decode('i123', fn () => null);
+        (new CallbackDecoder())->decode('i123', static fn () => null);
     }
 
     public function testRootStringNotFinalized(): void
@@ -52,7 +52,7 @@ class CallbackDecodeTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
 
-        (new CallbackDecoder())->decode('10:abc', fn () => null);
+        (new CallbackDecoder())->decode('10:abc', static fn () => null);
     }
 
     public function testRootStringDeclNotFinalized(): void
@@ -60,7 +60,7 @@ class CallbackDecodeTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
 
-        (new CallbackDecoder())->decode('10', fn () => null);
+        (new CallbackDecoder())->decode('10', static fn () => null);
     }
 
     public function testRootListNotFinalized(): void
@@ -68,7 +68,7 @@ class CallbackDecodeTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
 
-        (new CallbackDecoder())->decode('li213ei123e', fn () => null);
+        (new CallbackDecoder())->decode('li213ei123e', static fn () => null);
     }
 
     public function testRootDictionaryNotFinalized(): void
@@ -76,6 +76,6 @@ class CallbackDecodeTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Unexpected end of file');
 
-        (new CallbackDecoder())->decode('d4:key1i1e4:key2i2e', fn () => null);
+        (new CallbackDecoder())->decode('d4:key1i1e4:key2i2e', static fn () => null);
     }
 }

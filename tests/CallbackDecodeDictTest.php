@@ -12,7 +12,7 @@ use Arokettu\Bencode\Exceptions\ParseErrorException;
 use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;
 use PHPUnit\Framework\TestCase;
 
-class CallbackDecodeDictTest extends TestCase
+final class CallbackDecodeDictTest extends TestCase
 {
     public function testValid(): void
     {
@@ -30,7 +30,7 @@ class CallbackDecodeDictTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Non string key found in the dictionary');
 
-        (new CallbackDecoder())->decode('di123ei321ee', fn () => null);
+        (new CallbackDecoder())->decode('di123ei321ee', static fn () => null);
     }
 
     public function testKeyNotStringList(): void
@@ -38,7 +38,7 @@ class CallbackDecodeDictTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage('Non string key found in the dictionary');
 
-        (new CallbackDecoder())->decode('dlei321ee', fn () => null);
+        (new CallbackDecoder())->decode('dlei321ee', static fn () => null);
     }
 
     public function testKeysNotSorted(): void
@@ -46,7 +46,7 @@ class CallbackDecodeDictTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Invalid order of dictionary keys: 'aaa' after 'zzz'");
 
-        (new CallbackDecoder())->decode('d3:zzz0:3:aaa0:e', fn () => null);
+        (new CallbackDecoder())->decode('d3:zzz0:3:aaa0:e', static fn () => null);
     }
 
     public function testIntegerKeysNotSortedAsStrings(): void
@@ -54,7 +54,7 @@ class CallbackDecodeDictTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Invalid order of dictionary keys: '11' after '2'");
 
-        (new CallbackDecoder())->decode('d1:11:a1:21:c2:111:b2:221:de', fn () => null); // keys here are sorted as integers: 1, 2, 11, 22
+        (new CallbackDecoder())->decode('d1:11:a1:21:c2:111:b2:221:de', static fn () => null); // keys here are sorted as integers: 1, 2, 11, 22
     }
 
     public function testMissingLastValue(): void
@@ -62,16 +62,16 @@ class CallbackDecodeDictTest extends TestCase
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage("Dictionary key without corresponding value: 'c'");
 
-        (new CallbackDecoder())->decode('d1:a1:b1:ce', fn () => null); // three elements: last key misses a value
+        (new CallbackDecoder())->decode('d1:a1:b1:ce', static fn () => null); // three elements: last key misses a value
     }
 
     public function testDuplicateKey(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionMessage(
-            "Invalid order of dictionary keys: 'a' after 'a'"
+            "Invalid order of dictionary keys: 'a' after 'a'",
         ); // this may be confusing but it catches this bug
 
-        (new CallbackDecoder())->decode('d1:a1:b1:a1:de', fn () => null);
+        (new CallbackDecoder())->decode('d1:a1:b1:a1:de', static fn () => null);
     }
 }

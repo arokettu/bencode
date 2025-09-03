@@ -48,7 +48,7 @@
         "pear/math_biginteger": "^1.0",
         "phpunit/phpunit": "^10.5.28",
         "psy/psysh": "*",
-        "sandfox.dev/code-standard": "^1.2025.05.07",
+        "sandfox.dev/code-standard": "^1.2025.08.31",
         "squizlabs/php_codesniffer": "*",
         "vimeo/psalm": "^6"
     },

@@ -11,7 +11,7 @@ use Arokettu\Bencode\CallbackDecoder;
 use Arokettu\Bencode\Tests\Helpers\CallbackCombiner;
 use PHPUnit\Framework\TestCase;
 
-class CallbackDecodeListTest extends TestCase
+final class CallbackDecodeListTest extends TestCase
 {
     public function testListSimple(): void
     {

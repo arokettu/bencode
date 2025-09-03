@@ -8,7 +8,7 @@ use Arokettu\Bencode\Bencode;
 use Arokettu\Bencode\Exceptions\ValueNotSerializableException;
 use PHPUnit\Framework\TestCase;
 
-class EncodeScalarTest extends TestCase
+final class EncodeScalarTest extends TestCase
 {
     public function testInteger(): void
     {

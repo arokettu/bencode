@@ -123,9 +123,9 @@ final class CallbackReader
         $int = \intval($intStr);
 
         $this->finalizeScalar(
-            \strval($int) === $intStr ?         // detect overflow
-                $int :                          // not overflown: native int
-                ($this->bigIntHandler)($intStr) // overflown: handle big int
+            \strval($int) === $intStr ?             // detect overflow
+                $int :                              // not overflown: native int
+                ($this->bigIntHandler)($intStr),    // overflown: handle big int
         );
     }
 

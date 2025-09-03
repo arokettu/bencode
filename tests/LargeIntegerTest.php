@@ -14,7 +14,7 @@ use BcMath\Number;
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
 
-class LargeIntegerTest extends TestCase
+final class LargeIntegerTest extends TestCase
 {
     private const POW_2_1024 =
         '1797693134862315907729305190789024733617976978942306572734300811577326758055009631' .
@@ -46,7 +46,7 @@ class LargeIntegerTest extends TestCase
     {
         $encoded = 'i' . self::POW_2_1024 . 'e';
 
-        $decoded = Bencode::decode($encoded, bigInt: function ($value) {
+        $decoded = Bencode::decode($encoded, bigInt: static function ($value) {
             return $value;
         });
 

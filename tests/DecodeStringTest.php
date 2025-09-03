@@ -8,7 +8,7 @@ use Arokettu\Bencode\Bencode;
 use Arokettu\Bencode\Exceptions\ParseErrorException;
 use PHPUnit\Framework\TestCase;
 
-class DecodeStringTest extends TestCase
+final class DecodeStringTest extends TestCase
 {
     private function errorMsgLength(string $value): string
     {

@@ -10,7 +10,7 @@ use BcMath\Number;
 use Brick\Math\BigInteger;
 use PHPUnit\Framework\TestCase;
 
-class BigIntTypeTest extends TestCase
+final class BigIntTypeTest extends TestCase
 {
     public function testPositiveNumericString(): void
     {

@@ -9,7 +9,7 @@ use Arokettu\Bencode\Exceptions\ValueNotSerializableException;
 use Arokettu\Bencode\Types\BencodeSerializable;
 use PHPUnit\Framework\TestCase;
 
-class EncodeEmptyTest extends TestCase
+final class EncodeEmptyTest extends TestCase
 {
     public function testNoRootNull(): void
     {
@@ -57,7 +57,7 @@ class EncodeEmptyTest extends TestCase
     {
         self::assertEquals(
             'li1ei2ei3ei4ei5ee',
-            Bencode::encode([1, 2, false, 3, 4, null, 5])
+            Bencode::encode([1, 2, false, 3, 4, null, 5]),
         );
     }
 
@@ -71,7 +71,7 @@ class EncodeEmptyTest extends TestCase
                 'c' => 2,
                 'd' => false,
                 'e' => 3,
-            ])
+            ]),
         );
     }
 

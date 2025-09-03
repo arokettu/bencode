@@ -118,7 +118,7 @@ final class Reader
         $this->finalizeScalar(
             \strval($int) === $intStr ?         // detect overflow
                 $int :                          // not overflown: native int
-                ($this->bigIntHandler)($intStr) // overflown: handle big int
+                ($this->bigIntHandler)($intStr), // overflown: handle big int
         );
     }
 

@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  * In case dict iterable is processed after the decoding,
  * all subsequent dictionaries are empty
  */
-class LateDecodeEmptyDictTest extends TestCase
+final class LateDecodeEmptyDictTest extends TestCase
 {
     public function testIssue(): void
     {
@@ -30,8 +30,8 @@ class LateDecodeEmptyDictTest extends TestCase
         $encoded = Bencode::encode($data);
         $prepareForJsonEncoding = Bencode::decode(
             $encoded,
-            listType: fn ($v) => new LateDecodeEmptyDictTest\JsonList($v),
-            dictType: fn ($v) => new LateDecodeEmptyDictTest\JsonDict($v),
+            listType: static fn ($v) => new LateDecodeEmptyDictTest\JsonList($v),
+            dictType: static fn ($v) => new LateDecodeEmptyDictTest\JsonDict($v),
         );
         $json = json_encode($prepareForJsonEncoding);
         $decoded = json_decode($json, true);

@@ -9,14 +9,14 @@ use Arokettu\Bencode\Exceptions\ValueNotSerializableException;
 use Arokettu\Bencode\Types\DictType;
 use PHPUnit\Framework\TestCase;
 
-class EncodeDictTest extends TestCase
+final class EncodeDictTest extends TestCase
 {
     public function testDictionary(): void
     {
         // array with string keys
         self::assertEquals(
             'd3:key5:value4:test8:whatevere',
-            Bencode::encode(['key' => 'value', 'test' => 'whatever'])
+            Bencode::encode(['key' => 'value', 'test' => 'whatever']),
         );
 
         // any non-sequential array
@@ -32,12 +32,12 @@ class EncodeDictTest extends TestCase
 
         // ArrayObject
         self::assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode(
-            new \ArrayObject(['key' => 'value', 'test' => 'whatever'])
+            new \ArrayObject(['key' => 'value', 'test' => 'whatever']),
         ));
 
         // even sequential
         self::assertEquals('d1:0i1e1:1i2e1:21:31:34:test1:4i5ee', Bencode::encode(
-            new \ArrayObject([1, 2, '3', 'test', 5])
+            new \ArrayObject([1, 2, '3', 'test', 5]),
         ));
 
         // empty dict
@@ -45,10 +45,10 @@ class EncodeDictTest extends TestCase
 
         // DictType
         self::assertEquals('d3:key5:value4:test8:whatevere', Bencode::encode(
-            new DictType((function () {
+            new DictType((static function () {
                 yield 'key' => 'value';
                 yield 'test' => 'whatever';
-            })())
+            })()),
         ));
     }
 
@@ -60,10 +60,10 @@ class EncodeDictTest extends TestCase
         $this->expectExceptionMessage("Bencode doesn't know how to serialize an instance of Generator");
 
         Bencode::encode(
-            (function () {
+            (static function () {
                 yield 'key' => 'value';
                 yield 'test' => 'whatever';
-            })()
+            })(),
         );
     }
 
@@ -136,10 +136,10 @@ class EncodeDictTest extends TestCase
         $this->expectExceptionMessage("Dictionary contains repeated keys: 'key'");
 
         Bencode::encode(
-            new DictType((function () {
+            new DictType((static function () {
                 yield 'key' => 'value1';
                 yield 'key' => 'value2';
-            })())
+            })()),
         );
     }
 }

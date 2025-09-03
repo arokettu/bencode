@@ -12,7 +12,7 @@ use ArrayObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class DecodeListTest extends TestCase
+final class DecodeListTest extends TestCase
 {
     public function testListSimple(): void
     {
@@ -47,7 +47,7 @@ class DecodeListTest extends TestCase
         // callback
         $arrayObject = new ArrayObject($list);
 
-        $decodedCallback = Bencode::decode($encoded, listType: function ($decoded) use ($list) {
+        $decodedCallback = Bencode::decode($encoded, listType: static function ($decoded) use ($list) {
             $array = [...$decoded];
             self::assertIsIterable($decoded); // check that iterable is passed here
             self::assertEquals($list, $array); // check content

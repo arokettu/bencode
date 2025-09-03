@@ -8,7 +8,7 @@ use Arokettu\Bencode\Bencode;
 use Arokettu\Bencode\Types\ListType;
 use PHPUnit\Framework\TestCase;
 
-class EncodeListTest extends TestCase
+final class EncodeListTest extends TestCase
 {
     public function testList(): void
     {
@@ -20,23 +20,23 @@ class EncodeListTest extends TestCase
 
         self::assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
             new ListType(
-                (function () {
+                (static function () {
                     yield from [1, 2, '3', 'test', 5];
-                })()
-            )
+                })(),
+            ),
         ));
 
         // sequential or not, we ignore the keys for ListType
         self::assertEquals('li1ei2e1:34:testi5ee', Bencode::encode(
             new ListType(
-                (function () {
+                (static function () {
                     yield 'key1' => 1;
                     yield 'key2' => 2;
                     yield 'key0' => '3';
                     yield 'qqqq' => 'test';
                     yield 423112 => 5;
-                })()
-            )
+                })(),
+            ),
         ));
 
         // test list type consuming an array
@@ -48,7 +48,7 @@ class EncodeListTest extends TestCase
                 'key0' => '3',
                 'qqqq' => 'test',
                 423112 => 5,
-            ])
+            ]),
         ));
 
         // empty list
