@@ -1,12 +1,9 @@
 <?xml version="1.0"?>
-<!--
-    @see https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-Ruleset
--->
-<ruleset name="Custom Standard" namespace="MyProject\CS\Standard">
+<ruleset>
     <rule ref="SandFox_PHP81"/>
     <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions">
         <properties>
-            <property name="include" type="array">
+            <property name="include" type="array" extend="true">
                 <element value="gmp_init"/> <!-- ensure root level gmp -->
             </property>
         </properties>
