@@ -118,7 +118,8 @@ final class Reader
             throw new ParseErrorException("Invalid integer format: '{$intStr}'");
         }
 
-        $int = \intval($intStr);
+        // silence the notice, we will check validity ourselves later
+        $int = @\intval($intStr);
 
         $this->finalizeScalar(
             \strval($int) === $intStr ?         // detect overflow
