@@ -2,6 +2,12 @@
 
 ## 4.x
 
+### 4.3.2
+
+*Oct 9, 2025*
+
+* Fixed a notice in PHP 8.5 on big integer detection
+
 ### 4.3.1
 
 *May 20, 2025*
